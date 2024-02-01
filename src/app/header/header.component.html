@@ -14,8 +14,13 @@
           <ul>
             <li (click)="closeMenu()">Home</li>
             <li (click)="closeMenu()">About</li>
-            <li (click)="closeMenu()">Courses</li>
-            <li (click)="closeMenu()">Contact</li>
+            <li (click)="closeMenu()">Test</li>
+            @if (!is_authenticated) {
+            <li (click)="closeMenu()"><a routerLink="/login">Login</a></li>
+            }
+            @else {
+            <li (click)="closeMenu(); logout(); ">Logout</li>
+            }
           </ul>
         </div>
       </div>
