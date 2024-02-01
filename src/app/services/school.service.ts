@@ -8,12 +8,14 @@ import { ApiconfigService } from './apiconfig.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class SchoolService {
 
   constructor(private http: HttpClient, private api: ApiconfigService) { }
+
   url: string = this.api.getAPIUrl() + "/API_public/school";
-  getSchool(UAI_code: string): Observable<School> {
-    console.log(this.url);
+
+  getSchool(UAI_code: string | null): Observable<School> {
     return this.http.get<School>(this.url + `/${UAI_code}`).pipe(
       map((response: any) => ({
         UAI_code: response.UAI_code,
