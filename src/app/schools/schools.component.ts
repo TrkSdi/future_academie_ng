@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { School } from '../interface/school-interface';
 import { SchoolService } from '../services/school.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-schools',
@@ -11,13 +12,16 @@ import { SchoolService } from '../services/school.service';
 })
 export class SchoolsComponent {
 
-  constructor(private schoolService: SchoolService) { }
+  constructor(private schoolService: SchoolService, private route: ActivatedRoute) { }
 
   school!: School;
 
   ngOnInit() {
-    this.schoolService.getSchool("0133774G").subscribe(school => this.school = school);
+    this.loadSchool();
   }
-
+  loadSchool() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.schoolService.getSchool(id).subscribe(school => this.school = school);
+  }
 
 }
