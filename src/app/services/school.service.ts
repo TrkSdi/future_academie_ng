@@ -3,17 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { School } from '../interface/school-interface';
 import { map } from 'rxjs';
+import { ApiconfigService } from './apiconfig.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService {
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient, private api: ApiconfigService) { }
+  url: string = this.api.getAPIUrl() + "/API_public/school";
   getSchool(UAI_code: string): Observable<School> {
-    const url = `http://127.0.0.1:8001/API_public/school/${UAI_code}`;
-    return this.http.get<School>(url).pipe(
+    console.log(this.url);
+    return this.http.get<School>(this.url + `/${UAI_code}`).pipe(
       map((response: any) => ({
         UAI_code: response.UAI_code,
         name: response.name,
