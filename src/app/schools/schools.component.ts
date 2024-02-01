@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { School } from '../interface/school-interface';
+import { SchoolService } from '../services/school.service';
 
 @Component({
   selector: 'app-schools',
@@ -9,15 +10,14 @@ import { School } from '../interface/school-interface';
   styleUrl: './schools.component.css'
 })
 export class SchoolsComponent {
-  UAI_code = "0133774G";
-  name = "Centrale Marseille"
-  url = "https://www.centrale-marseille.fr/"
-  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  address = {
-        street_address: "38 rue Frédéric-Joliot-Curie",
-        postcode: 13451,
-        locality: "Marseille CEDEX 13"
+
+  constructor(private schoolService: SchoolService) { }
+
+  school!: School;
+
+  ngOnInit() {
+    this.schoolService.getSchool("0133774G").subscribe(school => this.school = school);
   }
-  school_type = "Public"
-  constructor() {}
+
+
 }
