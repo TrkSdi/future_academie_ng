@@ -1,0 +1,18 @@
+export interface StudyProgram {
+    cod_aff_form: number,
+    name: string,
+    school: string,
+    url: string,
+    acceptance_rate: number,
+    L1_succes_rate: number,
+    description: string,
+    diploma_earned_ontime: number,
+    available_places: number,
+    number_applicants: number,
+    percent_scholarship: number,
+    acceptance_rate_quartile: string,
+    L1_success_rate_quartile: string,
+    diploma_earned_ontime_quartile: string,
+    percent_scholarship_quartile: string,
+    job_prospects: string,
+}
