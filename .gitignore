@@ -2,8 +2,7 @@
 
 
 #environment
-/environments/environment.ts
-
+src/environments/environment.ts
 
 
 # Compiled output
