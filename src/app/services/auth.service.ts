@@ -26,31 +26,26 @@ export class AuthService {
     const decoded_refresh_token: JwtPayload | any = refresh_token ? jwtDecode(refresh_token) : null;
     const current_time: number = new Date().getTime()
 
-    if (!access_token) {
+    if (!access_token && !refresh_token) {
       return false
       // check access token expiration
-    } else if (decoded_access_token.exp * 1000 > current_time) {
+    } else if (access_token && decoded_access_token.exp * 1000 > current_time) {
       return true
-      // if access expired, check for refresh token
+      // if no refresh, user must re-authenticate
     } else if (!refresh_token) {
-      localStorage.removeItem('access_token');
+      access_token ? localStorage.removeItem('access_token') : null;
       return false
-      // if refresh token isn't expired, refresh access token and 
-      // return true result of a new check
-    } else if (decoded_refresh_token.exp * 1000 > current_time) {
+      // refresh if possible
+    } else if (refresh_token && decoded_refresh_token.exp * 1000 > current_time) {
+      access_token ? localStorage.removeItem('access_token') : null;
       this.refresh_token(refresh_token).subscribe({
         next: (response) => {
-          localStorage.removeItem('access_token');
           localStorage.setItem('access_token', response.access);
+          return this.check_authentication();
         }
-      });
-      return this.check_authentication()
-      // otherwise user is not authenticated, clean up any expired tokens
-    } else {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      return false
+      })
     }
+    return false
   }
 
   refresh_token(refresh_token: string | null): Observable<any> {
@@ -62,7 +57,7 @@ export class AuthService {
   logout(): Observable<any> { //needs testing
     const url = this.api.getAPIUrl() + '/auth/logout/';
     const data = {
-      "refresh": "tokenrefresh.tokenrefresh",
+      "refresh": localStorage.getItem("refresh_token"),
     }
     return this.http.post<any>(url, data);
 
