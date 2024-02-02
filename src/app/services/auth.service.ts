@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private http: HttpClient, private api: ApiconfigService) {
 
   }
-  //get a token
+  //get a token which will be saved to local storage by the login component
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>('http://localhost:8001/auth/jwt/create', { email, password }).pipe(map((response) => ({ refresh: response.refresh, access: response.access })));
   }
@@ -25,27 +25,30 @@ export class AuthService {
     const decoded_access_token: JwtPayload | any = access_token ? jwtDecode(access_token) : null;
     const decoded_refresh_token: JwtPayload | any = refresh_token ? jwtDecode(refresh_token) : null;
     const current_time: number = new Date().getTime()
-    console.log("decoded access exp", decoded_access_token.exp);
-    console.log("now", current_time);
-    console.log(decoded_access_token.exp * 1000 > current_time);
+
     if (!access_token) {
       return false
-      // if token isn't expired, return true
+      // check access token expiration
     } else if (decoded_access_token.exp * 1000 > current_time) {
-      console.log("good token");
       return true
-      // if refresh token isn't expired, refresh access token and return true result of a new check 
+      // if access expired, check for refresh token
+    } else if (!refresh_token) {
+      localStorage.removeItem('access_token');
+      return false
+      // if refresh token isn't expired, refresh access token and 
+      // return true result of a new check
     } else if (decoded_refresh_token.exp * 1000 > current_time) {
       this.refresh_token(refresh_token).subscribe({
         next: (response) => {
+          localStorage.removeItem('access_token');
           localStorage.setItem('access_token', response.access);
         }
       });
-      console.log("refresh");
       return this.check_authentication()
-      // otherwise user is not authenticated
+      // otherwise user is not authenticated, clean up any expired tokens
     } else {
-      console.log("other");
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       return false
     }
   }
@@ -56,11 +59,13 @@ export class AuthService {
     return this.http.post<any>(url, data).pipe(map((response) => ({ access: response.access })));
   }
 
-  logout(): Observable<any> { //to sort out tomorrow!
-    const url = this.api.getAPIUrl() + '/auth/logout';
+  logout(): Observable<any> { //needs testing
+    const url = this.api.getAPIUrl() + '/auth/logout/';
     const data = {
       "refresh": "tokenrefresh.tokenrefresh",
     }
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     return this.http.post<any>(url, data);
 
   }
