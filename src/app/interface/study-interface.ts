@@ -16,3 +16,10 @@ export interface StudyProgram {
     percent_scholarship_quartile: string,
     job_prospects: string,
 }
+
+export interface StudyResponse {
+    results: StudyProgram[] | any,
+    next: string | null,
+    previous: string | null,
+    count: number | null,
+}
