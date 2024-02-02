@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class ApiconfigService {
+
   constructor() {}
   private apiUrl = environment.API_URL;
   getAPIUrl(): string {
