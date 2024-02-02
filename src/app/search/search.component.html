@@ -1,0 +1,10 @@
+<input
+  #searchInput
+  placeholder="Search for schools"
+  (input)="search(searchInput.value)"
+/>
+<ul>
+  <li *ngFor="let school of schools$ | async">
+    {{ school.name }}
+  </li>
+</ul>

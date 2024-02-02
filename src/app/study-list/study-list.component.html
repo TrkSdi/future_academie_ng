@@ -1,0 +1,28 @@
+<div class="main-container">
+    <h1>Programme d'études</h1>
+    <div class="cards-container">
+        <div class="card" *ngFor="let study of studies">
+            <div class="main-info">
+                <ul>
+                    <li *ngIf="study.name !== null && study.name !== undefined"><span>Nom:</span> {{ study.name }}</li>
+                    <li *ngIf="study.school !== null && study.school !== undefined"><span>Ecole:</span> {{ study.school }}</li>
+                    <li *ngIf="study.url !== null && study.url !== undefined"><span>Site web:</span><a href="{{ study.url }}"> Lien</a></li>
+                    <li *ngIf="study.acceptance_rate !== null && study.acceptance_rate !== undefined"><span>Taux d'acceptation:</span> {{ study.acceptance_rate }}%</li>
+                    <li *ngIf="study.L1_succes_rate !== null && study.L1_succes_rate !== undefined"><span>Taux de succès en L1:</span> {{ study.L1_succes_rate }}%</li>
+                    <li *ngIf="study.description !== null && study.description !== undefined"><span>Description:</span> {{ study.description }}</li>
+                    <li *ngIf="study.diploma_earned_ontime !== null && study.diploma_earned_ontime !== undefined"><span>Taux obtention diplome (dans les temps):</span> {{ study.diploma_earned_ontime }}</li>
+                    <li *ngIf="study.available_places !== null && study.available_places !== undefined"><span>Places disponibles:</span> {{ study.available_places }}</li>
+                    <li *ngIf="study.number_applicants !== null && study.number_applicants !== undefined"><span>Nombre de candidats:</span> {{ study.number_applicants }}</li>
+                    <li *ngIf="study.percent_scholarship !== null && study.percent_scholarship !== undefined"><span>Boursiers:</span> {{ study.percent_scholarship }}%</li>
+                </ul>
+            </div>
+            <button>Voir plus</button>
+        </div>
+    </div>
+    <div class="pagination">
+        test
+    </div>
+    
+</div>
+
+
