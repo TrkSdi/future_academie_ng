@@ -5,9 +5,9 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root',
 })
 export class ApiconfigService {
-  constructor() { }
-  private apiUrl = environment.API_URL;
 
+  constructor() {}
+  private apiUrl = environment.API_URL;
   getAPIUrl(): string {
     return this.apiUrl;
   }
