@@ -25,9 +25,7 @@ export class AuthService {
     const decoded_access_token: JwtPayload | any = access_token ? jwtDecode(access_token) : null;
     const decoded_refresh_token: JwtPayload | any = refresh_token ? jwtDecode(refresh_token) : null;
     const current_time: number = new Date().getTime()
-    console.log("decoded access exp", decoded_access_token.exp);
-    console.log("now", current_time);
-    console.log(decoded_access_token.exp * 1000 > current_time);
+
     if (!access_token) {
       return false
       // if token isn't expired, return true
