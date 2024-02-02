@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
+import { ApiconfigService } from '../services/apiconfig.service';
 
 @Component({
   selector: 'app-creation',
@@ -11,13 +12,14 @@ import { Location } from '@angular/common';
   styleUrl: './creation.component.css',
 })
 export class CreationComponent {
-  constructor(private location: Location) {}
+  constructor(private location: Location, private api: ApiconfigService) { }
 
   texteSmallConfirmEmail: string = '';
   texteSmallConfirmPassword: string = '';
   textButton: string = 'Submit';
   validationNOK: boolean = false;
   validationOK: boolean = false;
+  apiUrl: string = this.api.getAPIUrl();
 
   afficher() {
     // on va atttraper les différentes constantes utiles dans le template
@@ -50,7 +52,7 @@ export class CreationComponent {
     var jsonStr = JSON.stringify(jsonObj);
 
     // variables permettant de fetch les informations à l'adresse url
-    var url = 'http://127.0.0.1:8000/auth/users/';
+    var url = this.apiUrl + '/auth/users/';
     var options = {
       method: 'POST',
       headers: {

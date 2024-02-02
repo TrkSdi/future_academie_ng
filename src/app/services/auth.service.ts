@@ -12,9 +12,11 @@ export class AuthService {
   constructor(private http: HttpClient, private api: ApiconfigService) {
 
   }
+
+  apiUrl = this.api.getAPIUrl();
   //get a token which will be saved to local storage by the login component
   login(email: string, password: string): Observable<any> {
-    return this.http.post<any>('http://localhost:8001/auth/jwt/create', { email, password }).pipe(map((response) => ({ refresh: response.refresh, access: response.access })));
+    return this.http.post<any>(this.apiUrl + '/auth/jwt/create', { email, password }).pipe(map((response) => ({ refresh: response.refresh, access: response.access })));
   }
 
   // check if the user has a JWT token that is not expired, note that this does not 
