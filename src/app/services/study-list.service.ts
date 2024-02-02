@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StudyProgram, StudyResponse } from '../interface/study-interface';
+import { StudyResponse } from '../interface/study-interface';
 import { map } from 'rxjs';
 import { ApiconfigService } from './apiconfig.service';
+import { StudydetailComponent } from '../studydetail/studydetail.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudyListService {
+
+  
+
   constructor(private http:HttpClient, private api:ApiconfigService) {}
 
   studyUrl: string = this.api.getAPIUrl() + "/API_public/studyprogram/";
-
-
   
-  
-  getStudyList(): Observable<StudyResponse> {
-  return this.http.get<StudyResponse>(this.studyUrl).pipe(
+  getStudyList(url?:string): Observable<StudyResponse> {
+  return this.http.get<StudyResponse>(url || this.studyUrl).pipe(
     map((response: any) => ({
       next: response.next,
       previous: response.previous,
