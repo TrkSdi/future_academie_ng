@@ -64,8 +64,6 @@ export class AuthService {
     const data = {
       "refresh": "tokenrefresh.tokenrefresh",
     }
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
     return this.http.post<any>(url, data);
 
   }
