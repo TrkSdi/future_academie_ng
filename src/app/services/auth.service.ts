@@ -30,7 +30,6 @@ export class AuthService {
       return false
       // if token isn't expired, return true
     } else if (decoded_access_token.exp * 1000 > current_time) {
-      console.log("good token");
       return true
       // if refresh token isn't expired, refresh access token and return true result of a new check 
     } else if (decoded_refresh_token.exp * 1000 > current_time) {
@@ -62,5 +61,7 @@ export class AuthService {
     return this.http.post<any>(url, data);
 
   }
+
+
 
 }
