@@ -23,8 +23,8 @@ export class StudyListComponent implements OnInit {
     this.getStudy();
   }
 
-  getStudy(): void {
-    this.studyListService.getStudyList().subscribe(
+  getStudy(url?:string): void {
+    this.studyListService.getStudyList(url).subscribe(
       (response) => {
         this.studies = response.results
         this.nextUrl = response.next
@@ -33,4 +33,17 @@ export class StudyListComponent implements OnInit {
       }
     )
   }
+
+  loadNextPage(): void {
+    if (this.nextUrl) {
+      this.getStudy(this.nextUrl);
+    }
+  }
+
+  loadPreviousPage(): void {
+    if (this.previousUrl) {
+      this.getStudy(this.previousUrl);
+    }
+  }
+
 }

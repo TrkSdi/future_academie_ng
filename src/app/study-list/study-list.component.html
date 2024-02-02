@@ -1,11 +1,14 @@
 <div class="main-container">
     <h1>Programme d'études</h1>
+    <div class="count-container">
+        <p>Nombres résultats: {{ count }}</p>
+    </div>
     <div class="cards-container">
         <div class="card" *ngFor="let study of studies">
             <div class="main-info">
                 <ul>
-                    <li *ngIf="study.name !== null && study.name !== undefined"><span>Nom:</span> {{ study.name }}</li>
-                    <li *ngIf="study.school !== null && study.school !== undefined"><span>Ecole:</span> {{ study.school }}</li>
+                    <li *ngIf="study.name !== null && study.name !== undefined"><h2>{{ study.name }}</h2></li>
+                    <li *ngIf="study.school !== null && study.school !== undefined"><h3>{{ study.school }}</h3></li>
                     <li *ngIf="study.url !== null && study.url !== undefined"><span>Site web:</span><a href="{{ study.url }}"> Lien</a></li>
                     <li *ngIf="study.acceptance_rate !== null && study.acceptance_rate !== undefined"><span>Taux d'acceptation:</span> {{ study.acceptance_rate }}%</li>
                     <li *ngIf="study.L1_succes_rate !== null && study.L1_succes_rate !== undefined"><span>Taux de succès en L1:</span> {{ study.L1_succes_rate }}%</li>
@@ -16,13 +19,18 @@
                     <li *ngIf="study.percent_scholarship !== null && study.percent_scholarship !== undefined"><span>Boursiers:</span> {{ study.percent_scholarship }}%</li>
                 </ul>
             </div>
-            <button>Voir plus</button>
+            <button class="more"><a routerLink="">Voir plus</a></button>
         </div>
     </div>
     <div class="pagination">
-        test
+        @if (previousUrl) {
+            <button class="chevron" (click)="loadPreviousPage()"><span class="charm--chevron-left"></span></button>
+        }
+        @if (nextUrl) {
+            <button class="chevron" (click)="loadNextPage()"><span class="charm--chevron-right"></span></button>
+        }
+        
     </div>
-    
 </div>
 
 
