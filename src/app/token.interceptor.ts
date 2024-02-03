@@ -6,7 +6,7 @@ import { AuthService } from './services/auth.service';
 export const tokenInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next:
   HttpHandlerFn) => {
   const auth = inject(AuthService);
-  const is_authenticated = auth.check_authentication();
+  const is_authenticated = auth.check_authentication().subscribe({ next: (result) => { return result } });
   if (is_authenticated) {
     const access_token: string | null = localStorage.getItem('access_token');
     const modifiedReq = req.clone({

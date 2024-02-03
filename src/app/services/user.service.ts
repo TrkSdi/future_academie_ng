@@ -11,7 +11,8 @@ export class UserService {
   constructor(private api: ApiconfigService, private auth: AuthService) { }
 
   getUserID(): string | null {
-    if (this.auth.check_authentication()) {
+    const is_authenticated = this.auth.check_authentication().subscribe({ next: (result) => { return result } });;
+    if (is_authenticated) {
       const token = localStorage.getItem('access_token');
       const decoded_token = jwtDecode(token!) as CustomJwtPayload;
       return decoded_token.user_id
