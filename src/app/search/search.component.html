@@ -1,10 +1,18 @@
-<input
-  #searchInput
-  placeholder="Search for schools"
-  (input)="search(searchInput.value)"
-/>
+<div class="row">
+  <p>Rechercher un programme</p>
+  <input
+    #searchInput
+    placeholder="Rechercher une école ou un programme"
+    (input)="search(searchInput.value)"
+  />
+</div>
+
+<h2>Résultats</h2>
+
+<!-- il faudrait ajouter le nombre de résultats -->
 <ul>
-  <li *ngFor="let school of schools$ | async">
-    {{ school.name }}
+  <li *ngFor="let school of schools$ | async">Schools : {{ school.name }}</li>
+  <li *ngFor="let program of programs$ | async">
+    programs : {{ program.name }}
   </li>
 </ul>
