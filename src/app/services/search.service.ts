@@ -35,7 +35,7 @@ export class SearchService {
     );
   }
   searchProgram(query: string): Observable<StudyProgram[]> {
-    const url = `${this.api.getAPIUrl()}/API_public/studyprogram/?name__icontains=${query}`;
+    const url = `${this.api.getAPIUrl()}/API_public/studyprogram/?search_all=${query}`;
     return this.http.get<any>(url).pipe(
       map((response) => {
         const results = response.results;

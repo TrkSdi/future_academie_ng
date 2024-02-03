@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { StudyListService } from '../services/study-list.service';
 import { ActivatedRoute } from '@angular/router';
 import { StudyProgram, StudyResponse } from '../interface/study-interface';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-study-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SearchComponent],
   templateUrl: './study-list.component.html',
-  styleUrl: './study-list.component.css'
+  styleUrl: './study-list.component.css',
 })
 export class StudyListComponent implements OnInit {
   studies: StudyProgram[] = [];
@@ -23,15 +24,13 @@ export class StudyListComponent implements OnInit {
     this.getStudy();
   }
 
-  getStudy(url?:string): void {
-    this.studyListService.getStudyList(url).subscribe(
-      (response) => {
-        this.studies = response.results
-        this.nextUrl = response.next
-        this.previousUrl = response.previous
-        this.count = response.count
-      }
-    )
+  getStudy(url?: string): void {
+    this.studyListService.getStudyList(url).subscribe((response) => {
+      this.studies = response.results;
+      this.nextUrl = response.next;
+      this.previousUrl = response.previous;
+      this.count = response.count;
+    });
   }
 
   loadNextPage(): void {
@@ -45,5 +44,4 @@ export class StudyListComponent implements OnInit {
       this.getStudy(this.previousUrl);
     }
   }
-
 }
