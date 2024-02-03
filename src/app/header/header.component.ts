@@ -13,6 +13,8 @@ export class HeaderComponent {
   menuValue: boolean = false;
   menu_icon: string = 'bi bi-list';
   is_authenticated: boolean = this.auth.check_authentication();
+  logout_message: string = '';
+  constructor(private auth: AuthService) { }
 
   openMenu() {
     this.menuValue = !this.menuValue;
@@ -28,11 +30,15 @@ export class HeaderComponent {
       next: () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        console.log("logout");
+        this.logout_message = "Déconnexion Réussie";
+        console.log(this.logout_message);
+        setTimeout(() => {
+          this.logout_message = '';
+        }, 5000);
       }
     });
   }
-  constructor(private auth: AuthService) { }
+
 
 }
 

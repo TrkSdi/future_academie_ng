@@ -12,9 +12,13 @@
         </div>
         <div class="desktop_menu" [class.mobile_menu]="menuValue">
           <ul>
-            <li (click)="closeMenu()">Home</li>
+            @if(logout_message){
+            <li class="danger-text"> {{logout_message}} </li>
+            }
+            <li (click)="closeMenu()"><a routerLink="/">Home</a></li>
             <li (click)="closeMenu()">About</li>
-            <li (click)="closeMenu()">Test</li>
+            <li (click)="closeMenu()">Profile</li>
+            <li (click)="closeMenu()">Favorites</li>
             @if (!is_authenticated) {
             <li (click)="closeMenu()"><a routerLink="/login">Login</a></li>
             }
@@ -22,6 +26,7 @@
             <li (click)="closeMenu(); logout(); ">Logout</li>
             }
           </ul>
+
         </div>
       </div>
     </div>

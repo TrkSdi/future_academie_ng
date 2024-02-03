@@ -30,7 +30,8 @@ export class LoginComponent {
   handleError(error: any) {
     if (error.status === 401) {
       this.error = "Incorrect email ou mot de passe."
-      // à faire: gérer quand quelqu'un 
+      // à faire: gérer quand quelqu'un est bloqué par axes, pour le moment
+      // axes refus d'envoyer un code HTTP qui indique que c'est bloqué
     }
     else {
       this.error = "Une erreur est survenue. Merci de réessayer."
@@ -40,10 +41,5 @@ export class LoginComponent {
   goBack() {
     this.location.back();
   }
-
-  ngOnInit() {
-
-  }
-
 
 }
