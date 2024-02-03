@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiconfigService } from './apiconfig.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Favorite } from '../interface/favorite-interface';
 
 @Injectable({
@@ -17,5 +17,15 @@ export class FavoriteService {
     return this.http.post<Favorite>(url, post_data);
   }
 
-
+  getFavorite(id: string | null): Observable<Favorite> {
+    const url = this.api.getAPIUrl() + `/API_private/favorite/${id}`;
+    return this.http.get<Favorite>(url).pipe(
+      map((response: any) => ({
+        user: response.user,
+        study_program: response.study_program,
+        note: response.note,
+        status: response.status,
+      }))
+    );
+  }
 }

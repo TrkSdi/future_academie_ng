@@ -1,5 +1,6 @@
 <div class="container">
     <ul>
+        @if(studyProgram){
         <li> Cod_aff_form : {{ studyProgram.cod_aff_form }}</li>
         <li> Name : {{ studyProgram.name }}</li>
         <li> School : {{ studyProgram.school }}</li>
@@ -17,7 +18,7 @@
         <li> Percent_scholarship_quartile : {{ studyProgram.percent_scholarship_quartile }}</li>
         <li> Job_prospects : {{ studyProgram.job_prospects }}</li>
 
-
+        }
     </ul>
 
 </div>
