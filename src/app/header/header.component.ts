@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent {
   menuValue: boolean = false;
   menu_icon: string = 'bi bi-list';
-  is_authenticated: boolean = this.auth.check_authentication();
+  is_authenticated = this.auth.check_authentication().subscribe({ next: (result) => { return result } });;
   logout_message: string = '';
   constructor(private auth: AuthService) { }
 
