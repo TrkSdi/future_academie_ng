@@ -20,5 +20,7 @@
 
         }
     </ul>
-
+    <button class="save" (click)="saveFavorite()"
+        [ngClass]="{'d-none': currentRoute.includes('favorite')}">Sauvegarder</button>
+    <span class="text-danger">{{ loginMessage}}</span>
 </div>
