@@ -9,6 +9,7 @@ import { FavoriteComponent } from './favorite/favorite.component';
 import { authRequiredGuard } from './auth-required.guard';
 
 export const routes: Routes = [
+  { path: '', component: SearchComponent },
   { path: 'school/:id', component: SchoolsComponent },
   { path: 'search', component: SearchComponent },
   { path: 'studyprogram/:id', component: StudydetailComponent },
