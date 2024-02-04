@@ -1,20 +1,24 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { LoginService } from '../services/login.service';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  constructor(private auth: AuthService, private login: LoginService, private router: Router) { }
+
   menuValue: boolean = false;
   menu_icon: string = 'bi bi-list';
-  is_authenticated = this.auth.check_authentication().subscribe({ next: (result) => { return result } });;
+  isAuthenticated: Observable<boolean> = this.auth.authenticated;
   logout_message: string = '';
-  constructor(private auth: AuthService) { }
 
   openMenu() {
     this.menuValue = !this.menuValue;
@@ -25,16 +29,22 @@ export class HeaderComponent {
     this.menu_icon = 'bi bi-list';
   }
 
+  allowGoBack() {
+    this.login.setCanGoBack(true);
+  }
+
   logout() {
     this.auth.logout().subscribe({
       next: () => {
+        // refresh token is sent to the backend on logout to blacklist so
+        // tokens should not be removed before successful logout HTTP request
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         this.logout_message = "Déconnexion Réussie";
-        console.log(this.logout_message);
+        this.router.navigateByUrl('/login');
         setTimeout(() => {
           this.logout_message = '';
-        }, 5000);
+        }, 3000);
       }
     });
   }

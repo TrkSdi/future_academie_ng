@@ -19,11 +19,11 @@
             <li (click)="closeMenu()">About</li>
             <li (click)="closeMenu()">Profile</li>
             <li (click)="closeMenu()">Favorites</li>
-            @if (!is_authenticated) {
-            <li (click)="closeMenu()"><a routerLink="/login">Login</a></li>
+            @if (isAuthenticated | async) {
+            <li (click)="closeMenu(); logout(); ">Logout</li>
             }
             @else {
-            <li (click)="closeMenu(); logout(); ">Logout</li>
+            <li (click)="closeMenu(); allowGoBack();"><a routerLink="/login">Login</a></li>
             }
           </ul>
 
