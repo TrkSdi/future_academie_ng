@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ApiconfigService } from './apiconfig.service';
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { AuthService } from './auth.service';
 
@@ -8,11 +7,10 @@ import { AuthService } from './auth.service';
 })
 export class UserService {
 
-  constructor(private api: ApiconfigService, private auth: AuthService) { }
+  constructor(private auth: AuthService) { }
 
   getUserID(): string | null {
-    const is_authenticated = this.auth.check_authentication().subscribe({ next: (result) => { return result } });;
-    if (is_authenticated) {
+    if (this.auth.isAuthenticated()) {
       const token = localStorage.getItem('access_token');
       const decoded_token = jwtDecode(token!) as CustomJwtPayload;
       return decoded_token.user_id
