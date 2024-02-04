@@ -18,11 +18,26 @@ export class FavoriteService {
   createFavorite(program_id: number, user_id: string,) {
     const url = this.api.getAPIUrl() + "/API_private/favorite/";
     const post_data = { study_program: program_id, user: user_id, status: "interested" };
-    return this.http.post<Favorite>(url, post_data);
+    return this.http.post<Favorite>(url, post_data).pipe(
+      map((response: any) => ({
+        id: response.id,
+        user: response.user,
+        study_program: response.study_program,
+        note: response.note,
+        status: response.status,
+      }))
+    );
+  }
+
+
+  updateFavorite(id: string, note: string | null, status: string | null) {
+    const url = this.api.getAPIUrl() + `/API_private/favorite/${id}/`;
+    const patch_data = { note: note, status: status }
+    return this.http.patch<Favorite>(url, patch_data);
   }
 
   getFavorite(id: string | null): Observable<Favorite> {
-    const url = this.api.getAPIUrl() + `/API_private/favorite/${id}`;
+    const url = this.api.getAPIUrl() + `/API_private/favorite/${id}/`;
     return this.http.get<Favorite>(url).pipe(
       map((response: any) => ({
         id: response.id,
