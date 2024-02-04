@@ -1,5 +1,5 @@
 export interface Favorite {
-    id: number,
+    id: string,
     user: string,
     study_program: number,
     note: string,
