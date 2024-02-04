@@ -1,6 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div id="form-area" class="col-md-4 order-md-1">
+            @if( favorite) {
             <form action="">
                 <div class="form-group">
                     <label class="my-1 mr-2" for="status">Status</label>
@@ -31,6 +32,7 @@
                 <small id="save-confirmation" class="form-text text-success">{{successConfirmation}}</small>
 
             </form>
+            }
         </div>
         <div id="favoriteProgram" class="col-md-8 order-md-2">
             @if(favoriteProgram){
