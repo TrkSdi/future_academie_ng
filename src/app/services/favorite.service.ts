@@ -17,7 +17,7 @@ export class FavoriteService {
 
   createFavorite(program_id: number, user_id: string,) {
     const url = this.api.getAPIUrl() + "/API_private/favorite/";
-    const post_data = { study_program: program_id, user: user_id };
+    const post_data = { study_program: program_id, user: user_id, status: "interested" };
     return this.http.post<Favorite>(url, post_data);
   }
 
@@ -25,6 +25,7 @@ export class FavoriteService {
     const url = this.api.getAPIUrl() + `/API_private/favorite/${id}`;
     return this.http.get<Favorite>(url).pipe(
       map((response: any) => ({
+        id: response.id,
         user: response.user,
         study_program: response.study_program,
         note: response.note,
