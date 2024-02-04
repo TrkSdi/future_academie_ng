@@ -4,22 +4,31 @@
             <form action="">
                 <div class="form-group">
                     <label class="my-1 mr-2" for="status">Status</label>
-                    <select class="custom-select my-1 mr-sm-2" id="status">
-                        <option selected>Choisir...</option>
-                        <option value="1">Intéressé.e</option>
-                        <option value="2">Postulé</option>
-                        <option value="3">Admis.e</option>
+                    <select class="custom-select my-1 mr-sm-2" name="status" [disabled]="!(editing | async)"
+                        [(ngModel)]="favorite.status">
+                        <option value="interested" [selected]="favorite.status==='interested'">Intéressé.e</option>
+                        <option value="applied" [selected]="favorite.status==='applied'">Postulé</option>
+                        <option value="accepted" [selected]="favorite.status==='accepted'">Admis.e</option>
+                        <option value="waitlisted" [selected]="favorite.status==='waitlisted'">Liste d'attente</option>
+                        <option value="enrolled" [selected]="favorite.status==='enrolled'">Inscrit.e</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="note">Note</label>
 
-                    <textarea class="form-control" id="note" rows="3"></textarea>
+                    <textarea
+                        [ngClass]="{'form-control-plaintext': !(editing | async),'form-control': editing | async }"
+                        class="form-control" name="note" rows="3" [readOnly]="!(editing | async)"
+                        [(ngModel)]="favorite.note">{{favorite.note}}</textarea>
                     <small id="note-help" class="form-text text-muted">Notez ici ce que vous voulez sur le program - vos
                         questions,
                         pourquoi il vous intéresse, etc.</small>
                 </div>
-                <button type="submit" class="btn btn-primary my-1">Sauvegarder</button>
+                <button type="button" class="btn btn-secondary" [ngClass]="{'d-none': editing | async}"
+                    (click)="editForm()">Editer</button>
+                <button type="button" class="btn btn-primary my-1" [ngClass]="{'d-none': !(editing | async)}"
+                    (click)="saveChanges()">Sauvegarder</button>
+                <small id="save-confirmation" class="form-text text-success">{{successConfirmation}}</small>
 
             </form>
         </div>

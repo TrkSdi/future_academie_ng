@@ -6,21 +6,43 @@ import { StudyProgram } from '../interface/study-interface';
 import { ActivatedRoute } from '@angular/router';
 import { Favorite } from '../interface/favorite-interface';
 import { StudyProgramDetailService } from '../services/studydetail.service';
+import { CommonModule } from '@angular/common';
+import { Subject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-favorite',
   standalone: true,
-  imports: [StudydetailComponent],
+  imports: [StudydetailComponent, CommonModule, FormsModule],
   templateUrl: './favorite.component.html',
   styleUrl: './favorite.component.css'
 })
 export class FavoriteComponent {
-  constructor(private studyProgramService: StudyProgramDetailService, private route: ActivatedRoute, private user: UserService, private favService: FavoriteService) { }
+  constructor(private studyProgramService: StudyProgramDetailService, private route: ActivatedRoute, private user: UserService, private favService: FavoriteService) {
+  }
   favoriteProgram: StudyProgram | null = null;
-  favorite: Favorite | null = null;
+  favorite!: Favorite;
+  successConfirmation: string = '';
+  editing: Subject<any> = new Subject();
   ngOnInit() {
     this.loadFavorite();
   }
+  editForm() {
+    this.editing.next("true");
+  }
+  saveChanges() {
+    this.favService.updateFavorite(this.favorite.id, this.favorite.note, this.favorite.status).subscribe({
+      next: (response) => {
+        this.favorite = response;
+        this.editing.next(false);
+        this.successConfirmation = "Changement sauvegardé ✅"
+        setTimeout(() => {
+          this.successConfirmation = '';
+        }, 5000);
+      }
+    })
+  }
+
   loadFavorite() {
     const id: string | null = this.route.snapshot.paramMap.get('id'); {
       this.favService.getFavorite(id).subscribe({
