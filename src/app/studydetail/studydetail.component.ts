@@ -56,8 +56,6 @@ export class StudydetailComponent {
         this.loginMessage = ""
         // window.location.reload();
       }, 4000);
-
     }
-
   }
 }
