@@ -26,7 +26,11 @@ export class StudydetailComponent {
   currentRoute: string = this.route.toString();
 
   ngOnInit() {
-    this.loadStudyProgram();
+    // don't call loadStudyProgram if the component is the child of 
+    // another template in which case studyProgram will be received as input
+    if (this.currentRoute.includes("studyprogram")) {
+      this.loadStudyProgram();
+    }
   }
 
   loadStudyProgram() {
@@ -34,8 +38,6 @@ export class StudydetailComponent {
       this.studyprogramdetailService.getStudyProgram(id).subscribe({
         next: (studyProgram) => {
           this.studyProgram = studyProgram;
-          console.log(studyProgram);
-
         }
       });
     }
@@ -47,6 +49,7 @@ export class StudydetailComponent {
       const user_id = this.user.getUserID()
       this.favoriteService.createFavorite(program_id!, user_id!).subscribe({
         next: (response) => {
+          // open the page of the newly created favorite
           this.router.navigateByUrl(`/favorite/${response.id}`);
         }
       });
@@ -54,7 +57,6 @@ export class StudydetailComponent {
       this.loginMessage = "Connectez-vous pour sauvegarder des favoris!"
       setTimeout(() => {
         this.loginMessage = ""
-        // window.location.reload();
       }, 4000);
     }
   }
