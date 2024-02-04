@@ -1,10 +1,124 @@
-<input
-  #searchInput
-  placeholder="Search for schools"
-  (input)="search(searchInput.value)"
-/>
-<ul>
-  <li *ngFor="let school of schools$ | async">
-    {{ school.name }}
-  </li>
-</ul>
+<div class="main-container">
+  <div class="row">
+    <!-- Search program -->
+    <div class="col-md-3">
+      <input
+        #searchInputProgram
+        class="form-control"
+        placeholder="Rechercher un programme"
+        (input)="searchPrograms(searchInputProgram.value)"
+      />
+    </div>
+    <div class="col-md-3">
+      <input
+        #searchInputSchool
+        class="form-control"
+        placeholder="Rechercher une école"
+        (input)="searchSchools(searchInputSchool.value)"
+      />
+    </div>
+
+    <div class="col-md-3">
+      <div ngbDropdown class="d-inline-block">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          id="dropdownBasic1"
+          ngbDropdownToggle
+        >
+          Trier par <i class="bi bi-sort-up"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem (click)="sortBySuccessRate()">
+            Taux de succès
+          </button>
+          <button ngbDropdownItem (click)="sortByAcceptanceRate()">
+            Taux d'acceptation
+          </button>
+          <button ngbDropdownItem (click)="sortByAvailablePlaces()">
+            Places disponibles
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cards-container">
+    <div class="card" *ngFor="let study of studies$ | async">
+      <div class="main-info">
+        <ul>
+          <li *ngIf="study.name !== null && study.name !== undefined">
+            <h2>{{ study.name }}</h2>
+          </li>
+          <li *ngIf="study.school !== null && study.school !== undefined">
+            <h3>{{ study.school }}</h3>
+          </li>
+          <li *ngIf="study.url !== null && study.url !== undefined">
+            <span>Site web:</span><a href="{{ study.url }}"> Lien</a>
+          </li>
+          <li
+            *ngIf="
+              study.acceptance_rate !== null &&
+              study.acceptance_rate !== undefined
+            "
+          >
+            <span>Taux d'acceptation:</span> {{ study.acceptance_rate }}%
+          </li>
+          <li
+            *ngIf="
+              study.L1_succes_rate !== null &&
+              study.L1_succes_rate !== undefined
+            "
+          >
+            <span>Taux de succès en L1:</span> {{ study.L1_succes_rate }}%
+          </li>
+          <li
+            *ngIf="
+              study.description !== null && study.description !== undefined
+            "
+          >
+            <span>Description:</span> {{ study.description }}
+          </li>
+          <li
+            *ngIf="
+              study.diploma_earned_ontime !== null &&
+              study.diploma_earned_ontime !== undefined
+            "
+          >
+            <span>Taux obtention diplome (dans les temps):</span>
+            {{ study.diploma_earned_ontime }}
+          </li>
+          <li
+            *ngIf="
+              study.available_places !== null &&
+              study.available_places !== undefined
+            "
+          >
+            <span>Places disponibles:</span> {{ study.available_places }}
+          </li>
+          <li
+            *ngIf="
+              study.number_applicants !== null &&
+              study.number_applicants !== undefined
+            "
+          >
+            <span>Nombre de candidats:</span> {{ study.number_applicants }}
+          </li>
+          <li
+            *ngIf="
+              study.percent_scholarship !== null &&
+              study.percent_scholarship !== undefined
+            "
+          >
+            <span>Boursiers:</span> {{ study.percent_scholarship }}%
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search school -->
+
+  <ul>
+    <li *ngFor="let school of schools$ | async">Écoles : {{ school.name }}</li>
+  </ul>
+</div>

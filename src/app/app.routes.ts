@@ -7,12 +7,11 @@ import { CreationComponent } from './creation/creation.component';
 import { LoginComponent } from './login/login.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 
-
 export const routes: Routes = [
   { path: 'school/:id', component: SchoolsComponent },
-  { path: 'search/', component: SearchComponent },
-  { path: "studyprogram/:id", component: StudydetailComponent },
-  { path: "studyprogram", component: StudyListComponent },
+  { path: 'search', component: SearchComponent },
+  { path: 'studyprogram/:id', component: StudydetailComponent },
+  { path: 'studyprogram', component: StudyListComponent },
   { path: 'creation', component: CreationComponent },
   { path: "login", component: LoginComponent },
   { path: "favorite/:id", component: FavoriteComponent }
