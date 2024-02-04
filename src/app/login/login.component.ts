@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -11,16 +14,22 @@ import { FormsModule, Validators } from '@angular/forms';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private auth: AuthService, private location: Location) { }
+  constructor(private auth: AuthService, private location: Location, private router: Router, private loginService: LoginService) { }
   error: string = "";
+  authRequiredMessage: boolean = this.loginService.auth_required;
 
-  login(email: string, password: string) {
+  login(email: string, password: string,) {
     this.auth.login(email, password).subscribe(
       {
         next: (response) => {
           localStorage.setItem('access_token', response.access);
           localStorage.setItem('refresh_token', response.refresh);
-          this.goBack();
+          if (this.loginService.checkCanGoBack()) {
+            this.location.back();
+          } else {
+            this.router.navigateByUrl('/');
+
+          }
         },
         error: (error) => this.handleError(error)
       }
@@ -37,9 +46,4 @@ export class LoginComponent {
       this.error = "Une erreur est survenue. Merci de réessayer."
     }
   }
-
-  goBack() {
-    this.location.back();
-  }
-
 }
