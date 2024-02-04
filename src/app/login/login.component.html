@@ -1,6 +1,10 @@
 <div class="container">
+
     <form (ngSubmit)="login(loginForm.value.email, loginForm.value.password)" #loginForm="ngForm">
         <h1>Connectez-vous</h1>
+        @if(authRequiredMessage){
+        <h2>L'authentication est requise pour le page demandé</h2>
+        }
         <div class="form-group">
             @if(error){
             <p class="error text-center"> {{error}} </p>

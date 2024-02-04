@@ -21,10 +21,11 @@
             <li (click)="closeMenu()"><a routerLink="/search">Search</a></li>
             <li (click)="closeMenu()">Profile</li>
             <li (click)="closeMenu()">Favorites</li>
-            @if (!is_authenticated) {
-            <li (click)="closeMenu()"><a routerLink="/login">Login</a></li>
-            } @else {
-            <li (click)="closeMenu(); logout()">Logout</li>
+            @if (isAuthenticated | async) {
+            <li (click)="closeMenu(); logout(); ">Logout</li>
+            }
+            @else {
+            <li (click)="closeMenu(); allowGoBack();"><a routerLink="/login">Login</a></li>
             }
           </ul>
         </div>

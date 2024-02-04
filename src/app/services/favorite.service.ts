@@ -8,6 +8,10 @@ import { Favorite } from '../interface/favorite-interface';
   providedIn: 'root'
 })
 export class FavoriteService {
+  /**
+   * This service handles HTTP requests for CRUD operations on individual
+   * Favorites
+   */
 
   constructor(private api: ApiconfigService, private http: HttpClient) { }
 
