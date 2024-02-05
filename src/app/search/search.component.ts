@@ -43,14 +43,15 @@ export class SearchComponent implements OnInit {
   addressInput = new BehaviorSubject<string>('');
   addressSuggestions$: Observable<any[]>;
   selectedLocation: { latitude: number; longitude: number } | null = null;
+  lastSearchTerm: string = '';
 
   constructor(private searchService: SearchService) {
     this.addressSuggestions$ = this.addressInput.pipe(
-      debounceTime(300), // Attendre avant de faire la requête pour éviter trop d'appels
-      distinctUntilChanged(), // Ignorer si la recherche suivante est identique à la précédente
+      debounceTime(300),
+      distinctUntilChanged(),
       switchMap((address) =>
         address ? this.searchService.getAddressSuggestions(address) : of([])
-      ), // Correction ici
+      ),
       catchError((error) => {
         console.error('Error loading address suggestions:', error);
         return of([]);
@@ -74,9 +75,27 @@ export class SearchComponent implements OnInit {
   }
 
   searchPrograms(term: string): void {
-    this.searchTermsPrograms.next(term);
-  }
+    this.lastSearchTerm = term;
 
+    const programsObservable: Observable<StudyProgram[]> = this.selectedLocation
+      ? this.searchService.searchProgram(
+          term,
+          this.selectedLocation,
+          this.distance
+        )
+      : this.searchService.searchProgram(term);
+
+    programsObservable
+      .pipe(
+        catchError((error) => {
+          console.error('Error searching programs:', error);
+          return of([]);
+        })
+      )
+      .subscribe((programs) => {
+        this.studies$.next(programs); // Mettez à jour les valeurs avec next
+      });
+  }
   sortBySuccessRate() {
     const sortedStudies = this.studies$.value.sort(
       (a, b) => b.L1_succes_rate - a.L1_succes_rate
@@ -119,11 +138,18 @@ export class SearchComponent implements OnInit {
       latitude: address.geometry.coordinates[1],
       longitude: address.geometry.coordinates[0],
     };
-    console.log('Selected location:', this.selectedLocation);
+    console.log(
+      'selectedLocation' +
+        this.selectedLocation.latitude +
+        this.selectedLocation.longitude
+    );
+
+    this.searchPrograms(this.lastSearchTerm);
   }
 
   onAddressInput(value: string): void {
     this.addressInput.next(value);
+    console.log(this.addressInput.next(value));
   }
 }
 
