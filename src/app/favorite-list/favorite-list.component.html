@@ -1,1 +1,12 @@
-<p>favorite-list works!</p>
+<h1>Favorites</h1>
+@for (favorite of favorites; track $index) {
+<ul>
+    <h4> {{ favorite.study_program_name }} </h4>
+    <h5>{{ favorite.school_name }}, {{ favorite.school_locality }} </h5>
+    <p><span class="section-title">Status:</span> {{ favorite.status }} </p>
+    <p><span class="section-title">Note:</span> {{ favorite.note }} </p>
+    <a routerLink="/favorite/{{favorite.id}}">Voir plus</a>
+
+    <button type="button" class="btn btn-secondary" (click)="deleteFavorite(favorite.id)">Supprimer</button>
+</ul>
+}

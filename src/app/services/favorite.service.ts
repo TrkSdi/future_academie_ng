@@ -39,12 +39,16 @@ export class FavoriteService {
   getFavorite(id: string | null): Observable<Favorite> {
     const url = this.api.getAPIUrl() + `/API_private/favorite/${id}/`;
     return this.http.get<Favorite>(url).pipe(
-      map((response: any) => ({
-        id: response.id,
-        user: response.user,
-        study_program: response.study_program,
-        note: response.note,
-        status: response.status,
+      map((favorite: any) => ({
+        id: favorite.id,
+        user: favorite.user,
+        study_program: favorite.study_program,
+        note: favorite.note,
+        status: favorite.status,
+        study_program_name: favorite.study_program_extended.name,
+        school_name: favorite.study_program_extended.school_extended.name,
+        school_locality: favorite.study_program_extended.school_extended.address_extended.locality,
+        school_code: favorite.study_program_extended.school_extended.UAI_code,
       }))
     );
   }
