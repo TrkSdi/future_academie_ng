@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FavoriteListService } from '../services/favorite-list.service';
 import { Favorite } from '../interface/favorite-interface';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { AlertService, Alert } from '../services/alert.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -59,11 +59,15 @@ export class FavoriteListComponent {
   }
 
   confirmDelete(favorite_id: string) {
-    this.alertService.showAlert({ type: "danger", message: "Are you sure you want to delete" + favorite_id + " ?", object_id: favorite_id })
+    this.alertService.showAlert({
+      type: "danger", message: "Vous êtes certain.e de vouloir supprimer ce programme de votre liste de favoris?",
+      object_id: favorite_id
+    })
   }
+
   deleteFavorite(favorite_id: string) {
     return this.favListService.deleteFavorite(favorite_id).subscribe({
-      next: (response) => { console.log(response) },
+      next: (response) => { this.favorites = this.favorites.filter(obj => { return obj.id !== favorite_id }); },
       error: (error) => { console.log(error) }
     }
     );
