@@ -10,23 +10,23 @@
       />
     </div>
     <!-- Search school not sure importnat and we have to see how inplent -->
-    <div class="col-md-3">
+    <!-- <div class="col-md-3">
       <input
         #searchInputSchool
         class="form-control"
         placeholder="Rechercher une école"
         (input)="searchSchools(searchInputSchool.value)"
       />
-    </div>
+    </div> -->
     <!-- tentative geo -->
     <div class="col-md-3">
       <input
         class="form-control"
         placeholder="Entrez une adresse"
         #geoLocationInput
-        (blur)="findLocation(geoLocationInput.value)"
         (input)="searchAddress(geoLocationInput.value)"
       />
+
       <ul *ngIf="addressSuggestions$ | async as suggestions">
         <li
           *ngFor="let suggestion of suggestions"
@@ -79,9 +79,8 @@
             <h2>{{ study.name }}</h2>
           </li>
           <li>
-            Ville{{ study.school_extended?.address_extended?.locality }}
+            Ville {{ study.locality }}
             geolocation
-            {{ study.school_extended?.address_extended?.geolocation }}
             {{ study.geolocation }}
           </li>
           <li *ngIf="study.school !== null && study.school !== undefined">
