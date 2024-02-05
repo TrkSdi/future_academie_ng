@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudyListService } from '../services/study-list.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { StudyProgram, StudyResponse } from '../interface/study-interface';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { SearchComponent } from '../search/search.component';
@@ -11,7 +11,7 @@ import { FavoriteListService } from '../services/favorite-list.service';
 @Component({
   selector: 'app-study-list',
   standalone: true,
-  imports: [CommonModule, SearchComponent],
+  imports: [CommonModule, SearchComponent, RouterModule],
   templateUrl: './study-list.component.html',
   styleUrl: './study-list.component.css',
 })
@@ -22,7 +22,7 @@ export class StudyListComponent implements OnInit {
   count: number | null = null;
   favorites: number[] = [];
 
-  constructor(private studyListService: StudyListService, private auth: AuthService, private favListService: FavoriteListService, private favService: FavoriteService, private router: Router) { }
+  constructor(private studyListService: StudyListService) { }
 
   ngOnInit(): void {
     this.getStudy();
