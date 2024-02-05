@@ -32,6 +32,7 @@ export interface StudyProgram {
   percent_scholarship_quartile: string;
   job_prospects: string;
   geolocation?: string;
+  locality?: string;
 }
 
 export interface StudyResponse {
