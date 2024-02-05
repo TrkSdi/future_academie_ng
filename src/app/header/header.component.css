@@ -95,6 +95,8 @@ header {
     color: var(--grey);
     font-size: 3em;
     padding: 10px;
+    position: absolute;
+    right: 0
   }
   .mobile_menu {
     right: 0;
