@@ -18,7 +18,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, n
     });
     return next(modifiedReq);
   } else {
-    console.log("req:", req);
 
     return next(req);
 
