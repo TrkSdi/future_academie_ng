@@ -28,11 +28,35 @@ header {
   margin-left: 0.8em;
 }
 
-.desktop_menu ul li:hover {
+/* .desktop_menu ul li:hover {
  
   text-decoration: underline;
   cursor: pointer;
   color: #333;
+} */
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: var(--grey);
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--grey);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 .desktop_menu ul li a {

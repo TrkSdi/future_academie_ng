@@ -16,16 +16,16 @@
             <li class="danger-text">{{ logout_message }}</li>
             }
             <li (click)="closeMenu()">
-              <a routerLink="/studyprogram">Programme</a>
+              <a class="hover-underline-animation" routerLink="/studyprogram">Programme</a>
             </li>
-            <li (click)="closeMenu()"><a routerLink="/search">Recherche</a></li>
-            <li (click)="closeMenu()">Profil</li>
-            <li (click)="closeMenu()">Favoris</li>
+            <li (click)="closeMenu()"><a  class="hover-underline-animation" routerLink="/search">Recherche</a></li>
+            <li (click)="closeMenu()"><a class="hover-underline-animation">Profil</a></li>
+            <li (click)="closeMenu()"><a class="hover-underline-animation">Favoris</a></li>
             @if (isAuthenticated | async) {
-            <li (click)="closeMenu(); logout(); ">Déconnexion</li>
+            <li (click)="closeMenu(); logout(); "><a class="hover-underline-animation">Déconnexion</a></li>
             }
             @else {
-            <li (click)="closeMenu(); allowGoBack();"><a routerLink="/login">Connexion</a></li>
+            <li (click)="closeMenu(); allowGoBack();"><a class="hover-underline-animation" routerLink="/login">Connexion</a></li>
             }
           </ul>
         </div>
