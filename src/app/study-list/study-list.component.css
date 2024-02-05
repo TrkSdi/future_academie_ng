@@ -107,13 +107,6 @@ button.chevron {
   mask-size: 100% 100%;
 }
 
-.test-class-testing {
-  color: red;
-  background-color: aqua;
-  font-size: 15rem;
-
-}
-
 .material-symbols--favorite {
   display: inline-block;
   width: 32px;

@@ -59,7 +59,8 @@
         </ul>
       </div>
       <div class="bottom-row">
-        <span class="material-symbols--favorite-outline favorite"></span>
+        <span class="material-symbols--favorite-outline favorite" (click)="addFavorite(study.cod_aff_form)"
+          [ngClass]="{'active' : (favorites.includes(study.cod_aff_form))}"></span>
         <button class="more"><a routerLink="/studyprogram/{{study.cod_aff_form}}">Voir plus</a></button>
       </div>
 
