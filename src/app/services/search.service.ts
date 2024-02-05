@@ -28,6 +28,7 @@ export class SearchService {
               street_address: '',
               postcode: 0,
               locality: '',
+              geolocation: '',
             },
           };
         });
@@ -71,6 +72,7 @@ export class SearchService {
             percent_scholarship_quartile: result.percent_scholarship_quartile,
             job_prospects: result.job_prospects,
             geolocation: result.school_extended.address_extended.geolocation,
+            locality: result.school_extended.address_extended.locality,
           })
         )
       )

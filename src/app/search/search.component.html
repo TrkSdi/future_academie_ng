@@ -67,7 +67,7 @@
           <button ngbDropdownItem (click)="sortByAvailablePlaces()">
             Places disponibles
           </button>
-        </div> 
+        </div>
       </div>
     </div>
   </div>
@@ -82,6 +82,7 @@
             Ville{{ study.school_extended?.address_extended?.locality }}
             geolocation
             {{ study.school_extended?.address_extended?.geolocation }}
+            {{ study.geolocation }}
           </li>
           <li *ngIf="study.school !== null && study.school !== undefined">
             <h3>{{ study.school }}</h3>
