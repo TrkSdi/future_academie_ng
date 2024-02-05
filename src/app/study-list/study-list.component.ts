@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudyListService } from '../services/study-list.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { StudyProgram, StudyResponse } from '../interface/study-interface';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { SearchComponent } from '../search/search.component';
@@ -8,7 +8,7 @@ import { SearchComponent } from '../search/search.component';
 @Component({
   selector: 'app-study-list',
   standalone: true,
-  imports: [CommonModule, SearchComponent],
+  imports: [CommonModule, SearchComponent, RouterModule],
   templateUrl: './study-list.component.html',
   styleUrl: './study-list.component.css',
 })
@@ -18,7 +18,7 @@ export class StudyListComponent implements OnInit {
   previousUrl: string | null = null;
   count: number | null = null;
 
-  constructor(private studyListService: StudyListService) {}
+  constructor(private studyListService: StudyListService) { }
 
   ngOnInit(): void {
     this.getStudy();
