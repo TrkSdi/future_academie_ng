@@ -1,0 +1,8 @@
+{
+  "/api-adresse": {
+    "target": "https://api-adresse.data.gouv.fr",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/api-adresse": "" }
+  }
+}

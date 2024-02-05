@@ -40,10 +40,12 @@ export class SearchService {
     distance?: number
   ): Observable<StudyProgram[]> {
     let url = `${this.api.getAPIUrl()}/API_public/studyprogram/?search_all=${query}`;
-    if (location && distance) {
-      url += `&geolocation=SRID=4326;POINT (${location.longitude} ${location.latitude})&distance=${distance}`;
-      console.log('la geoloc est ' + url);
+
+    if (location && distance !== undefined) {
+      url += `&distance__from=${location.longitude},${location.latitude}`;
+      url += `&distance__lte=${location.longitude},${location.latitude},${distance}`;
     }
+
     return this.http.get<any>(url).pipe(
       map((response) =>
         response.results.map(
@@ -51,6 +53,7 @@ export class SearchService {
             cod_aff_form: result.cod_aff_form,
             name: result.name,
             school: result.school_extended.name,
+
             url: result.url_parcoursup_extended
               ? result.url_parcoursup_extended.link_url
               : '', // Gestion de l'absence de l'URL parcoursup
@@ -67,6 +70,7 @@ export class SearchService {
               result.diploma_earned_ontime_quartile,
             percent_scholarship_quartile: result.percent_scholarship_quartile,
             job_prospects: result.job_prospects,
+            geolocation: result.school_extended.address_extended.geolocation,
           })
         )
       )
@@ -79,10 +83,11 @@ export class SearchService {
     const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(
       address
     )}`;
+    console.log(url);
     return this.http.get<any>(url).pipe(
       map((response) => {
         const location = response.features[0].geometry.coordinates;
-        console.log(location);
+        console.log(location); // ne pas enlever sert à savoir sç cela marche
         return { longitude: location[0], latitude: location[1] };
       })
     );
