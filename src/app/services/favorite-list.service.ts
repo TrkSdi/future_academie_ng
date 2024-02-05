@@ -12,7 +12,7 @@ import { FavoriteResponse } from '../interface/favorite-interface';
 export class FavoriteListService {
 
   constructor(private http: HttpClient, private auth: AuthService, private api: ApiconfigService, user: UserService) { }
-  favUrl = this.api.getAPIUrl() + "/API_private/favorite/";
+  favUrl = this.api.getAPIUrl() + "/API_private/favorite/?page_size=10";
 
   getFavorites(url?: string): Observable<FavoriteResponse> {
     return this.http.get(url || this.favUrl).pipe(
