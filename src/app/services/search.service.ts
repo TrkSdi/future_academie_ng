@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApiconfigService } from './apiconfig.service';
 import { School } from '../interface/school-interface';
@@ -34,19 +34,31 @@ export class SearchService {
       })
     );
   }
-  searchProgram(query: string): Observable<StudyProgram[]> {
-    const url = `${this.api.getAPIUrl()}/API_public/studyprogram/?search_all=${query}`;
+  searchProgram(
+    query: string,
+    location?: { latitude: number; longitude: number },
+    distance?: number
+  ): Observable<StudyProgram[]> {
+    let url = `${this.api.getAPIUrl()}/API_public/studyprogram/?search_all=${query}`;
+
+    if (location && distance !== undefined) {
+      url += `&distance__from=${location.longitude},${location.latitude}`;
+      url += `&distance__lte=${location.longitude},${location.latitude},${distance}`;
+    }
+
     return this.http.get<any>(url).pipe(
-      map((response) => {
-        const results = response.results;
-        return results.map((result: StudyProgram) => {
-          return {
+      map((response) =>
+        response.results.map(
+          (result: any): StudyProgram => ({
             cod_aff_form: result.cod_aff_form,
             name: result.name,
-            school: result.school,
-            url: result.url,
+            school: result.school_extended.name,
+
+            url: result.url_parcoursup_extended
+              ? result.url_parcoursup_extended.link_url
+              : '', // Gestion de l'absence de l'URL parcoursup
             acceptance_rate: result.acceptance_rate,
-            L1_succes_rate: result.L1_succes_rate,
+            L1_succes_rate: result.L1_success_rate,
             description: result.description,
             diploma_earned_ontime: result.diploma_earned_ontime,
             available_places: result.available_places,
@@ -58,9 +70,35 @@ export class SearchService {
               result.diploma_earned_ontime_quartile,
             percent_scholarship_quartile: result.percent_scholarship_quartile,
             job_prospects: result.job_prospects,
-          };
-        });
+            geolocation: result.school_extended.address_extended.geolocation,
+          })
+        )
+      )
+    );
+  }
+
+  getGeolocation(
+    address: string
+  ): Observable<{ latitude: number; longitude: number }> {
+    const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(
+      address
+    )}`;
+    console.log(url);
+    return this.http.get<any>(url).pipe(
+      map((response) => {
+        const location = response.features[0].geometry.coordinates;
+        console.log(location); // ne pas enlever sert à savoir sç cela marche
+        return { longitude: location[0], latitude: location[1] };
       })
     );
+  }
+  getAddressSuggestions(query: string): Observable<any[]> {
+    if (!query.trim()) {
+      return of([]); // Retourne un Observable vide si la requête est vide
+    }
+    const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(
+      query
+    )}&limit=5`;
+    return this.http.get<any>(url).pipe(map((response) => response.features));
   }
 }

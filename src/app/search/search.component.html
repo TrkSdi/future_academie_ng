@@ -9,6 +9,7 @@
         (input)="searchPrograms(searchInputProgram.value)"
       />
     </div>
+    <!-- Search school not sure importnat and we have to see how inplent -->
     <div class="col-md-3">
       <input
         #searchInputSchool
@@ -17,7 +18,35 @@
         (input)="searchSchools(searchInputSchool.value)"
       />
     </div>
+    <!-- tentative geo -->
+    <div class="col-md-3">
+      <input
+        class="form-control"
+        placeholder="Entrez une adresse"
+        #geoLocationInput
+        (blur)="findLocation(geoLocationInput.value)"
+        (input)="searchAddress(geoLocationInput.value)"
+      />
+      <ul *ngIf="addressSuggestions$ | async as suggestions">
+        <li
+          *ngFor="let suggestion of suggestions"
+          (click)="selectAddress(suggestion)"
+        >
+          {{ suggestion.properties.label }}
+        </li>
+      </ul>
+      <select
+        class="form-control mt-2"
+        #distanceSelect
+        (change)="setDistance(distanceSelect.value)"
+      >
+        <option value="5">5 km</option>
+        <option value="10">10 km</option>
+        <option value="20">20 km</option>
+      </select>
+    </div>
 
+    <!-- Sort by -->
     <div class="col-md-3">
       <div ngbDropdown class="d-inline-block">
         <button
@@ -38,7 +67,7 @@
           <button ngbDropdownItem (click)="sortByAvailablePlaces()">
             Places disponibles
           </button>
-        </div>
+        </div> 
       </div>
     </div>
   </div>
@@ -48,6 +77,11 @@
         <ul>
           <li *ngIf="study.name !== null && study.name !== undefined">
             <h2>{{ study.name }}</h2>
+          </li>
+          <li>
+            Ville{{ study.school_extended?.address_extended?.locality }}
+            geolocation
+            {{ study.school_extended?.address_extended?.geolocation }}
           </li>
           <li *ngIf="study.school !== null && study.school !== undefined">
             <h3>{{ study.school }}</h3>
