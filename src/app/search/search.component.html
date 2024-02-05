@@ -1,16 +1,15 @@
-<div class="main-container">
-  <div class="row">
-    <!-- Search program -->
-    <div class="col-md-3">
-      <input
-        #searchInputProgram
-        class="form-control"
-        placeholder="Rechercher un programme"
-        (input)="searchPrograms(searchInputProgram.value)"
-      />
-    </div>
-    <!-- Search school not sure importnat and we have to see how inplent -->
-    <!-- <div class="col-md-3">
+<div class="row">
+  <!-- Search program -->
+  <div class="col-md-3">
+    <input
+      #searchInputProgram
+      class="form-control"
+      placeholder="Rechercher un programme"
+      (input)="searchPrograms(searchInputProgram.value)"
+    />
+  </div>
+  <!-- Search school not sure importnat and we have to see how inplent -->
+  <!-- <div class="col-md-3">
       <input
         #searchInputSchool
         class="form-control"
@@ -18,61 +17,71 @@
         (input)="searchSchools(searchInputSchool.value)"
       />
     </div> -->
-    <!-- tentative geo -->
-    <div class="col-md-3">
-      <input
-        class="form-control"
-        placeholder="Entrez une adresse"
-        #geoLocationInput
-        (input)="searchAddress(geoLocationInput.value)"
-      />
+  <!-- tentative geo -->
+  <div class="col-md-3">
+    <input
+      class="form-control"
+      placeholder="Entrez une adresse"
+      #geoLocationInput
+      (input)="searchAddress(geoLocationInput.value)"
+    />
 
-      <ul *ngIf="addressSuggestions$ | async as suggestions">
-        <li
-          *ngFor="let suggestion of suggestions"
-          (click)="selectAddress(suggestion)"
-        >
-          {{ suggestion.properties.label }}
-        </li>
-      </ul>
-      <select
-        class="form-control mt-2"
-        #distanceSelect
-        (change)="setDistance(distanceSelect.value)"
+    <ul *ngIf="addressSuggestions$ | async as suggestions">
+      <li
+        *ngFor="let suggestion of suggestions"
+        (click)="selectAddress(suggestion)"
       >
-        <option value="5">5 km</option>
-        <option value="10">10 km</option>
-        <option value="20">20 km</option>
-      </select>
-    </div>
+        {{ suggestion.properties.label }}
+      </li>
+    </ul>
+    <select
+      class="form-control mt-2"
+      #distanceSelect
+      (change)="setDistance(distanceSelect.value)"
+    >
+      <option value="5">5 km</option>
+      <option value="10">10 km</option>
+      <option value="20">20 km</option>
+    </select>
+  </div>
 
-    <!-- Sort by -->
-    <div class="col-md-3">
-      <div ngbDropdown class="d-inline-block">
-        <button
-          type="button"
-          class="btn btn-outline-primary"
-          id="dropdownBasic1"
-          ngbDropdownToggle
-        >
-          Trier par <i class="bi bi-sort-up"></i>
+  <!-- Sort by -->
+  <div class="col-md-3">
+    <div ngbDropdown class="d-inline-block">
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        id="dropdownBasic1"
+        ngbDropdownToggle
+      >
+        Trier par <i class="bi bi-sort-up"></i>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem (click)="sortBySuccessRate()">
+          Taux de succès
         </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem (click)="sortBySuccessRate()">
-            Taux de succès
-          </button>
-          <button ngbDropdownItem (click)="sortByAcceptanceRate()">
-            Taux d'acceptation
-          </button>
-          <button ngbDropdownItem (click)="sortByAvailablePlaces()">
-            Places disponibles
-          </button>
-        </div>
+        <button ngbDropdownItem (click)="sortByAcceptanceRate()">
+          Taux d'acceptation
+        </button>
+        <button ngbDropdownItem (click)="sortByAvailablePlaces()">
+          Places disponibles
+        </button>
       </div>
     </div>
   </div>
-  <div class="cards-container">
-    <div class="card" *ngFor="let study of studies$ | async">
+</div>
+
+<!-- End of search bar -->
+<!-- import studylist -->
+
+<app-study-list
+  *ngIf="studies$ | async as studies"
+  [studies]="studies"
+></app-study-list>
+
+<!-- Manual Study list -->
+<!-- <div class="cards-container">
+    <div class="card" *ngFor="let study of studies | async">
       <div class="main-info">
         <ul>
           <li *ngIf="study.name !== null && study.name !== undefined">
@@ -148,11 +157,10 @@
         </ul>
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <!-- Search school -->
+<!-- Search school -->
 
-  <ul>
-    <li *ngFor="let school of schools$ | async">Écoles : {{ school.name }}</li>
-  </ul>
-</div>
+<ul>
+  <li *ngFor="let school of schools$ | async">Écoles : {{ school.name }}</li>
+</ul>

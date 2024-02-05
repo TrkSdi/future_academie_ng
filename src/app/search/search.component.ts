@@ -1,13 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {
-  Observable,
-  Subject,
-  BehaviorSubject,
-  map,
-  throwError,
-  of,
-} from 'rxjs';
+import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -20,10 +12,11 @@ import { SearchService } from '../services/search.service';
 import { StudyProgram } from '../interface/study-interface';
 
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { StudyListComponent } from '../study-list/study-list.component';
 
 @Component({
   selector: 'app-search',
-  imports: [CommonModule, NgbDropdownModule],
+  imports: [CommonModule, NgbDropdownModule, StudyListComponent],
   standalone: true,
   templateUrl: './search.component.html',
 
@@ -41,7 +34,7 @@ export class SearchComponent implements OnInit {
   addressInput: BehaviorSubject<string> = new BehaviorSubject<string>('');
   addressSuggestions$: Observable<any[]> = of([]);
   selectedLocation?: { latitude: number; longitude: number };
-
+  studies: any[] = [];
   constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
@@ -77,6 +70,13 @@ export class SearchComponent implements OnInit {
 
   searchAddress(query: string): void {
     this.addressInput.next(query);
+    if (query.trim().length > 2) {
+      console.log(query.trim());
+      for (let s in this.addressSuggestions$) {
+        console.log(s);
+      }
+      console.log(this.addressSuggestions$);
+    }
   }
   // here I would like to make adress input = first selectAdress(suggestion)
   selectAddress(suggestion: any): void {

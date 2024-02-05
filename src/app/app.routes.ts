@@ -7,15 +7,32 @@ import { CreationComponent } from './creation/creation.component';
 import { LoginComponent } from './login/login.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { authRequiredGuard } from './auth-required.guard';
+import { FavoriteListComponent } from './favorite-list/favorite-list.component';
 
 export const routes: Routes = [
-  { path: '', component: SearchComponent },
+  // {
+  //   path: '',
+  //   component: SearchComponent,
+  // },
   { path: 'school/:id', component: SchoolsComponent },
   { path: 'search', component: SearchComponent },
   { path: 'studyprogram/:id', component: StudydetailComponent },
   { path: 'studyprogram', component: StudyListComponent },
   { path: 'creation', component: CreationComponent },
-  { path: "login", component: LoginComponent },
-  { path: "favorite/:id", component: FavoriteComponent, canActivate: [authRequiredGuard] }
-
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'favorite/:id',
+    component: FavoriteComponent,
+    canActivate: [authRequiredGuard],
+  },
+  {
+    path: 'favorite',
+    component: FavoriteListComponent,
+    canActivate: [authRequiredGuard],
+  },
 ];
+// {
+//   path: 'search',
+//   loadChildren: () =>
+//     import('./search/search.component').then((m) => StudyListComponent),
+// },
