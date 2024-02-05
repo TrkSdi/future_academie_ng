@@ -3,6 +3,7 @@ import { ApiconfigService } from './apiconfig.service';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Favorite } from '../interface/favorite-interface';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,10 @@ export class FavoriteService {
    * Favorites
    */
 
-  constructor(private api: ApiconfigService, private http: HttpClient) { }
+  constructor(private api: ApiconfigService, private http: HttpClient, private user: UserService) { }
 
-  createFavorite(program_id: number, user_id: string,) {
+  createFavorite(program_id: number) {
+    const user_id = this.user.getUserID();
     const url = this.api.getAPIUrl() + "/API_private/favorite/";
     const post_data = { study_program: program_id, user: user_id, status: "interested" };
     return this.http.post<Favorite>(url, post_data).pipe(

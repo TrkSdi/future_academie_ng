@@ -20,7 +20,7 @@
             </li>
             <li (click)="closeMenu()"><a routerLink="/search">Search</a></li>
             <li (click)="closeMenu()">Profile</li>
-            <li (click)="closeMenu()">Favorites</li>
+            <li (click)="closeMenu()"><a routerLink="/favorite">Favorites</a></li>
             @if (isAuthenticated | async) {
             <li (click)="closeMenu(); logout(); ">Logout</li>
             }
