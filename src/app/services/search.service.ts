@@ -43,7 +43,7 @@ export class SearchService {
     let url = `${this.api.getAPIUrl()}/API_public/studyprogram/?search_all=${query}`;
 
     if (location && distance !== undefined) {
-      url += `&distance__from=${location.longitude},${location.latitude}`;
+      // url += `&distance__from=${location.longitude},${location.latitude}`;
       url += `&distance__lte=${location.longitude},${location.latitude},${distance}`;
     }
 
@@ -71,8 +71,8 @@ export class SearchService {
               result.diploma_earned_ontime_quartile,
             percent_scholarship_quartile: result.percent_scholarship_quartile,
             job_prospects: result.job_prospects,
-            geolocation: result.school_extended.address_extended.geolocation,
-            locality: result.school_extended.address_extended.locality,
+            geolocation: result.address_extended.geolocation,
+            locality: result.address_extended.locality,
           })
         )
       )
