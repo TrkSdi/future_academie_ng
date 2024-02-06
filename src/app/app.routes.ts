@@ -11,7 +11,10 @@ import { UserProfilesComponent } from './userprofiles/userprofiles.component';
 import { StudyListComponent } from './study-list/study-list.component';
 
 export const routes: Routes = [
-  { path: '', component: SearchComponent },
+  // {
+  //   path: '',
+  //   component: SearchComponent,
+  // },
   { path: 'school/:id', component: SchoolsComponent },
   { path: 'search', component: SearchComponent },
   { path: 'studyprogram/:id', component: StudydetailComponent },

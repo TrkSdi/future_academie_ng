@@ -1,18 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {
-  Observable,
-  Subject,
-  BehaviorSubject,
-  map,
-  throwError,
-  of,
-} from 'rxjs';
+import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
   catchError,
+  tap,
 } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { School } from '../interface/school-interface';
@@ -26,14 +19,17 @@ import { StudyListComponent } from '../study-list/study-list.component';
 
 @Component({
   selector: 'app-search',
-  imports: [CommonModule, NgbDropdownModule, RouterModule, FormsModule, StudyListComponent],
+  imports: [
+    CommonModule,
+    NgbDropdownModule,
+    RouterModule,
+    FormsModule,
+    StudyListComponent,
+  ],
   standalone: true,
   templateUrl: './search.component.html',
-  styleUrls: [
-    './search.component.css',
-  ],
+  styleUrls: ['./search.component.css'],
 })
-
 export class SearchComponent implements OnInit {
   // Variables to store search results
   schools$: Observable<School[]> = of([]);
@@ -50,8 +46,7 @@ export class SearchComponent implements OnInit {
   nextUrl: string | null = null;
   previousUrl: string | null = null;
   count: number | null = null;
-
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -61,14 +56,19 @@ export class SearchComponent implements OnInit {
       switchMap((address) =>
         address ? this.searchService.getAddressSuggestions(address) : of([])
       ),
+      tap((suggestions) => {
+        if (suggestions.length > 0) {
+          this.selectAddress(suggestions[0]);
+        }
+      }),
       catchError((error) => {
         console.error('Error loading address suggestions:', error);
         return of([]);
       })
     );
-    this.studies$.subscribe(studies => {
-      this.results = studies as StudyProgram[]
-    })
+    this.studies$.subscribe((studies) => {
+      this.results = studies as StudyProgram[];
+    });
   }
   // to have the program without a search
   loadInitialData(): void {
@@ -76,14 +76,14 @@ export class SearchComponent implements OnInit {
   }
 
   // simple search for the programs
-  searchPrograms(term: string): void {
+  searchPrograms(term: string, sortBy: string = ''): void {
     this.searchService
-      .searchProgram(term, this.selectedLocation, this.distance)
+      .searchProgram(term, this.selectedLocation, this.distance, sortBy)
       .subscribe((response) => {
         this.studies$.next(response.results),
-          this.count = response.count,
-          this.nextUrl = response.next,
-          this.previousUrl = response.previous
+          (this.count = response.count),
+          (this.nextUrl = response.next),
+          (this.previousUrl = response.previous);
       });
   }
 
@@ -134,9 +134,10 @@ export class SearchComponent implements OnInit {
     );
     this.studies$.next(sortedStudies);
   }
-
-
+  sortByItem(sortBy: string) {
+    // Appel à searchPrograms avec le critère de tri
+    this.searchPrograms('', sortBy);
+  }
 }
-
 // pb que l'on a encore : c'ess que si on met plusieurs mots icontains ne marche plus....
 // à faire message pas de résultat
