@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { SchoolsComponent } from './schools/schools.component';
-import { StudyListComponent } from './study-list/study-list.component';
 import { StudydetailComponent } from './studydetail/studydetail.component';
 import { SearchComponent } from './search/search.component';
 import { CreationComponent } from './creation/creation.component';
@@ -9,6 +8,7 @@ import { FavoriteComponent } from './favorite/favorite.component';
 import { authRequiredGuard } from './auth-required.guard';
 import { FavoriteListComponent } from './favorite-list/favorite-list.component';
 import { UserProfilesComponent } from './userprofiles/userprofiles.component';
+import { StudyListComponent } from './study-list/study-list.component';
 
 export const routes: Routes = [
   { path: '', component: SearchComponent },
