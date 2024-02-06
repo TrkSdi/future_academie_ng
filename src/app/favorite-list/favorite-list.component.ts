@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FavoriteListService } from '../services/favorite-list.service';
 import { Favorite } from '../interface/favorite-interface';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule, formatDate, Location } from '@angular/common';
 import { Observable, Subject, of } from 'rxjs';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AlertService, Alert } from "../services/alert.service"
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { jwtDecode, JwtPayload } from "jwt-decode";
 import { ApiconfigService } from '../services/apiconfig.service';
 
 @Component({
@@ -18,7 +17,7 @@ import { ApiconfigService } from '../services/apiconfig.service';
 })
 export class FavoriteListComponent {
 
-  favorites: Favorite[] = [];
+  @Input() favorites: Favorite[] = [];
   nextUrl: string | null = null;
   previousUrl: string | null = null;
   count: number | null = null;
@@ -26,14 +25,18 @@ export class FavoriteListComponent {
   shareToken$: Subject<string> = new Subject();
   shareUrlBase: string = this.api.getFrontUrl() + "/favorite/share/";
   expirationDate: Subject<any> = new Subject();
+  isShare: boolean = this.router.url.includes("share");
 
-  constructor(private favListService: FavoriteListService, private alertService: AlertService, private api: ApiconfigService) { }
+  constructor(private router: Router, private favListService: FavoriteListService, private alertService: AlertService, private api: ApiconfigService) { }
 
   ngOnInit() {
-    this.getFavorites();
-    this.alertService.alert$.subscribe((alert) => {
-      this.alerts.push(alert);
-    })
+    if (!this.router.url.includes("share")) {
+      this.getFavorites();
+      this.alertService.alert$.subscribe((alert) => {
+        this.alerts.push(alert);
+      }
+      )
+    }
   }
 
   shareFavorites() {

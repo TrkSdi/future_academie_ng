@@ -42,13 +42,11 @@ export class FavoriteListService {
   }
   shareFavorites() {
     const url: string = this.api.getAPIUrl() + "/API_private/favorite/share_favorites/"
-    return this.http.get(url).pipe(tap((response) => { console.log(response) }));
-    //get the token from  http://127.0.0.1:8001/API_private/favorite/share_favorites 
-    // returned token: tokentext
-    // decode it and set variables for the token and exp date
+    return this.http.get(url)
   }
 
   getSharedFavorites(token: string) {
-    //get token from params and then fetch favs from http://127.0.0.1:8001/API_public/favorite/view_shared
+    const url: string = this.api.getAPIUrl() + "/API_public/favorite/view_shared/?list="
+    return this.http.get(url + token).pipe(tap((result) => (console.log(result))))
   }
 }
