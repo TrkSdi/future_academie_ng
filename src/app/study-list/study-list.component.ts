@@ -18,9 +18,9 @@ import { ApiconfigService } from '../services/apiconfig.service';
 })
 export class StudyListComponent {
   @Input() studies: StudyProgram[] = [];
-  nextUrl: string | null = null;
-  previousUrl: string | null = null;
-  count: number | null = null;
+  @Input() nextUrl: string | null = null;
+  @Input() previousUrl: string | null = null;
+  @Input() count: number | null = null;
   favorites: number[] = [];
 
   constructor(

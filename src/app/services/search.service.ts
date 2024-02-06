@@ -4,13 +4,13 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApiconfigService } from './apiconfig.service';
 import { School } from '../interface/school-interface';
-import { StudyProgram } from '../interface/study-interface';
+import { StudyProgram, StudyResponse } from '../interface/study-interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  constructor(private http: HttpClient, private api: ApiconfigService) { }
+  constructor(private http: HttpClient, private api: ApiconfigService) {}
 
   searchSchools(query: string): Observable<School[]> {
     const url = `${this.api.getAPIUrl()}/API_public/school/?name__icontains=${query}`;
@@ -35,26 +35,33 @@ export class SearchService {
       })
     );
   }
+
   searchProgram(
     query: string,
     location?: { latitude: number; longitude: number },
-    distance?: number
-  ): Observable<StudyProgram[]> {
+    distance?: number,
+    sortBy?: string
+  ): Observable<StudyResponse> {
     let url = `${this.api.getAPIUrl()}/API_public/studyprogram/?search_all=${query}`;
 
     if (location && distance !== undefined) {
       // url += `&distance__from=${location.longitude},${location.latitude}`;
       url += `&distance__lte=${location.longitude},${location.latitude},${distance}`;
     }
+    if (sortBy !== undefined) {
+      url += `&ordering=-${sortBy}`;
+    }
 
     return this.http.get<any>(url).pipe(
-      map((response) =>
-        response.results.map(
+      map((response: any) => ({
+        next: response.next,
+        previous: response.previous,
+        count: response.count,
+        results: response.results.map(
           (result: any): StudyProgram => ({
             cod_aff_form: result.cod_aff_form,
             name: result.name,
             school: result.school_extended.name,
-
             url: result.url_parcoursup_extended
               ? result.url_parcoursup_extended.link_url
               : '', // Gestion de l'absence de l'URL parcoursup
@@ -74,8 +81,8 @@ export class SearchService {
             geolocation: result.address_extended.geolocation,
             locality: result.address_extended.locality,
           })
-        )
-      )
+        ),
+      }))
     );
   }
 
@@ -89,11 +96,11 @@ export class SearchService {
     return this.http.get<any>(url).pipe(
       map((response) => {
         const location = response.features[0].geometry.coordinates;
-        console.log(location); // ne pas enlever sert à savoir sç cela marche
         return { longitude: location[0], latitude: location[1] };
       })
     );
   }
+
   getAddressSuggestions(query: string): Observable<any[]> {
     if (!query.trim()) {
       return of([]); // Retourne un Observable vide si la requête est vide

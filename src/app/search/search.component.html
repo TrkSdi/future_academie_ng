@@ -2,8 +2,12 @@
   <div class="row">
     <!-- Search program -->
     <div class="col-md-3">
-      <input #searchInputProgram class="form-control" placeholder="Rechercher un programme"
-        (input)="searchPrograms(searchInputProgram.value)" />
+      <input
+        #searchInputProgram
+        class="form-control"
+        placeholder="Rechercher un programme"
+        (input)="searchPrograms(searchInputProgram.value)"
+      />
     </div>
     <!-- Search school not sure importnat and we have to see how inplent -->
     <!-- <div class="col-md-3">
@@ -16,14 +20,28 @@
     </div> -->
     <!-- tentative geo -->
     <div class="col-md-3">
-      <input class="form-control" placeholder="Entrez une adresse" #geoLocationInput
-        (input)="searchAddress(geoLocationInput.value)" />
+      <input
+        class="form-control"
+        placeholder="Entrez une adresse"
+        #geoLocationInput
+        (input)="searchAddress(geoLocationInput.value)"
+        (keyup)="selectAddress(geoLocationInput.value)"
+      />
       <ul *ngIf="addressSuggestions$ | async as suggestions">
-        <li *ngFor="let suggestion of suggestions" (click)="selectAddress(suggestion)" class="dropdown-item">
+        <li
+          *ngFor="let suggestion of suggestions"
+          (click)="selectAddress(suggestion)"
+          class="dropdown-item"
+        >
           {{ suggestion.properties.label }}
         </li>
       </ul>
-      <select class="form-control mt-2" #distanceSelect (change)="setDistance(distanceSelect.value)">
+
+      <select
+        class="form-control mt-2"
+        #distanceSelect
+        (change)="setDistance(distanceSelect.value)"
+      >
         <option value="5">5 km</option>
         <option value="10">10 km</option>
         <option value="20">20 km</option>
@@ -31,9 +49,14 @@
     </div>
 
     <!-- Sort by -->
-    <div class="col-md-3">
+    <!-- <div class="col-md-3">
       <div ngbDropdown class="d-inline-block">
-        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          id="dropdownBasic1"
+          ngbDropdownToggle
+        >
           Trier par <i class="bi bi-sort-up"></i>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
@@ -47,16 +70,42 @@
             Places disponibles
           </button>
         </div>
+      </div> -->
+    Dropdown Test
+    <div class="col-md-3">
+      <div ngbDropdown class="d-inline-block">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          id="dropdownBasic1"
+          ngbDropdownToggle
+        >
+          Trier par <i class="bi bi-sort-up"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem (click)="sortByItem('L1_succes_rate')">
+            Taux de succès
+          </button>
+          <button ngbDropdownItem (click)="sortByItem('acceptance_rate ')">
+            Taux d'acceptation
+          </button>
+          <button ngbDropdownItem (click)="sortByItem('available_places ')">
+            Places disponibles
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-
-
-  @if (results) {
-  <app-study-list [studies]="results"></app-study-list>
-  <!-- [studies]="results!" -->
-  }
-  <!-- <div class="cards-container">
+    <div>
+      @if (results) {
+      <app-study-list
+        [studies]="results"
+        [count]="count"
+        [nextUrl]="nextUrl"
+        [previousUrl]="previousUrl"
+      ></app-study-list>
+      <!-- [studies]="results!" -->
+      }
+      <!-- <div class="cards-container">
     <div class="card" *ngFor="let study of studies$ | async">
       <div class="main-info">
         <ul>
@@ -121,9 +170,13 @@
     </div>
   </div> -->
 
-  <!-- Search school -->
+      <!-- Search school -->
 
-  <ul>
-    <li *ngFor="let school of schools$ | async">Écoles : {{ school.name }}</li>
-  </ul>
+      <ul>
+        <li *ngFor="let school of schools$ | async">
+          Écoles : {{ school.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
