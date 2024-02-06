@@ -9,7 +9,7 @@ import { ApiconfigService } from './apiconfig.service';
   providedIn: 'root'
 })
 export class UserProfileService {
-  
+
 
   constructor(private http: HttpClient, private api: ApiconfigService) { }
 
@@ -17,21 +17,23 @@ export class UserProfileService {
 
   getUserProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(this.url).pipe(
-      tap ((response: any) => (console.log(response))),
+      tap((response: any) => (console.log(response))),
       map((response: any) => ({
-       
-        username: response.results.user_extended ? response.user_extended.username : null,
-        first_name: response.results.user_extended ? response.user_extended.first_name : null,
-        last_name: response.results.user_extended ? response.user_extended.last_name : null,
-        email: response.results.user_extended ? response.user_extended.email : null,
+        results: response.results.map((profile: any) => ({
+          username: profile.user_extended ? profile.username : null,
+          first_name: profile.user_extended ? profile.first_name : null,
+          last_name: profile.user_extended ? profile.last_name : null,
+          email: profile.user_extended ? profile.email : null,
+          image_profile: profile.image_profile,
+          url_tiktok: profile.url_tiktok_extended ? profile.url_tiktok_extended.link_url : null,
+          url_instagram: profile.url_instagram_extended ? profile.url_instagram_extended.link_url : null,
+          about_me: profile.about_me,
+          is_public: profile.is_public,
+          student_at: profile.student_at,
+          id: profile.id
+        })),
+      })),
 
-
-      image_profile: response.results.image_profile,
-      url_tiktok: response.results.url_tiktok_extended ? response.url_tiktok_extended.link_url : null,
-      url_instagram: response.results.url_instagram_extended ? response.url_instagram_extended.link_url : null,
-      about_me: response.results.about_me,
-      is_public: response.results.is_public,
-      student_at: response.results.student_at
-    })))
+      tap((response: any) => (console.log(response.results))))
   }
 }
