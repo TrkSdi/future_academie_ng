@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { ApiconfigService } from './apiconfig.service';
 import { UserService } from './user.service';
-import { Observable, map } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { FavoriteResponse } from '../interface/favorite-interface';
 
 @Injectable({
@@ -39,5 +39,16 @@ export class FavoriteListService {
     const url: string = this.favUrl + favorite_id + "/";
     const http_options = {}
     return this.http.delete(url, http_options)
+  }
+  shareFavorites() {
+    const url: string = this.api.getAPIUrl() + "/API_private/favorite/share_favorites/"
+    return this.http.get(url).pipe(tap((response) => { console.log(response) }));
+    //get the token from  http://127.0.0.1:8001/API_private/favorite/share_favorites 
+    // returned token: tokentext
+    // decode it and set variables for the token and exp date
+  }
+
+  getSharedFavorites(token: string) {
+    //get token from params and then fetch favs from http://127.0.0.1:8001/API_public/favorite/view_shared
   }
 }
