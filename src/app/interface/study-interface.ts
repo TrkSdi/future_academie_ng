@@ -9,7 +9,7 @@ export interface SchoolExtended {
   UAI_code: string;
   name: string;
   address: number;
-  address_extended: Address;
+  //   address_extended: Address;
   school_type: string;
 }
 
@@ -18,6 +18,7 @@ export interface StudyProgram {
   name: string;
   school: string;
   school_extended?: SchoolExtended;
+  address_extended?: Address;
   url: string;
   acceptance_rate: number;
   L1_succes_rate: number;

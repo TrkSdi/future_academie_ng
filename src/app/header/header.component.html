@@ -21,6 +21,7 @@
             <li (click)="closeMenu()"><a  class="hover-underline-animation" routerLink="/search">Recherche</a></li>
             <li (click)="closeMenu()"><a class="hover-underline-animation">Profil</a></li>
             <li (click)="closeMenu()"><a class="hover-underline-animation">Favoris</a></li>
+
             @if (isAuthenticated | async) {
             <li (click)="closeMenu(); logout(); "><a class="hover-underline-animation">Déconnexion</a></li>
             }

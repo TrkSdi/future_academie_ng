@@ -33,19 +33,19 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
   ],
 })
 export class SearchComponent implements OnInit {
-  private searchTermsSchools = new Subject<string>();
-  private searchTermsPrograms = new Subject<string>();
   schools$: Observable<School[]> = of([]);
   studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
     StudyProgram[]
   >([]);
-  distance: number = 10; //distance par defaut
-  addressInput = new BehaviorSubject<string>('');
-  addressSuggestions$: Observable<any[]>;
-  selectedLocation: { latitude: number; longitude: number } | null = null;
-  lastSearchTerm: string = '';
+  distance: number = 10; // Default distance
+  addressInput: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  addressSuggestions$: Observable<any[]> = of([]);
+  selectedLocation?: { latitude: number; longitude: number };
 
-  constructor(private searchService: SearchService) {
+  constructor(private searchService: SearchService) {}
+
+  ngOnInit(): void {
+    this.loadInitialData();
     this.addressSuggestions$ = this.addressInput.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -58,44 +58,41 @@ export class SearchComponent implements OnInit {
       })
     );
   }
-
-  ngOnInit() {
-    this.searchTermsPrograms
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((term: string) => this.searchService.searchProgram(term))
-      )
-      .subscribe((programs) => this.studies$.next(programs));
-    this.searchPrograms(''); // to have all the program in the beginning IMPORTANT
+  // to have the program without research
+  loadInitialData(): void {
+    this.searchPrograms('');
   }
-
-  searchSchools(term: string): void {
-    this.searchTermsSchools.next(term);
-  }
-
+  // simple search for the programs
   searchPrograms(term: string): void {
-    this.lastSearchTerm = term;
-
-    const programsObservable: Observable<StudyProgram[]> = this.selectedLocation
-      ? this.searchService.searchProgram(
-          term,
-          this.selectedLocation,
-          this.distance
-        )
-      : this.searchService.searchProgram(term);
-
-    programsObservable
-      .pipe(
-        catchError((error) => {
-          console.error('Error searching programs:', error);
-          return of([]);
-        })
-      )
-      .subscribe((programs) => {
-        this.studies$.next(programs); // Mettez à jour les valeurs avec next
-      });
+    this.searchService
+      .searchProgram(term, this.selectedLocation, this.distance)
+      .subscribe((programs) => this.studies$.next(programs));
   }
+  // disable for the moment
+  searchSchools(term: string): void {
+    this.searchService
+      .searchSchools(term)
+      .subscribe((schools) => (this.schools$ = of(schools)));
+  }
+
+  searchAddress(query: string): void {
+    this.addressInput.next(query);
+  }
+  // here I would like to make adress input = first selectAdress(suggestion)
+  selectAddress(suggestion: any): void {
+    this.selectedLocation = {
+      latitude: suggestion.geometry.coordinates[1],
+      longitude: suggestion.geometry.coordinates[0],
+    };
+    this.searchPrograms('');
+  }
+  // the distance around the city
+  setDistance(value: string): void {
+    this.distance = +value;
+    this.searchPrograms('');
+  }
+
+  /// sort by
   sortBySuccessRate() {
     const sortedStudies = this.studies$.value.sort(
       (a, b) => b.L1_succes_rate - a.L1_succes_rate
@@ -115,41 +112,6 @@ export class SearchComponent implements OnInit {
       (a, b) => b.available_places - a.available_places
     );
     this.studies$.next(sortedStudies);
-  }
-
-  setDistance(value: string): void {
-    this.distance = +value;
-  }
-
-  findLocation(address: string): void {
-    this.searchService.getGeolocation(address).subscribe({
-      next: (location) => {
-        console.log('Location found:', location);
-      },
-      error: (error) => console.error('Error finding location:', error),
-    });
-  }
-  searchAddress(query: string): void {
-    this.addressInput.next(query);
-  }
-
-  selectAddress(address: any): void {
-    this.selectedLocation = {
-      latitude: address.geometry.coordinates[1],
-      longitude: address.geometry.coordinates[0],
-    };
-    console.log(
-      'selectedLocation' +
-        this.selectedLocation.latitude +
-        this.selectedLocation.longitude
-    );
-
-    this.searchPrograms(this.lastSearchTerm);
-  }
-
-  onAddressInput(value: string): void {
-    this.addressInput.next(value);
-    console.log(this.addressInput.next(value));
   }
 }
 
