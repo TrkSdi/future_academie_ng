@@ -1,6 +1,6 @@
 // Angular Modules
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -33,6 +33,7 @@ export class FavoriteComponent {
     private route: ActivatedRoute,
     private router: Router,
     private studyProgramService: StudyProgramDetailService,
+    private location: Location
   ) {
   }
   editing$: Subject<any> = new Subject();
@@ -52,6 +53,10 @@ export class FavoriteComponent {
   cancelEdit(): void {
     console.log("trying")
     this.editing$.next("false");
+  }
+
+  goBack() {
+    this.location.back()
   }
 
   saveChanges() {
