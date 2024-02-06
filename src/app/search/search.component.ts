@@ -46,7 +46,6 @@ export class SearchComponent implements OnInit {
   nextUrl: string | null = null;
   previousUrl: string | null = null;
   count: number | null = null;
-
   constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
@@ -77,14 +76,14 @@ export class SearchComponent implements OnInit {
   }
 
   // simple search for the programs
-  searchPrograms(term: string): void {
+  searchPrograms(term: string, sortBy: string = ''): void {
     this.searchService
-      .searchProgram(term, this.selectedLocation, this.distance)
+      .searchProgram(term, this.selectedLocation, this.distance, sortBy)
       .subscribe((response) => {
         this.studies$.next(response.results),
-          this.count = response.count,
-          this.nextUrl = response.next,
-          this.previousUrl = response.previous
+          (this.count = response.count),
+          (this.nextUrl = response.next),
+          (this.previousUrl = response.previous);
       });
   }
 
@@ -97,13 +96,6 @@ export class SearchComponent implements OnInit {
 
   searchAddress(query: string): void {
     this.addressInput.next(query);
-    // if (query.trim().length > 2) {
-    //   console.log(query.trim());
-    //   for (let s in this.addressSuggestions$) {
-    //     console.log(s);
-    //   }
-    //   console.log(this.addressSuggestions$);
-    // }
   }
 
   // here I would like to make adress input = first selectAdress(suggestion)
@@ -142,7 +134,10 @@ export class SearchComponent implements OnInit {
     );
     this.studies$.next(sortedStudies);
   }
+  sortByItem(sortBy: string) {
+    // Appel à searchPrograms avec le critère de tri
+    this.searchPrograms('', sortBy);
+  }
 }
-
 // pb que l'on a encore : c'ess que si on met plusieurs mots icontains ne marche plus....
 // à faire message pas de résultat

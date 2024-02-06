@@ -49,7 +49,7 @@
     </div>
 
     <!-- Sort by -->
-    <div class="col-md-3">
+    <!-- <div class="col-md-3">
       <div ngbDropdown class="d-inline-block">
         <button
           type="button"
@@ -70,15 +70,42 @@
             Places disponibles
           </button>
         </div>
+      </div> -->
+    Dropdown Test
+    <div class="col-md-3">
+      <div ngbDropdown class="d-inline-block">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          id="dropdownBasic1"
+          ngbDropdownToggle
+        >
+          Trier par <i class="bi bi-sort-up"></i>
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem (click)="sortByItem('L1_succes_rate')">
+            Taux de succès
+          </button>
+          <button ngbDropdownItem (click)="sortByItem('acceptance_rate ')">
+            Taux d'acceptation
+          </button>
+          <button ngbDropdownItem (click)="sortByItem('available_places ')">
+            Places disponibles
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-
-  @if (results) {
-  <app-study-list [studies]="results" [count]="count" [nextUrl]="nextUrl" [previousUrl]="previousUrl"></app-study-list>
-  <!-- [studies]="results!" -->
-  }
-  <!-- <div class="cards-container">
+    <div>
+      @if (results) {
+      <app-study-list
+        [studies]="results"
+        [count]="count"
+        [nextUrl]="nextUrl"
+        [previousUrl]="previousUrl"
+      ></app-study-list>
+      <!-- [studies]="results!" -->
+      }
+      <!-- <div class="cards-container">
     <div class="card" *ngFor="let study of studies$ | async">
       <div class="main-info">
         <ul>
@@ -143,9 +170,13 @@
     </div>
   </div> -->
 
-  <!-- Search school -->
+      <!-- Search school -->
 
-  <ul>
-    <li *ngFor="let school of schools$ | async">Écoles : {{ school.name }}</li>
-  </ul>
+      <ul>
+        <li *ngFor="let school of schools$ | async">
+          Écoles : {{ school.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
