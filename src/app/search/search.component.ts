@@ -1,18 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {
-  Observable,
-  Subject,
-  BehaviorSubject,
-  map,
-  throwError,
-  of,
-} from 'rxjs';
+import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
   catchError,
+  tap,
 } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { School } from '../interface/school-interface';
@@ -26,14 +19,17 @@ import { StudyListComponent } from '../study-list/study-list.component';
 
 @Component({
   selector: 'app-search',
-  imports: [CommonModule, NgbDropdownModule, RouterModule, FormsModule, StudyListComponent],
+  imports: [
+    CommonModule,
+    NgbDropdownModule,
+    RouterModule,
+    FormsModule,
+    StudyListComponent,
+  ],
   standalone: true,
   templateUrl: './search.component.html',
-  styleUrls: [
-    './search.component.css',
-  ],
+  styleUrls: ['./search.component.css'],
 })
-
 export class SearchComponent implements OnInit {
   // Variables to store search results
   schools$: Observable<School[]> = of([]);
@@ -51,7 +47,7 @@ export class SearchComponent implements OnInit {
   previousUrl: string | null = null;
   count: number | null = null;
 
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -61,14 +57,19 @@ export class SearchComponent implements OnInit {
       switchMap((address) =>
         address ? this.searchService.getAddressSuggestions(address) : of([])
       ),
+      tap((suggestions) => {
+        if (suggestions.length > 0) {
+          this.selectAddress(suggestions[0]);
+        }
+      }),
       catchError((error) => {
         console.error('Error loading address suggestions:', error);
         return of([]);
       })
     );
-    this.studies$.subscribe(studies => {
-      this.results = studies as StudyProgram[]
-    })
+    this.studies$.subscribe((studies) => {
+      this.results = studies as StudyProgram[];
+    });
   }
   // to have the program without a search
   loadInitialData(): void {
@@ -96,6 +97,13 @@ export class SearchComponent implements OnInit {
 
   searchAddress(query: string): void {
     this.addressInput.next(query);
+    // if (query.trim().length > 2) {
+    //   console.log(query.trim());
+    //   for (let s in this.addressSuggestions$) {
+    //     console.log(s);
+    //   }
+    //   console.log(this.addressSuggestions$);
+    // }
   }
 
   // here I would like to make adress input = first selectAdress(suggestion)
@@ -134,8 +142,6 @@ export class SearchComponent implements OnInit {
     );
     this.studies$.next(sortedStudies);
   }
-
-
 }
 
 // pb que l'on a encore : c'ess que si on met plusieurs mots icontains ne marche plus....
