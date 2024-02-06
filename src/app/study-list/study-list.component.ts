@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { StudyListService } from '../services/study-list.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { StudyProgram, StudyResponse } from '../interface/study-interface';
@@ -14,10 +14,10 @@ import { ApiconfigService } from '../services/apiconfig.service';
   standalone: true,
   imports: [CommonModule, SearchComponent, RouterModule],
   templateUrl: './study-list.component.html',
-  styleUrl: './study-list.component.css',
+  styleUrl: './study-list.component.css'
 })
-export class StudyListComponent implements OnInit {
-  studies: StudyProgram[] = [];
+export class StudyListComponent {
+  @Input() studies: StudyProgram[] = [];
   nextUrl: string | null = null;
   previousUrl: string | null = null;
   count: number | null = null;
@@ -91,6 +91,5 @@ export class StudyListComponent implements OnInit {
       }
     })
   }
-
 
 }

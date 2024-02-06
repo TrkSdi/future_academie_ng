@@ -10,7 +10,7 @@ import { StudyProgram } from '../interface/study-interface';
   providedIn: 'root',
 })
 export class SearchService {
-  constructor(private http: HttpClient, private api: ApiconfigService) {}
+  constructor(private http: HttpClient, private api: ApiconfigService) { }
 
   searchSchools(query: string): Observable<School[]> {
     const url = `${this.api.getAPIUrl()}/API_public/school/?name__icontains=${query}`;
@@ -100,7 +100,7 @@ export class SearchService {
     }
     const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(
       query
-    )}&limit=5`;
+    )}&limit=1`;
     return this.http.get<any>(url).pipe(map((response) => response.features));
   }
 }
