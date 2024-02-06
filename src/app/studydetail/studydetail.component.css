@@ -3,4 +3,42 @@ button {
     width: 150px;
     padding: 10px 20px;
     border-radius: 25px;
+    margin-top: 20px;
 }
+
+img {
+    width: 250px;
+    margin-bottom: 20px;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    margin-top: 70px;
+    justify-content: space-between;
+    gap: 70px
+}
+
+ul {
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+ul li a {
+    text-decoration: none;
+}
+
+ul li span {
+    font-weight: bold;
+}
+
+.quartile-container {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px 15px;
+}
+
