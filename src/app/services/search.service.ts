@@ -4,7 +4,7 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApiconfigService } from './apiconfig.service';
 import { School } from '../interface/school-interface';
-import { StudyProgram } from '../interface/study-interface';
+import { StudyProgram, StudyResponse } from '../interface/study-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -35,11 +35,12 @@ export class SearchService {
       })
     );
   }
+
   searchProgram(
     query: string,
     location?: { latitude: number; longitude: number },
     distance?: number
-  ): Observable<StudyProgram[]> {
+  ): Observable<StudyResponse> {
     let url = `${this.api.getAPIUrl()}/API_public/studyprogram/?search_all=${query}`;
 
     if (location && distance !== undefined) {
@@ -48,13 +49,15 @@ export class SearchService {
     }
 
     return this.http.get<any>(url).pipe(
-      map((response) =>
-        response.results.map(
+      map((response: any) => ({
+        next: response.next,
+        previous: response.previous,
+        count: response.count,
+        results: response.results.map(
           (result: any): StudyProgram => ({
             cod_aff_form: result.cod_aff_form,
             name: result.name,
             school: result.school_extended.name,
-
             url: result.url_parcoursup_extended
               ? result.url_parcoursup_extended.link_url
               : '', // Gestion de l'absence de l'URL parcoursup
@@ -73,8 +76,8 @@ export class SearchService {
             job_prospects: result.job_prospects,
             geolocation: result.address_extended.geolocation,
             locality: result.address_extended.locality,
-          })
-        )
+          }))
+      })
       )
     );
   }
@@ -94,6 +97,7 @@ export class SearchService {
       })
     );
   }
+
   getAddressSuggestions(query: string): Observable<any[]> {
     if (!query.trim()) {
       return of([]); // Retourne un Observable vide si la requête est vide

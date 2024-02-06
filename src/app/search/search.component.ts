@@ -47,6 +47,9 @@ export class SearchComponent implements OnInit {
   addressInput: BehaviorSubject<string> = new BehaviorSubject<string>('');
   addressSuggestions$: Observable<any[]> = of([]);
   selectedLocation?: { latitude: number; longitude: number };
+  nextUrl: string | null = null;
+  previousUrl: string | null = null;
+  count: number | null = null;
 
   constructor(private searchService: SearchService) { }
 
@@ -76,7 +79,12 @@ export class SearchComponent implements OnInit {
   searchPrograms(term: string): void {
     this.searchService
       .searchProgram(term, this.selectedLocation, this.distance)
-      .subscribe((programs) => this.studies$.next(programs));
+      .subscribe((response) => {
+        this.studies$.next(response.results),
+          this.count = response.count,
+          this.nextUrl = response.next,
+          this.previousUrl = response.previous
+      });
   }
 
   // disabled for the moment
