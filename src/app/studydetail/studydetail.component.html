@@ -1,42 +1,51 @@
 <div class="container">
-        @if(studyProgram){
-            <div class="left-col">
-                <div class="img-container">
-                    <img src="../../assets/image-logo.png" alt="image logo">
-                </div>
-                <div class="quartile-container">
-                    <h4>Quartile</h4>
-                    <ul>
-                        <li><span>Taux d'acceptation:</span>&ensp;{{ studyProgram.acceptance_rate_quartile }}</li>
-                        <li><span>Taux de succès en L1:</span>&ensp;{{ studyProgram.L1_success_rate_quartile }}</li>
-                        <li><span>Taux obtention diplome (dans les temps):</span>&ensp;{{ studyProgram.diploma_earned_ontime_quartile }}</li>
-                        <li><span>Boursier:</span>&ensp;{{ studyProgram.percent_scholarship_quartile }}</li>
-                    </ul>
-                    <p>Explication du quartile</p>
-                </div>
-                <button class="save" (click)="saveFavorite()"
-                [ngClass]="{'d-none': !currentRoute.includes('studyprogram')}">Sauvegarder</button>
-                <span class="text-danger">{{ loginMessage}}</span>
-            </div>
-            <div class="right-col">
-                <ul>
-                    <li> <h1>{{ studyProgram.name }}</h1></li>
-                    <li> <h2>{{ studyProgram.school }}</h2></li>
-                    <li> <span>Code établissement:</span>&ensp;{{ studyProgram.cod_aff_form }}</li>
-                    <li> <span>Site Web:</span><a href="{{ studyProgram.url }}" target="_blank">&ensp;Lien</a></li>
-                    <li> <span>Taux d'acceptation:</span>&ensp;{{ studyProgram.acceptance_rate }}%</li>
-                    <li *ngIf="
+    @if(studyProgram){
+    <div class="left-col">
+        <div class="img-container">
+            <img src="../../assets/image-logo.png" alt="image logo">
+        </div>
+        <div class="quartile-container">
+            <h4>Quartile</h4>
+            <ul>
+                <li><span>Taux d'acceptation:</span>&ensp;{{ studyProgram.acceptance_rate_quartile }}</li>
+                <li><span>Taux de succès en L1:</span>&ensp;{{ studyProgram.L1_success_rate_quartile }}</li>
+                <li><span>Taux obtention diplome (dans les temps):</span>&ensp;{{
+                    studyProgram.diploma_earned_ontime_quartile }}</li>
+                <li><span>Boursier:</span>&ensp;{{ studyProgram.percent_scholarship_quartile }}</li>
+            </ul>
+            <p>Explication du quartile</p>
+        </div>
+
+    </div>
+    <div class="right-col">
+        <ul>
+            <li>
+                <h1>{{ studyProgram.name }}</h1>
+            </li>
+            <li>
+                <h2>{{ studyProgram.school }}</h2>
+            </li>
+            <span class="material-symbols--favorite-outline favorite" (click)="saveFavorite()"></span><span
+                class="text-danger">{{ loginMessage}}</span>
+            <li> <span>Site Web:</span><a href="{{ studyProgram.url }}" target="_blank">&ensp;Lien</a></li>
+            <li> <span>Taux d'acceptation:</span>&ensp;{{ studyProgram.acceptance_rate }}%</li>
+            <li *ngIf="
                     studyProgram.L1_succes_rate !== null && 
-                    studyProgram.L1_succes_rate !== undefined"> 
-                        <span>Taux de succès en L1:</span>&ensp;{{ studyProgram.L1_succes_rate }}%</li>
-                    <li> <span>Description:</span>&ensp;{{ studyProgram.description}}</li>
-                    <li> <span>Taux obtention diplome (dans les temps):</span>&ensp;{{ studyProgram.diploma_earned_ontime}}%</li>
-                    <li> <span>Places disponibles:</span>&ensp;{{ studyProgram.available_places }}</li>
-                    <li> <span>Nombre de candidats:</span>&ensp;{{ studyProgram.number_applicants }}</li>
-                    <li> <span>Boursiers:</span>&ensp;{{ studyProgram.percent_scholarship }}%</li>
-                    <li> <span>Débouchés:</span>&ensp;{{ studyProgram.job_prospects }}</li>
-                </ul>
-            </div>
-        }
-    
+                    studyProgram.L1_succes_rate !== undefined">
+                <span>Taux de succès en L1:</span>&ensp;{{ studyProgram.L1_succes_rate }}%
+            </li>
+            <li> <span>Description:</span>&ensp;{{ studyProgram.description}}</li>
+            <li> <span>Taux obtention diplome (dans les temps):</span>&ensp;{{ studyProgram.diploma_earned_ontime}}%
+            </li>
+            <li> <span>Places disponibles:</span>&ensp;{{ studyProgram.available_places }}</li>
+            <li> <span>Nombre de candidats:</span>&ensp;{{ studyProgram.number_applicants }}</li>
+            <li> <span>Boursiers:</span>&ensp;{{ studyProgram.percent_scholarship }}%</li>
+            <li> <span>Débouchés:</span>&ensp;{{ studyProgram.job_prospects }}</li>
+        </ul>
+    </div>
+    }
+
 </div>
+
+
+<!-- [ngClass]="{ active: ""favorites"".includes(studyProgram.cod_aff_form) }" -->

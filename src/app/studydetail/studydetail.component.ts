@@ -25,7 +25,7 @@ export class StudydetailComponent {
   @Input() studyProgram: StudyProgram | null = null;
   currentRoute: string = this.route.toString();
 
-  
+
 
   ngOnInit() {
     // don't call loadStudyProgram if the component is the child of 
