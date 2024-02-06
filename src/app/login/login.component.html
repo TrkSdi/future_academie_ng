@@ -1,11 +1,16 @@
 <div class="container">
 
     <form (ngSubmit)="login(loginForm.value.email, loginForm.value.password)" #loginForm="ngForm">
+
         <h1>Connectez-vous</h1>
+        <h4>Vous n'avez pas encore de compte? <a routerLink="/creation">Inscrivez-vous ici!</a></h4>
+
         @if(authRequiredMessage){
         <h2>L'authentication est requise pour le page demandé</h2>
         }
+
         <div class="form-group">
+
             @if(error){
             <p class="error text-center"> {{error}} </p>
             }
@@ -17,14 +22,19 @@
             }
 
         </div>
+
         <div class="form-group">
+
             <label for="password">Mot de passe</label>
             <input type="password" class="form-control" name="password" placeholder="password" ngModel required>
             @if(loginForm.controls['password'].hasError('required')) {
             <small id="emailHelp" class="form-text text-danger">Merci de renseigner votre mot de passe.</small>
             }
+
         </div>
 
         <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Submit</button>
+
     </form>
+
 </div>

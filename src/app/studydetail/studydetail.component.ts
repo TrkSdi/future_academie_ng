@@ -25,6 +25,8 @@ export class StudydetailComponent {
   @Input() studyProgram: StudyProgram | null = null;
   currentRoute: string = this.route.toString();
 
+  
+
   ngOnInit() {
     // don't call loadStudyProgram if the component is the child of 
     // another template in which case studyProgram will be received as input
@@ -46,8 +48,7 @@ export class StudydetailComponent {
   saveFavorite() {
     const program_id = this.studyProgram?.cod_aff_form
     if (this.auth.isAuthenticated()) {
-      const user_id = this.user.getUserID()
-      this.favoriteService.createFavorite(program_id!, user_id!).subscribe({
+      this.favoriteService.createFavorite(program_id!).subscribe({
         next: (response) => {
           // open the page of the newly created favorite
           this.router.navigateByUrl(`/favorite/${response.id}`);
