@@ -17,9 +17,9 @@ export class UserProfileService {
 
   getUserProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(this.url).pipe(
-      tap((response: any) => (console.log(response))),
-      map((response: any) => ({
-        results: response.results.map((profile: any) => ({
+      map((response: any) => {
+        const profile = response.results[0];
+        return {
           username: profile.user_extended ? profile.username : null,
           first_name: profile.user_extended ? profile.first_name : null,
           last_name: profile.user_extended ? profile.last_name : null,
@@ -31,9 +31,9 @@ export class UserProfileService {
           is_public: profile.is_public,
           student_at: profile.student_at,
           id: profile.id
-        })),
-      })),
-
-      tap((response: any) => (console.log(response.results))))
+        }
+      }),
+    )
   }
 }
+
