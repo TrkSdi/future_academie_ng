@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { UserProfile } from '../interface/userprofile-interface';
 import { ApiconfigService } from './apiconfig.service';
@@ -20,7 +20,17 @@ export class UserProfileService {
       map((response: any) => this.mapProfile(response)),
       catchError(error => {
         console.error('Error fetching user profile:', error);
-        throw error; 
+        throw error;
+      })
+    );
+  }
+
+  updateUserProfile(userprofile: UserProfile) {
+    console.log('Updating user profile:', userprofile);
+    return this.http.put<any>(this.url, userprofile).pipe(
+      catchError(error => {
+        console.error('Error updating user profile:', error);
+        throw error;
       })
     );
   }
