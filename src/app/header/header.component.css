@@ -177,8 +177,9 @@ header {
   .menu ul {
     position: absolute;
     flex-direction: column;
+    padding: 5px 15px;
     gap: 5px;
-    right: -100px;
+    right: 10px;
     top: 65px;
     z-index: 10;
     background-color: var(--background_color);
@@ -188,8 +189,6 @@ header {
 
   .menu ul.active {
     opacity: 1;
-    right: 15px;
-    
   }
 
   .logo-container img {

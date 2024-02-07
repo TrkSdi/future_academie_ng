@@ -9,11 +9,12 @@ import { AuthService } from '../services/auth.service';
 import { FavoriteListService } from '../services/favorite-list.service';
 import { ApiconfigService } from '../services/apiconfig.service';
 import { PaginatorModule } from 'primeng/paginator'
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-study-list',
   standalone: true,
-  imports: [CommonModule, SearchComponent, RouterModule, PaginatorModule],
+  imports: [CommonModule, SearchComponent, RouterModule, PaginatorModule, ButtonModule],
   templateUrl: './study-list.component.html',
   styleUrl: './study-list.component.css'
 })

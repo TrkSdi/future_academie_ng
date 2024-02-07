@@ -9,13 +9,14 @@
         <ul>
           <li *ngIf="study.name !== null && study.name !== undefined">
             <h2>{{ study.name }}</h2>
+            <hr>
           </li>
           <li *ngIf="study.school !== null && study.school !== undefined">
             <h3>{{ study.school }}</h3>
           </li>
           <li>{{ study.locality }}</li>
           <li *ngIf="study.url !== null && study.url !== undefined">
-            <span>Site web:</span><a href="{{ study.url }}">&ensp;Lien</a>
+            <span>Site web:</span><a class="link" href="{{ study.url }}">Cliquez</a>
           </li>
           <li
             *ngIf="
@@ -81,7 +82,7 @@
           (click)="addFavorite(study.cod_aff_form)"
           [ngClass]="{ active: favorites.includes(study.cod_aff_form) }"
         ></span>
-        <button class="more">
+        <button class="more glow-on-hover">
           <a routerLink="/studyprogram/{{ study.cod_aff_form }}">Voir plus</a>
         </button>
       </div>
