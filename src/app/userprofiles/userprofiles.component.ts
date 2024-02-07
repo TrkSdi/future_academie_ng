@@ -19,13 +19,20 @@ export class UserProfilesComponent implements OnInit {
 
   ngOnInit() {
     this.loadUserProfile();
+    console.log();
   }
 
   loadUserProfile() {
     this.userprofileService.getUserProfile().subscribe({
       next: (userprofile: UserProfile) => {
         this.userprofile = userprofile;
+        console.log('User Profile Data:', userprofile); 
+      },
+      error: (error) => {
+        console.error('Error fetching user profile:', error);
       }
+      
     });
+    
   }
 }

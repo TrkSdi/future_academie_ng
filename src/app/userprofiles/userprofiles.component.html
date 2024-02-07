@@ -1,6 +1,5 @@
 <div class="container">
-    <ul>
-        @if(userprofile!){
+    <ul *ngIf="userprofile">
         <li>First name : {{ userprofile.first_name }}</li>
         <li>Last name : {{ userprofile.last_name }}</li>
         <li>Email : {{ userprofile.email }}</li>
@@ -10,7 +9,5 @@
         <li>About me : {{ userprofile.about_me }}</li>
         <li>Profile is public? : {{ userprofile.is_public }}</li>
         <li>Student at : {{ userprofile.student_at}}</li>
-        }
     </ul>
-
 </div>
