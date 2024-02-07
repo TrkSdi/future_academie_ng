@@ -15,18 +15,13 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   constructor(private auth: AuthService, private login: LoginService, private router: Router) { }
 
-  menuValue: boolean = false;
-  menu_icon: string = 'bi bi-list';
+  
   isAuthenticated: Observable<boolean> = this.auth.authenticated;
   logout_message: string = '';
-
-  openMenu() {
-    this.menuValue = !this.menuValue;
-    this.menu_icon = this.menuValue ? 'bi bi-x' : 'bi bi-list';
-  }
-  closeMenu() {
-    this.menuValue = false;
-    this.menu_icon = 'bi bi-list';
+  isNavActive: boolean = false;
+  
+  toggleNav() {
+    this.isNavActive = !this.isNavActive;
   }
 
   allowGoBack() {
