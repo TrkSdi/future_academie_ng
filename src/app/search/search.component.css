@@ -3,6 +3,10 @@
   margin: 0 auto;
   padding: 20px;
 }
+.search-bar {
+  max-width: 1320px;
+  margin: 0 auto;
+}
 
 .form-control {
   border-radius: 10px;

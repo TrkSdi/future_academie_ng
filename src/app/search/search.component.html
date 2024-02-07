@@ -1,5 +1,5 @@
 <div class="main-container">
-  <div class="row">
+  <div class="row search-bar">
     <!-- Search program -->
     <div class="col-md-3">
       <input
@@ -10,18 +10,9 @@
         (input)="searchPrograms(searchInputProgram.value)"
       />
     </div>
-    <!-- Search school not sure importnat and we have to see how inplent -->
-    <!-- <div class="col-md-3">
-      <input
-        #searchInputSchool
-        class="form-control"
-        placeholder="Rechercher une école"
-        (input)="searchSchools(searchInputSchool.value)"
-      />
-    </div> -->
-    <!-- tentative geo -->
+    <!-- Localisation-->
     <div class="col-md-6 location-distance-container">
-          <input
+      <input
         class="form-control"
         placeholder="Entrez une adresse"
         #geoLocationInput
@@ -40,16 +31,15 @@
         </li>
       </ul>
 
-
-
       <select
         class="form-control custom-select"
         #distanceSelect
         (change)="setDistance(distanceSelect.value)"
       >
-        <option value="5">5 km</option>
         <option value="10">10 km</option>
         <option value="20">20 km</option>
+        <option value="30">30 km</option>
+        <option value="40">40 km</option>
       </select>
     </div>
 

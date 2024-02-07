@@ -54,7 +54,7 @@ export class SearchComponent implements OnInit {
   activeFilters: { [filterName: string]: any } = {};
   defaultSearchTerm: string = '';
   defaultSortBy: string = '';
-  defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
+  // defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
   constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
