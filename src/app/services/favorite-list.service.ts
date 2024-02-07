@@ -12,10 +12,12 @@ import { FavoriteResponse } from '../interface/favorite-interface';
 export class FavoriteListService {
 
   constructor(private http: HttpClient, private auth: AuthService, private api: ApiconfigService, user: UserService) { }
-  favUrl = this.api.getAPIUrl() + "/API_private/favorite/?page_size=10";
+  favUrl = this.api.getAPIUrl() + "/API_private/favorite/";
 
   getFavorites(url?: string): Observable<FavoriteResponse> {
-    return this.http.get(url || this.favUrl).pipe(
+    const getUrl: string = this.favUrl + "?page_size=10";
+
+    return this.http.get(url || getUrl).pipe(
       map((response: any) => ({
         next: response.next,
         previous: response.previous,
@@ -38,8 +40,10 @@ export class FavoriteListService {
   deleteFavorite(favorite_id: string) {
     const url: string = this.favUrl + favorite_id + "/";
     const http_options = {}
+    console.log("deleting via service", favorite_id);
     return this.http.delete(url, http_options)
   }
+
   shareFavorites() {
     const url: string = this.api.getAPIUrl() + "/API_private/favorite/share_favorites/"
     return this.http.get(url)

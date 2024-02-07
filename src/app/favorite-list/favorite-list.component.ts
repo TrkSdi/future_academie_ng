@@ -83,6 +83,7 @@ export class FavoriteListComponent {
   deleteFavorite(favorite_id_del: string) {
     return this.favListService.deleteFavorite(favorite_id_del).subscribe({
       next: (response) => {
+        console.log("delete successful now trying to update list");
         // Update the favorites list by filtering out the item with the specified id
         this.favorites$ = this.favorites$.pipe(
           map((favorites: Favorite[]) => favorites.filter(favorite => favorite.id !== favorite_id_del))
