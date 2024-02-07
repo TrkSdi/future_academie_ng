@@ -1,11 +1,12 @@
-header {
+/* header {
   padding: 0px;
   background: var(--background_color);
   box-shadow: 0px 10px 30px rgb(88 164 176 / 30%);
 }
+
 .logo {
   width: 300px;
-  
+
 }
 .logo:hover {
   cursor: pointer;
@@ -27,13 +28,6 @@ header {
   font-size: 1.4em;
   margin-left: 0.8em;
 }
-
-/* .desktop_menu ul li:hover {
- 
-  text-decoration: underline;
-  cursor: pointer;
-  color: #333;
-} */
 
 .hover-underline-animation {
   display: inline-block;
@@ -63,6 +57,7 @@ header {
   text-decoration: none;
   color: var(--grey)
 }
+
 .menu-icon {
   display: none;
 }
@@ -96,7 +91,7 @@ header {
     font-size: 3em;
     padding: 10px;
     position: absolute;
-    right: 0
+    right: 0;
   }
   .mobile_menu {
     right: 0;
@@ -105,4 +100,64 @@ header {
   .logo {
     width: 200px;
   }
+}
+ */
+
+header {
+  background: var(--background_color);
+  box-shadow: 0px 10px 30px rgba(74, 155, 255, 0.203);
+  padding: 0 30px;
+
+}
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1320px;
+}
+
+.logo-container img {
+  width: 300px;
+}
+
+.menu ul {
+  display: flex;
+  gap: 20px
+}
+
+.menu ul li {
+  list-style: none;
+  font-size: 1.4em;
+  
+}
+
+.menu ul li a {
+  color: var(--grey);
+  text-decoration: none;
+}
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: var(--grey);
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--grey);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
