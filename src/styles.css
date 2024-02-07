@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,100;1,300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,100;1,300&display=swap");
 
 :root {
   --background_color: #fff;
@@ -7,9 +7,8 @@
   --shadow2: rgba(74, 155, 255, 0.203);
   --blue: rgb(3 42 115);
   --red: rgb(255 49 49);
-  
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }

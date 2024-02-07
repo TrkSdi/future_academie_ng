@@ -1,25 +1,17 @@
 <div class="main-container">
-  <div class="row">
+  <div class="row search-bar">
     <!-- Search program -->
     <div class="col-md-3">
       <input
         #searchInputProgram
         class="form-control"
         placeholder="Rechercher un programme"
+        [(ngModel)]="currentSearchTerm"
         (input)="searchPrograms(searchInputProgram.value)"
       />
     </div>
-    <!-- Search school not sure importnat and we have to see how inplent -->
-    <!-- <div class="col-md-3">
-      <input
-        #searchInputSchool
-        class="form-control"
-        placeholder="Rechercher une école"
-        (input)="searchSchools(searchInputSchool.value)"
-      />
-    </div> -->
-    <!-- tentative geo -->
-    <div class="col-md-3">
+    <!-- Localisation-->
+    <div class="col-md-6 location-distance-container">
       <input
         class="form-control"
         placeholder="Entrez une adresse"
@@ -40,13 +32,14 @@
       </ul>
 
       <select
-        class="form-control mt-2"
+        class="form-control custom-select"
         #distanceSelect
         (change)="setDistance(distanceSelect.value)"
       >
-        <option value="5">5 km</option>
         <option value="10">10 km</option>
         <option value="20">20 km</option>
+        <option value="30">30 km</option>
+        <option value="40">40 km</option>
       </select>
     </div>
 
@@ -63,35 +56,63 @@
           Trier par <i class="bi bi-sort-up"></i>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem (click)="sortByItem('L1_succes_rate')">
-            Taux de succès
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('L1_succes_rate', 'Taux de succès en L1')"
+          >
+            Taux de succès en L1
           </button>
-          <button ngbDropdownItem (click)="sortByItem('acceptance_rate')">
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('acceptance_rate', 'Taux d\'acceptation')"
+          >
             Taux d'acceptation
           </button>
-          <button ngbDropdownItem (click)="sortByItem('available_places')">
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('available_places', 'Places disponibles')"
+          >
             Places disponibles
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="
+              sortByItem('diploma_earned_ontime', 'Taux obtention diplome ')
+            "
+          >
+            Taux obtention diplome
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('number_applicants', 'Nombre de candidats')"
+          >
+            Nombre de candidats
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('percent_scholarship', 'Boursiers')"
+          >
+            Boursiers
           </button>
         </div>
       </div>
     </div>
 
-    <!-- {{ activefilter[0] }}
-    {{ activefilter[1] }} -->
     <!-- filters active -->
-    <div *ngIf="getActiveFilterKeys().length">
-      <div *ngFor="let key of getActiveFilterKeys()">
+    <div *ngIf="getActiveFilterKeys().length" class="filters-container">
+      <div *ngFor="let key of getActiveFilterKeys()" class="filter-tag">
         <button (click)="removeFilter(key)">
-          {{ key }}: {{ activeFilters[key] }}
-          <i class="bi bi-backspace-fill"></i>
+          {{ key }} : {{ activeFilters[key] }}
+          <span class="filter-close">x</span>
         </button>
       </div>
-    </div>
-    <div>
-      <button (click)="clearFilters()">Supprimer les filtres</button>
+      <div class="clear-filters">
+        <button (click)="clearFilters()">Effacer tous les filtres</button>
+      </div>
     </div>
     <!-- end active filters -->
     <div>
+      <!-- List of results -->
       @if (results) {
       <app-study-list
         [studies]="results"
@@ -101,70 +122,6 @@
       ></app-study-list>
       <!-- [studies]="results!" -->
       }
-      <!-- <div class="cards-container">
-    <div class="card" *ngFor="let study of studies$ | async">
-      <div class="main-info">
-        <ul>
-          <li *ngIf="study.name !== null && study.name !== undefined">
-            <h2>{{ study.name }}</h2>
-          </li>
-          <li>
-            Ville {{ study.locality }}
-            geolocation
-            {{ study.geolocation }}
-          </li>
-          <li *ngIf="study.school !== null && study.school !== undefined">
-            <h3>{{ study.school }}</h3>
-          </li>
-          <li *ngIf="study.url !== null && study.url !== undefined">
-            <span>Site web:</span><a href="{{ study.url }}"> Lien</a>
-          </li>
-          <li *ngIf="
-              study.acceptance_rate !== null &&
-              study.acceptance_rate !== undefined
-            ">
-            <span>Taux d'acceptation:</span> {{ study.acceptance_rate }}%
-          </li>
-          <li *ngIf="
-              study.L1_succes_rate !== null &&
-              study.L1_succes_rate !== undefined
-            ">
-            <span>Taux de succès en L1:</span> {{ study.L1_succes_rate }}%
-          </li>
-          <li *ngIf="
-              study.description !== null && study.description !== undefined
-            ">
-            <span>Description:</span> {{ study.description }}
-          </li>
-          <li *ngIf="
-              study.diploma_earned_ontime !== null &&
-              study.diploma_earned_ontime !== undefined
-            ">
-            <span>Taux obtention diplome (dans les temps):</span>
-            {{ study.diploma_earned_ontime }}
-          </li>
-          <li *ngIf="
-              study.available_places !== null &&
-              study.available_places !== undefined
-            ">
-            <span>Places disponibles:</span> {{ study.available_places }}
-          </li>
-          <li *ngIf="
-              study.number_applicants !== null &&
-              study.number_applicants !== undefined
-            ">
-            <span>Nombre de candidats:</span> {{ study.number_applicants }}
-          </li>
-          <li *ngIf="
-              study.percent_scholarship !== null &&
-              study.percent_scholarship !== undefined
-            ">
-            <span>Boursiers:</span> {{ study.percent_scholarship }}%
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div> -->
 
       <!-- Search school -->
 
