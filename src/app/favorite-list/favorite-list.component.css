@@ -1,3 +1,19 @@
+.share-link {
+    width: 90%;
+}
+
+.btn-red {
+    background-color: red;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-blue {
+    background-color: blue;
+    font-weight: bold;
+    color: white;
+}
+
 .section-title {
     font-weight: bold;
 }

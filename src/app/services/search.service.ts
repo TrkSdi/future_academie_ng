@@ -107,7 +107,7 @@ export class SearchService {
     }
     const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(
       query
-    )}&limit=1`;
+    )}`;
     return this.http.get<any>(url).pipe(map((response) => response.features));
   }
 }

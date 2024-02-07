@@ -6,6 +6,7 @@ import {
   switchMap,
   catchError,
   tap,
+  timeout,
 } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { School } from '../interface/school-interface';
@@ -46,6 +47,13 @@ export class SearchComponent implements OnInit {
   nextUrl: string | null = null;
   previousUrl: string | null = null;
   count: number | null = null;
+  currentGeoLocationInput: string = '';
+  showSuggestions: boolean = false;
+
+  activeFilters: { [filterName: string]: any } = {};
+  defaultSearchTerm: string = '';
+  defaultSortBy: string = '';
+  defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
   constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
@@ -60,6 +68,10 @@ export class SearchComponent implements OnInit {
         if (suggestions.length > 0) {
           this.selectAddress(suggestions[0]);
         }
+        // delete suggestion after time
+        // setTimeout(() => {
+        //   this.addressSuggestions$ = of([]);
+        // }, 7000);
       }),
       catchError((error) => {
         console.error('Error loading address suggestions:', error);
@@ -87,6 +99,36 @@ export class SearchComponent implements OnInit {
       });
   }
 
+  // supprimer tous les filtres
+  clearFilters(): void {
+    this.selectedLocation = this.defaultLocation;
+    this.distance = this.distance;
+
+    // Optionnellement, effectuer une nouvelle recherche sans filtres
+    // Vous pouvez décider de ne pas appeler searchPrograms ici si vous ne voulez pas effectuer une recherche immédiatement après avoir effacé les filtres
+    this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
+  }
+
+  applyFilter(filterName: string, value: any): void {
+    if (value !== null && value !== undefined) {
+      this.activeFilters[filterName] = value;
+    } else {
+      delete this.activeFilters[filterName];
+    }
+    this.searchPrograms('');
+  }
+  objectKeys = Object.keys;
+
+  removeFilter(filterName: string): void {
+    this.applyFilter(filterName, null);
+    if (filterName == 'Ville sélectionnée') {
+      this.currentGeoLocationInput = '';
+      this.selectedLocation = undefined;
+    }
+  }
+  getActiveFilterKeys(): string[] {
+    return Object.keys(this.activeFilters);
+  }
   // disabled for the moment
   searchSchools(term: string): void {
     this.searchService
@@ -95,7 +137,17 @@ export class SearchComponent implements OnInit {
   }
 
   searchAddress(query: string): void {
-    this.addressInput.next(query);
+    this.showSuggestions = !!query;
+
+    if (!query) {
+    } else {
+      this.addressInput.next(query);
+    }
+    if (this.currentGeoLocationInput == '') {
+      this.removeFilter('Ville sélectionnée');
+      this.selectedLocation = undefined;
+      this.showSuggestions = false;
+    }
   }
 
   // here I would like to make adress input = first selectAdress(suggestion)
@@ -104,40 +156,22 @@ export class SearchComponent implements OnInit {
       latitude: suggestion.geometry.coordinates[1],
       longitude: suggestion.geometry.coordinates[0],
     };
+    this.applyFilter('Ville sélectionnée', suggestion.properties.label);
+    this.currentGeoLocationInput = suggestion.properties.label;
+    this.showSuggestions = false;
     this.searchPrograms('');
   }
 
   // the distance around the city
   setDistance(value: string): void {
     this.distance = +value;
-    this.searchPrograms('');
+    this.applyFilter('Distance', value);
   }
 
   /// sort by
-  sortBySuccessRate() {
-    const sortedStudies = this.studies$.value.sort(
-      (a, b) => b.L1_succes_rate - a.L1_succes_rate
-    );
-    this.studies$.next(sortedStudies);
-  }
 
-  sortByAcceptanceRate() {
-    const sortedStudies = this.studies$.value.sort(
-      (a, b) => b.acceptance_rate - a.acceptance_rate
-    );
-    this.studies$.next(sortedStudies);
-  }
-
-  sortByAvailablePlaces() {
-    const sortedStudies = this.studies$.value.sort(
-      (a, b) => b.available_places - a.available_places
-    );
-    this.studies$.next(sortedStudies);
-  }
   sortByItem(sortBy: string) {
     // Appel à searchPrograms avec le critère de tri
-    this.searchPrograms('', sortBy);
+    this.applyFilter('Tri par', sortBy);
   }
 }
-// pb que l'on a encore : c'ess que si on met plusieurs mots icontains ne marche plus....
-// à faire message pas de résultat

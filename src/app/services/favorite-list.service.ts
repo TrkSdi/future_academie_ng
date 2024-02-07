@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { ApiconfigService } from './apiconfig.service';
 import { UserService } from './user.service';
-import { Observable, map } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { FavoriteResponse } from '../interface/favorite-interface';
 
 @Injectable({
@@ -39,5 +39,14 @@ export class FavoriteListService {
     const url: string = this.favUrl + favorite_id + "/";
     const http_options = {}
     return this.http.delete(url, http_options)
+  }
+  shareFavorites() {
+    const url: string = this.api.getAPIUrl() + "/API_private/favorite/share_favorites/"
+    return this.http.get(url)
+  }
+
+  getSharedFavorites(token: string) {
+    const url: string = this.api.getAPIUrl() + "/API_public/favorite/view_shared/?list="
+    return this.http.get(url + token).pipe(tap((result) => (console.log(result))))
   }
 }

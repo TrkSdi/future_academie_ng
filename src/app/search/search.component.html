@@ -24,10 +24,12 @@
         class="form-control"
         placeholder="Entrez une adresse"
         #geoLocationInput
+        [(ngModel)]="currentGeoLocationInput"
         (input)="searchAddress(geoLocationInput.value)"
-        (keyup)="selectAddress(geoLocationInput.value)"
       />
-      <ul *ngIf="addressSuggestions$ | async as suggestions">
+      <ul
+        *ngIf="showSuggestions && (addressSuggestions$ | async) as suggestions"
+      >
         <li
           *ngFor="let suggestion of suggestions"
           (click)="selectAddress(suggestion)"
@@ -49,29 +51,7 @@
     </div>
 
     <!-- Sort by -->
-    <!-- <div class="col-md-3">
-      <div ngbDropdown class="d-inline-block">
-        <button
-          type="button"
-          class="btn btn-outline-primary"
-          id="dropdownBasic1"
-          ngbDropdownToggle
-        >
-          Trier par <i class="bi bi-sort-up"></i>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem (click)="sortBySuccessRate()">
-            Taux de succès
-          </button>
-          <button ngbDropdownItem (click)="sortByAcceptanceRate()">
-            Taux d'acceptation
-          </button>
-          <button ngbDropdownItem (click)="sortByAvailablePlaces()">
-            Places disponibles
-          </button>
-        </div>
-      </div> -->
-    Dropdown Test
+
     <div class="col-md-3">
       <div ngbDropdown class="d-inline-block">
         <button
@@ -86,15 +66,31 @@
           <button ngbDropdownItem (click)="sortByItem('L1_succes_rate')">
             Taux de succès
           </button>
-          <button ngbDropdownItem (click)="sortByItem('acceptance_rate ')">
+          <button ngbDropdownItem (click)="sortByItem('acceptance_rate')">
             Taux d'acceptation
           </button>
-          <button ngbDropdownItem (click)="sortByItem('available_places ')">
+          <button ngbDropdownItem (click)="sortByItem('available_places')">
             Places disponibles
           </button>
         </div>
       </div>
     </div>
+
+    <!-- {{ activefilter[0] }}
+    {{ activefilter[1] }} -->
+    <!-- filters active -->
+    <div *ngIf="getActiveFilterKeys().length">
+      <div *ngFor="let key of getActiveFilterKeys()">
+        <button (click)="removeFilter(key)">
+          {{ key }}: {{ activeFilters[key] }}
+          <i class="bi bi-backspace-fill"></i>
+        </button>
+      </div>
+    </div>
+    <div>
+      <button (click)="clearFilters()">Supprimer les filtres</button>
+    </div>
+    <!-- end active filters -->
     <div>
       @if (results) {
       <app-study-list

@@ -7,6 +7,8 @@ import { UserService } from '../services/user.service';
 import { FavoriteService } from '../services/favorite.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ApiconfigService } from '../services/apiconfig.service';
+import { FavoriteListService } from '../services/favorite-list.service';
 
 @Component({
   selector: 'app-studydetail',
@@ -18,14 +20,23 @@ import { CommonModule } from '@angular/common';
 
 export class StudydetailComponent {
 
-  constructor(private studyprogramdetailService: StudyProgramDetailService, private route: ActivatedRoute, private router: Router, private auth: AuthService, private user: UserService, private favoriteService: FavoriteService) { }
+  constructor(
+    private studyprogramdetailService: StudyProgramDetailService,
+    private favListService: FavoriteListService,
+    private api: ApiconfigService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private auth: AuthService,
+    private user: UserService,
+    private favoriteService: FavoriteService) { }
   loginMessage: string = '';
 
   // Needed to next study-detail in favorite view
   @Input() studyProgram: StudyProgram | null = null;
   currentRoute: string = this.route.toString();
+  favorites: number[] = [];
 
-  
+
 
   ngOnInit() {
     // don't call loadStudyProgram if the component is the child of 
@@ -33,6 +44,7 @@ export class StudydetailComponent {
     if (this.currentRoute.includes("studyprogram")) {
       this.loadStudyProgram();
     }
+    this.getFavorites();
   }
 
   loadStudyProgram() {
@@ -61,4 +73,20 @@ export class StudydetailComponent {
       }, 4000);
     }
   }
+
+  /**
+ * This function creates a list of the IDs of all study programs which the user has
+ * in their favorites to allow the template to show which programs are already saved
+ */
+  getFavorites() {
+    const url = this.api.getAPIUrl() + "/API_private/favorite/?page_size=1000";
+    this.favListService.getFavorites(url).subscribe({
+      next: (response: any) => {
+        for (var fav of response.results) {
+          this.favorites.push(fav.study_program);
+        }
+      }
+    })
+  }
+
 }
