@@ -4,6 +4,28 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
+          <label>Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter your Name"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter your First Name"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
           <!--each part is same : label to introduce, input has to be completed and small to inform (ngclass to change color of text depending situation)-->
           <label for="InputEmail">Adresse Email</label>
           <input
@@ -110,7 +132,7 @@
         </div>
       </div>
     </div>
-    <!--different buttons visible or hidden in case of-->>
+    <!--different buttons visible or hidden in case of-->
     <button
       *ngIf="validationCreation"
       id="creationbutton"
