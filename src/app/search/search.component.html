@@ -1,12 +1,12 @@
 <div class="main-container">
   <div class="row search-bar">
     <!-- Search program -->
-    <div class="col-md-3">
-      <input #searchInputProgram class="form-control" placeholder="Rechercher un programme"
+    <div class="col-md-3 sm-12">
+      <input #searchInputProgram class="form-control" placeholder="Rechercher un programme / une école"
         [(ngModel)]="currentSearchTerm" (input)="searchPrograms(searchInputProgram.value)" />
     </div>
     <!-- Localisation-->
-    <div class="col-md-6 location-distance-container">
+    <div class="col-md-6 sm-12 location-distance-container">
       <input class="form-control" placeholder="Entrez une adresse" #geoLocationInput
         [(ngModel)]="currentGeoLocationInput" (input)="searchAddress(geoLocationInput.value)" />
       <ul *ngIf="showSuggestions && (addressSuggestions$ | async) as suggestions">
@@ -15,7 +15,8 @@
         </li>
       </ul>
 
-      <select class="form-control custom-select" #distanceSelect (change)="setDistance(distanceSelect.value)">
+      <select class="col-md-6 sm-12 form-control custom-select" #distanceSelect
+        (change)="setDistance(distanceSelect.value)">
         <option value="10">10 km</option>
         <option value="20">20 km</option>
         <option value="30">30 km</option>
