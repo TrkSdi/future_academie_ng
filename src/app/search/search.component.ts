@@ -97,6 +97,7 @@ export class SearchComponent implements OnInit {
           (this.nextUrl = response.next),
           (this.previousUrl = response.previous);
       });
+    // this.applyFilter('term', term);
   }
 
   // Delete all filters
@@ -104,8 +105,6 @@ export class SearchComponent implements OnInit {
     this.selectedLocation = this.defaultLocation;
     this.distance = this.distance;
 
-    // Optionnellement, effectuer une nouvelle recherche sans filtres
-    // Vous pouvez décider de ne pas appeler searchPrograms ici si vous ne voulez pas effectuer une recherche immédiatement après avoir effacé les filtres
     this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
   }
 
@@ -136,17 +135,6 @@ export class SearchComponent implements OnInit {
       .searchSchools(term)
       .subscribe((schools) => (this.schools$ = of(schools)));
   }
-  // searchAddress(query: string): void {
-  //   this.showSuggestions = !!query;
-
-  //   if (!query) {
-  //     this.selectedLocation = undefined;
-  //     this.currentGeoLocationInput = '';
-  //     this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
-  //   } else {
-  //     this.addressInput.next(query);
-  //   }
-  // }
 
   searchAddress(query: string): void {
     this.showSuggestions = !!query;
