@@ -28,7 +28,7 @@ export class FavoriteListComponent {
   isShare: boolean = this.router.url.includes("share");
 
   constructor(private router: Router, private favListService: FavoriteListService, private alertService: AlertService, private api: ApiconfigService) { }
-
+  route: string = this.router.url;
   ngOnInit() {
     if (!this.router.url.includes("share")) {
       this.getFavorites();
