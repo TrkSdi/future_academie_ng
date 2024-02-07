@@ -12,7 +12,7 @@
         <span class="text-danger"> ATTENTION: vos notes seront visibles également.</span>
     </p>
     <div class="cards-container">
-        @for (favorite of favorites; track $index) {
+        @for (favorite of favorites$ | async; track $index) {
         <div class="card">
             <ul>
                 <h4> {{ favorite.study_program_name }} </h4>
