@@ -37,10 +37,9 @@ export class FavoriteListService {
     );
   }
 
-  deleteFavorite(favorite_id: string) {
+  deleteFavorite(favorite_id: string): Observable<any> {
     const url: string = this.favUrl + favorite_id + "/";
     const http_options = {}
-    console.log("deleting via service", favorite_id);
     return this.http.delete(url, http_options)
   }
 

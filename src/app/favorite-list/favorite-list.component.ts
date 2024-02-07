@@ -27,7 +27,12 @@ export class FavoriteListComponent {
   expirationDate: Subject<any> = new Subject();
   isShare: boolean = this.router.url.includes("share");
 
-  constructor(private router: Router, private favListService: FavoriteListService, private alertService: AlertService, private api: ApiconfigService) { }
+  constructor(
+    private router: Router,
+    private favListService: FavoriteListService,
+    private alertService: AlertService,
+    private api: ApiconfigService) { }
+
   route: string = this.router.url;
   ngOnInit() {
     if (!this.router.url.includes("share")) {
@@ -94,6 +99,5 @@ export class FavoriteListComponent {
       }
     });
   }
-  //this.favorites.filter(obj => { return obj.id !== favorite_id });
 }
 

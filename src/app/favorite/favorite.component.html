@@ -36,17 +36,25 @@
                         pourquoi il vous intéresse, etc.</small>
 
                 </div>
+                @if(alerts[0] && alerts[0].object_id===favorite.id) {
+                <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
+                <button type="button" class="btn btn-danger"
+                    (click)="deleteFavorite(favorite.id); close(alerts[0]); ">Supprimer</button>
+                <button type="button" class="btn btn-secondary" (click)="close(alerts[0])">Annuler</button>
+                }
+                <div [hidden]="(alerts.length)">
+                    <button type="button" class="btn btn-danger" (click)="confirmDelete(favorite.id)"
+                        [ngClass]="{'d-none': editing$ | async}">Supprimer le
+                        favoris</button>
+                    <button type="button" class="btn btn-primary" (click)="editForm()"
+                        [ngClass]="{'d-none': editing$ | async}">Editer</button>
+                </div>
+                <div [ngClass]="{'d-none': !(editing$ | async)}">
+                    <button type="button" class="btn btn-secondary my-1" (click)="cancelEdit()">Annuler</button>
+                    <button type="button" class="btn btn-primary my-1" (click)="saveChanges()">Sauvegarder</button>
 
-
-                <button type="button" class="btn btn-secondary" [ngClass]="{'d-none': editing$ | async}"
-                    (click)="editForm()">Editer</button>
-                <button type="button" class="btn btn-secondary my-1" [ngClass]="{'d-none': !(editing$ | async)}"
-                    (click)="cancelEdit()">Annuler</button>
-                <button type="button" class="btn btn-primary my-1" [ngClass]="{'d-none': !(editing$ | async)}"
-                    (click)="saveChanges()">Sauvegarder</button>
-
-                <small id="save-confirmation" class="form-text text-success">{{successConfirmation}}</small>
-
+                    <small id="save-confirmation" class="form-text text-success">{{successConfirmation}}</small>
+                </div>
             </form>
             }
 
