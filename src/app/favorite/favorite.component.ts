@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject, } from 'rxjs';
 
 // Local Imports
 import { Favorite } from '../interface/favorite-interface';
@@ -36,7 +36,7 @@ export class FavoriteComponent {
     private location: Location
   ) {
   }
-  editing$: Subject<any> = new Subject();
+  editing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   favorite!: Favorite;
   favoriteProgram: StudyProgram | null = null;
   successConfirmation: string = '';
@@ -46,13 +46,11 @@ export class FavoriteComponent {
   }
 
   editForm(): void {
-    this.editing$.next("true");
+    this.editing$.next(true);
   }
-
   //why is this not working??
   cancelEdit(): void {
-    console.log("trying")
-    this.editing$.next("false");
+    this.editing$.next(false);
   }
 
   goBack() {
