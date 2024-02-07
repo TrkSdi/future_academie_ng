@@ -94,6 +94,8 @@ export class SearchComponent implements OnInit {
     sortBy: string = this.defaultSortBy
   ): void {
     this.currentSearchTerm = term;
+    this.defaultSortBy = sortBy;
+
     this.searchService
       .searchProgram(term, this.selectedLocation, this.distance, sortBy)
       .subscribe((response) => {
@@ -171,7 +173,6 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  // here I would like to make adress input = first selectAdress(suggestion)
   selectAddress(suggestion: any): void {
     this.selectedLocation = {
       latitude: suggestion.geometry.coordinates[1],
@@ -191,7 +192,8 @@ export class SearchComponent implements OnInit {
   /// sort by
 
   sortByItem(sortBy: string) {
-    // Appel à searchPrograms avec le critère de tri
+    this.defaultSortBy = sortBy;
+
     this.applyFilter('Tri par', sortBy);
   }
 }
