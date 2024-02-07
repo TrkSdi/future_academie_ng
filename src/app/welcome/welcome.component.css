@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+
 header {
   background-color: rgb(88 164 176 / 30%);
   color: #fff;
@@ -20,6 +22,14 @@ header p {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   font-size: 16px;
+  margin: 3rem 10rem;
+}
+
+footer {
+  text-align: right;
+  padding-right: 6rem;
+  font-family: "Pacifico", "Comic Sans MS", sans-serif;
+  font-size: 24px;
 }
 
 .description strong {
