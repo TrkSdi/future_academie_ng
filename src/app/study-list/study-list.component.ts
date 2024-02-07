@@ -8,11 +8,12 @@ import { FavoriteService } from '../services/favorite.service';
 import { AuthService } from '../services/auth.service';
 import { FavoriteListService } from '../services/favorite-list.service';
 import { ApiconfigService } from '../services/apiconfig.service';
+import { PaginatorModule } from 'primeng/paginator'
 
 @Component({
   selector: 'app-study-list',
   standalone: true,
-  imports: [CommonModule, SearchComponent, RouterModule],
+  imports: [CommonModule, SearchComponent, RouterModule, PaginatorModule],
   templateUrl: './study-list.component.html',
   styleUrl: './study-list.component.css'
 })

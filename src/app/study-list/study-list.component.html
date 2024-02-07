@@ -13,9 +13,9 @@
           <li *ngIf="study.school !== null && study.school !== undefined">
             <h3>{{ study.school }}</h3>
           </li>
-          <li>{{ study.locality }} <br /></li>
+          <li>{{ study.locality }}</li>
           <li *ngIf="study.url !== null && study.url !== undefined">
-            <span>Site web:</span><a href="{{ study.url }}"> Lien</a>
+            <span>Site web:</span><a href="{{ study.url }}">&ensp;Lien</a>
           </li>
           <li
             *ngIf="
@@ -47,7 +47,7 @@
             "
           >
             <span>Taux obtention diplome (dans les temps):</span>
-            {{ study.diploma_earned_ontime }}
+            {{ study.diploma_earned_ontime }}%
           </li>
           <li
             *ngIf="
@@ -89,7 +89,7 @@
   </div>
 </div>
 <div class="pagination">
-  @if (previousUrl) {
+  <!-- @if (previousUrl) {
   <button class="chevron" (click)="loadPreviousPage()">
     <span class="charm--chevron-left"></span>
   </button>
@@ -97,5 +97,7 @@
   <button class="chevron" (click)="loadNextPage()">
     <span class="charm--chevron-right"></span>
   </button>
-  }
+  } -->
+  <p-paginator  [totalRecords]="120" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+
 </div>

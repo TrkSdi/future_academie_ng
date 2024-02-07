@@ -1,3 +1,7 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+
 .main-container {
     max-width: 1320px;
     margin: 0 auto;
@@ -5,16 +9,30 @@
 
 .cards-container {
     display: flex;
-    gap: 30px;
+    justify-content: space-between;
     flex-wrap: wrap;
 }
 
 .card {
-    width: 500px;
+    width: 400px;
     padding: 30px 20px;
     display: flex;
     position: relative;
-    min-height: 600px;
+    margin-bottom: 50px;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.main-info {
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.main-info:hover {
+    transform: scale(0.99);
 }
 
 h1 {
@@ -31,9 +49,16 @@ h3 {
     margin-bottom: 10px;
 }
 
-ul li {
-    list-style: none;
+.card ul {
+    padding: 0;
+}
 
+.card ul li {
+    list-style: none;
+}
+
+.card ul li a {
+    text-decoration: none;
 }
 
 span {
@@ -42,7 +67,8 @@ span {
 }
 
 .main-info {
-    height: 400px;
+    min-height: 400px;
+    margin-bottom: 20px;
 }
 
 .charm--chevron-left {
@@ -75,8 +101,9 @@ span {
 
 .pagination {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     margin-top: 40px;
+    margin-right: 40px;
 }
 
 .pagination a {
@@ -128,6 +155,12 @@ button.chevron {
     position: absolute;
     bottom: 30px;
     right: 20px;
+    margin-top: 30px;
+}
+
+.bottom-row a {
+    text-decoration: none;
+    color: var
 }
 
 button.more {

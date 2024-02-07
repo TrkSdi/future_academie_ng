@@ -178,15 +178,18 @@ header {
     position: absolute;
     flex-direction: column;
     gap: 5px;
-    right: 15px;
+    right: -100px;
     top: 65px;
     z-index: 10;
     background-color: var(--background_color);
-    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
   .menu ul.active {
-    display: block;
+    opacity: 1;
+    right: 15px;
+    
   }
 
   .logo-container img {
