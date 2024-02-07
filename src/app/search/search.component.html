@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="row search-bar">
     <!-- Search program -->
-    <div class="col-md-3">
+    <div class="col-md-3 sm-12">
       <input
         #searchInputProgram
         class="form-control"
@@ -11,7 +11,7 @@
       />
     </div>
     <!-- Localisation-->
-    <div class="col-md-6 location-distance-container">
+    <div class="col-md-6 sm-12 location-distance-container">
       <input
         class="form-control"
         placeholder="Entrez une adresse"
@@ -32,7 +32,7 @@
       </ul>
 
       <select
-        class="form-control custom-select"
+        class="col-md-6 sm-12 form-control custom-select"
         #distanceSelect
         (change)="setDistance(distanceSelect.value)"
       >
