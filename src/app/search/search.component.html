@@ -6,6 +6,7 @@
         #searchInputProgram
         class="form-control"
         placeholder="Rechercher un programme"
+        [(ngModel)]="currentSearchTerm"
         (input)="searchPrograms(searchInputProgram.value)"
       />
     </div>
