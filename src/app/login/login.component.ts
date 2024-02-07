@@ -1,20 +1,26 @@
+// Angular Modules
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { CommonModule, Location } from '@angular/common';
-import { FormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+
+// Local Imports
+import { AuthService } from '../services/auth.service';
 import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private auth: AuthService, private location: Location, private router: Router, private loginService: LoginService) { }
+  constructor(
+    private auth: AuthService,
+    private location: Location,
+    private router: Router,
+    private loginService: LoginService) { }
   error: string = "";
   authRequiredMessage: boolean = this.loginService.auth_required;
 

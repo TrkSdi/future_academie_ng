@@ -24,17 +24,21 @@
         class="form-control"
         placeholder="Entrez une adresse"
         #geoLocationInput
+        [(ngModel)]="currentGeoLocationInput"
         (input)="searchAddress(geoLocationInput.value)"
       />
-
-      <ul *ngIf="addressSuggestions$ | async as suggestions">
+      <ul
+        *ngIf="showSuggestions && (addressSuggestions$ | async) as suggestions"
+      >
         <li
           *ngFor="let suggestion of suggestions"
           (click)="selectAddress(suggestion)"
+          class="dropdown-item"
         >
           {{ suggestion.properties.label }}
         </li>
       </ul>
+
       <select
         class="form-control mt-2"
         #distanceSelect
@@ -47,6 +51,7 @@
     </div>
 
     <!-- Sort by -->
+
     <div class="col-md-3">
       <div ngbDropdown class="d-inline-block">
         <button
@@ -58,20 +63,45 @@
           Trier par <i class="bi bi-sort-up"></i>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem (click)="sortBySuccessRate()">
+          <button ngbDropdownItem (click)="sortByItem('L1_succes_rate')">
             Taux de succès
           </button>
-          <button ngbDropdownItem (click)="sortByAcceptanceRate()">
+          <button ngbDropdownItem (click)="sortByItem('acceptance_rate')">
             Taux d'acceptation
           </button>
-          <button ngbDropdownItem (click)="sortByAvailablePlaces()">
+          <button ngbDropdownItem (click)="sortByItem('available_places')">
             Places disponibles
           </button>
         </div>
       </div>
     </div>
-  </div>
-  <div class="cards-container">
+
+    <!-- {{ activefilter[0] }}
+    {{ activefilter[1] }} -->
+    <!-- filters active -->
+    <div *ngIf="getActiveFilterKeys().length">
+      <div *ngFor="let key of getActiveFilterKeys()">
+        <button (click)="removeFilter(key)">
+          {{ key }}: {{ activeFilters[key] }}
+          <i class="bi bi-backspace-fill"></i>
+        </button>
+      </div>
+    </div>
+    <div>
+      <button (click)="clearFilters()">Supprimer les filtres</button>
+    </div>
+    <!-- end active filters -->
+    <div>
+      @if (results) {
+      <app-study-list
+        [studies]="results"
+        [count]="count"
+        [nextUrl]="nextUrl"
+        [previousUrl]="previousUrl"
+      ></app-study-list>
+      <!-- [studies]="results!" -->
+      }
+      <!-- <div class="cards-container">
     <div class="card" *ngFor="let study of studies$ | async">
       <div class="main-info">
         <ul>
@@ -89,70 +119,60 @@
           <li *ngIf="study.url !== null && study.url !== undefined">
             <span>Site web:</span><a href="{{ study.url }}"> Lien</a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               study.acceptance_rate !== null &&
               study.acceptance_rate !== undefined
-            "
-          >
+            ">
             <span>Taux d'acceptation:</span> {{ study.acceptance_rate }}%
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               study.L1_succes_rate !== null &&
               study.L1_succes_rate !== undefined
-            "
-          >
+            ">
             <span>Taux de succès en L1:</span> {{ study.L1_succes_rate }}%
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               study.description !== null && study.description !== undefined
-            "
-          >
+            ">
             <span>Description:</span> {{ study.description }}
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               study.diploma_earned_ontime !== null &&
               study.diploma_earned_ontime !== undefined
-            "
-          >
+            ">
             <span>Taux obtention diplome (dans les temps):</span>
             {{ study.diploma_earned_ontime }}
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               study.available_places !== null &&
               study.available_places !== undefined
-            "
-          >
+            ">
             <span>Places disponibles:</span> {{ study.available_places }}
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               study.number_applicants !== null &&
               study.number_applicants !== undefined
-            "
-          >
+            ">
             <span>Nombre de candidats:</span> {{ study.number_applicants }}
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               study.percent_scholarship !== null &&
               study.percent_scholarship !== undefined
-            "
-          >
+            ">
             <span>Boursiers:</span> {{ study.percent_scholarship }}%
           </li>
         </ul>
       </div>
     </div>
+  </div> -->
+
+      <!-- Search school -->
+
+      <ul>
+        <li *ngFor="let school of schools$ | async">
+          Écoles : {{ school.name }}
+        </li>
+      </ul>
+    </div>
   </div>
-
-  <!-- Search school -->
-
-  <ul>
-    <li *ngFor="let school of schools$ | async">Écoles : {{ school.name }}</li>
-  </ul>
 </div>

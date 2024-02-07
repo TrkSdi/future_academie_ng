@@ -1,0 +1,13 @@
+<div class="container">
+    <ul *ngIf="userprofile">
+        <li>First name : {{ userprofile.first_name }}</li>
+        <li>Last name : {{ userprofile.last_name }}</li>
+        <li>Email : {{ userprofile.email }}</li>
+        <li>Image Profile : {{ userprofile.image_profile }}</li>
+        <li>URL TikTok : {{ userprofile.url_tiktok }}</li>
+        <li>URL Instagram : {{ userprofile.url_instagram}}</li>
+        <li>About me : {{ userprofile.about_me }}</li>
+        <li>Profile is public? : {{ userprofile.is_public }}</li>
+        <li>Student at : {{ userprofile.student_at}}</li>
+    </ul>
+</div>

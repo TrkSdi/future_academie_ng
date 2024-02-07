@@ -1,6 +1,6 @@
 .main-container {
-    margin-left: 50px;
-    margin-right: 50px;
+    max-width: 1320px;
+    margin: 0 auto;
 }
 
 .cards-container {
@@ -57,9 +57,9 @@ span {
     mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
-  }
+}
 
-  .charm--chevron-right {
+.charm--chevron-right {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -71,29 +71,29 @@ span {
     mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
-  }
+}
 
-  .pagination {
+.pagination {
     display: flex;
     justify-content: end;
     margin-top: 40px;
-  }
+}
 
-  .pagination a {
-    color:black
-  }
+.pagination a {
+    color: black
+}
 
-  .pagination a:visited {
+.pagination a:visited {
     color: black;
-  }
+}
 
-  button.chevron {
+button.chevron {
     border: none;
     background-color: transparent;
-  }
+}
 
 
-  .material-symbols--favorite-outline {
+.material-symbols--favorite-outline {
     display: inline-block;
     width: 36px;
     height: 36px;
@@ -105,9 +105,9 @@ span {
     mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
-  }
+}
 
-  .material-symbols--favorite {
+.material-symbols--favorite {
     display: inline-block;
     width: 32px;
     height: 32px;
@@ -119,15 +119,15 @@ span {
     mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
-  }
+}
 
 
 .bottom-row {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  bottom: 30px;
-  right: 20px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
 }
 
 button.more {
@@ -139,9 +139,9 @@ button.more {
 }
 
 .favorite {
-  background-color: black;
+    background-color: black;
 }
 
 .favorite.active {
-  background-color: red;
+    background-color: red;
 }

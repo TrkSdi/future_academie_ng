@@ -1,12 +1,56 @@
-<h1>Favorites</h1>
-@for (favorite of favorites; track $index) {
-<ul>
-    <h4> {{ favorite.study_program_name }} </h4>
-    <h5>{{ favorite.school_name }}, {{ favorite.school_locality }} </h5>
-    <p><span class="section-title">Status:</span> {{ favorite.status }} </p>
-    <p><span class="section-title">Note:</span> {{ favorite.note }} </p>
-    <a routerLink="/favorite/{{favorite.id}}">Voir plus</a>
+<div class="main-container">
+    <h1>Favorites</h1>
+    <button type="button" class="btn btn-red" (click)="shareFavorites()" [hidden]="shareToken$ | async">Partager vos
+        Favoris</button>
+    <textarea class="share-link" placeholder="" [hidden]="!(shareToken$ | async)">
+        {{ shareUrlBase + (shareToken$ | async) }}
+    </textarea>
 
-    <button type="button" class="btn btn-secondary" (click)="deleteFavorite(favorite.id)">Supprimer</button>
-</ul>
-}
+    <p [hidden]="!(shareToken$ | async)">
+        Copier ce lien et partager-le avec vos proches pour leur permettre de voir
+        vos favoris. Il est valable jusqu'au {{expirationDate | async | date}}
+        <span class="text-danger">ATTENTION: vos notes seront visibles également.</span>
+    </p>
+    <div class="cards-container">
+        @for (favorite of favorites; track $index) {
+        <div class="card">
+            <ul>
+                <h4> {{ favorite.study_program_name }} </h4>
+                <h5>{{ favorite.school_name }}, {{ favorite.school_locality }} </h5>
+
+                <p><span class="section-title">Status:</span> {{ favorite.status }} </p>
+                <p><span class="section-title">Note:</span> {{ favorite.note }} </p>
+                @if(alerts[0] && alerts[0].object_id===favorite.id) {
+                <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
+
+                <button type="button" class="btn btn-danger"
+                    (click)="deleteFavorite(favorite.id); close(alerts[0]); ">Supprimer</button>
+                <button type="button" class="btn btn-secondary" (click)="close(alerts[0])">Annuler</button>
+                }
+                <div [hidden]="alerts.length">
+                    <button type="button" class="btn btn-blue"
+                        [routerLink]="isShare ? '/studyprogram/' + favorite.study_program : '/favorite/' + favorite.id">Voir
+                        plus</button>
+                    @if(!isShare){
+                    <button type="button" class="btn btn-secondary"
+                        (click)="confirmDelete(favorite.id)">Supprimer</button>
+                    }
+                </div>
+            </ul>
+        </div>
+        }
+
+    </div>
+
+    <div class="pagination">
+        @if (previousUrl) {
+        <button class="chevron" (click)="loadPreviousPage()">
+            <span class="charm--chevron-left"></span>
+        </button>
+        } @if (nextUrl) {
+        <button class="chevron" (click)="loadNextPage()">
+            <span class="charm--chevron-right"></span>
+        </button>
+        }
+    </div>
+</div>

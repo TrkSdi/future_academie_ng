@@ -1,10 +1,34 @@
 <div class="container">
-  <p id="titre">Formulaire d'inscrition</p>
+  <p id="titre">Formulaire d'inscription</p>
   <form id="creationform">
     <div class="row">
       <div class="col-md-6">
-        <!-- Première colonne pour les champs d'adresse e-mail -->
         <div class="form-group">
+          <label>Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="InputLastName"
+            placeholder="Enter your Last Name"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="InputFirstName"
+            placeholder="Enter your First Name"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <!--each part is same : label to introduce, input has to be completed and small to inform (ngclass to change color of text depending situation)-->
           <label for="InputEmail">Adresse Email</label>
           <input
             #emailInput
@@ -26,7 +50,6 @@
       </div>
 
       <div class="col-md-6">
-        <!-- Deuxième colonne pour les champs d'adresse e-mail -->
         <div class="form-group">
           <label for="InputConfirmationEmail">Confirmation adresse email</label>
           <input
@@ -53,7 +76,6 @@
 
     <div class="row">
       <div class="col-md-6">
-        <!-- Première colonne pour les champs de mot de passe -->
         <div class="form-group">
           <label for="InputPassword">Mot de passe</label>
           <input
@@ -84,7 +106,6 @@
       </div>
 
       <div class="col-md-6">
-        <!-- Deuxième colonne pour les champs de mot de passe -->
         <div class="form-group">
           <label for="InputConfirmationPassword"
             >Confirmation mot de passe</label
@@ -113,7 +134,7 @@
         </div>
       </div>
     </div>
-
+    <!--different buttons visible or hidden in case of-->
     <button
       *ngIf="validationCreation"
       id="creationbutton"

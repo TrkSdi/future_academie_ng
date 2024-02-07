@@ -1,40 +1,69 @@
-import { Component, Input } from '@angular/core';
-import { UserService } from '../services/user.service';
+// Angular Modules
+import { Component } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+
+// Local Imports
+import { Favorite } from '../interface/favorite-interface';
 import { FavoriteService } from '../services/favorite.service';
 import { StudydetailComponent } from '../studydetail/studydetail.component';
-import { StudyProgram } from '../interface/study-interface';
-import { ActivatedRoute } from '@angular/router';
-import { Favorite } from '../interface/favorite-interface';
 import { StudyProgramDetailService } from '../services/studydetail.service';
-import { CommonModule } from '@angular/common';
-import { Subject } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { StudyProgram } from '../interface/study-interface';
+import { UserService } from '../services/user.service';
+
+
 
 @Component({
   selector: 'app-favorite',
   standalone: true,
-  imports: [StudydetailComponent, CommonModule, FormsModule],
+  imports: [StudydetailComponent, CommonModule, FormsModule, RouterModule],
   templateUrl: './favorite.component.html',
   styleUrl: './favorite.component.css'
 })
+/**
+ * This component is used for CRUD operations on a single Favorite. Using this
+ * component requires authentication;
+ */
 export class FavoriteComponent {
-  constructor(private studyProgramService: StudyProgramDetailService, private route: ActivatedRoute, private user: UserService, private favService: FavoriteService) {
+
+  constructor(
+    private favService: FavoriteService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private studyProgramService: StudyProgramDetailService,
+    private location: Location
+  ) {
   }
-  favoriteProgram: StudyProgram | null = null;
+  editing$: Subject<any> = new Subject();
   favorite!: Favorite;
+  favoriteProgram: StudyProgram | null = null;
   successConfirmation: string = '';
-  editing: Subject<any> = new Subject();
+
   ngOnInit() {
     this.loadFavorite();
   }
-  editForm() {
-    this.editing.next("true");
+
+  editForm(): void {
+    this.editing$.next("true");
   }
+
+  //why is this not working??
+  cancelEdit(): void {
+    console.log("trying")
+    this.editing$.next("false");
+  }
+
+  goBack() {
+    this.location.back()
+  }
+
   saveChanges() {
     this.favService.updateFavorite(this.favorite.id, this.favorite.note, this.favorite.status).subscribe({
       next: (response) => {
         this.favorite = response;
-        this.editing.next(false);
+        this.editing$.next(false);
         this.successConfirmation = "Changement sauvegardé ✅"
         setTimeout(() => {
           this.successConfirmation = '';
@@ -54,21 +83,6 @@ export class FavoriteComponent {
               this.favoriteProgram = studyProgram;
             }
           });
-        }
-      });
-    }
-  }
-
-
-  addFavorite(program_id: number) {
-    const user_id: string | null = this.user.getUserID();
-    if (user_id) {
-      this.favService.createFavorite(program_id, user_id).subscribe({
-        next: (results) => {
-          console.log(results); // this is temporary will add real directions later
-          // idea is this function is used by clicking "add favorite" on a program
-          // and then it opens an individual favorite page where you 
-          //can add a status or a note and save it
         }
       });
     }
