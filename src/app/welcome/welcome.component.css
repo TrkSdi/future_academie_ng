@@ -1,0 +1,27 @@
+header {
+  background-color: rgb(88 164 176 / 30%);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.contour {
+  color: white;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
+}
+
+header p {
+  color: black;
+  font-weight: bold;
+}
+
+.description {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.description strong {
+  font-weight: bold;
+}

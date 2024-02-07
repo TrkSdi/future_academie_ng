@@ -102,7 +102,7 @@ export class CreationComponent {
       document.getElementById('InputLastName') as HTMLInputElement
     ).value;
 
-    // transform email and pasword in json format in order to be understandable by the back
+    // transform email and password in json format in order to be understandable by the back
     var jsonObj = {
       email: emailValue,
       first_name: firstNameValue,
@@ -111,7 +111,7 @@ export class CreationComponent {
     };
     var jsonStr = JSON.stringify(jsonObj);
 
-    // variables which permit to fech information in the good route for auth user
+    // variables which permit to fetch information in the good route for auth user
     var url = this.apiUrl + '/auth/users/';
     var options = {
       method: 'POST', //envoyer données
@@ -121,14 +121,14 @@ export class CreationComponent {
       body: jsonStr,
     };
 
-    // conditions to fetch : same passwords, same email, good email format
+    // conditions to fetch : same passwords, same emails, good email format
     if (this.passwordsMatch && this.isEmailValid && this.emailsMatch) {
       fetch(url, options)
         .then((response) => response.json())
         .then((data) => {
-          // test if answer inform us that an user with the same email adress exists
+          // test if fetch answer informs us that an user with the same email adress already exists
           if (data.email[0] !== 'user with this email already exists.') {
-            //show or hide buttons in case of
+            //show or hide buttons in function
             this.validationOK = true;
             this.validationCreation = false;
             this.validationNOK = false;
@@ -150,7 +150,7 @@ export class CreationComponent {
     this.router.navigateByUrl('/login');
   }
 
-  // reload page in case of login already exists
+  // reload page in case of email address already exists
   rechargementPage() {
     location.reload();
   }
