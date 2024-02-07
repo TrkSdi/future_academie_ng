@@ -20,8 +20,8 @@
       />
     </div> -->
     <!-- tentative geo -->
-    <div class="col-md-3">
-      <input
+    <div class="col-md-6 location-distance-container">
+          <input
         class="form-control"
         placeholder="Entrez une adresse"
         #geoLocationInput
@@ -40,8 +40,10 @@
         </li>
       </ul>
 
+
+
       <select
-        class="form-control mt-2"
+        class="form-control custom-select"
         #distanceSelect
         (change)="setDistance(distanceSelect.value)"
       >
@@ -107,16 +109,16 @@
     </div>
 
     <!-- filters active -->
-    <div *ngIf="getActiveFilterKeys().length">
-      <div *ngFor="let key of getActiveFilterKeys()">
+    <div *ngIf="getActiveFilterKeys().length" class="filters-container">
+      <div *ngFor="let key of getActiveFilterKeys()" class="filter-tag">
         <button (click)="removeFilter(key)">
           {{ key }} : {{ activeFilters[key] }}
-          <i class="bi bi-backspace-fill"></i>
+          <span class="filter-close">x</span>
         </button>
       </div>
-    </div>
-    <div>
-      <button (click)="clearFilters()">Supprimer les filtres</button>
+      <div class="clear-filters">
+        <button (click)="clearFilters()">Effacer tous les filtres</button>
+      </div>
     </div>
     <!-- end active filters -->
     <div>

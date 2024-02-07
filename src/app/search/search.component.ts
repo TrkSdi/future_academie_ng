@@ -60,7 +60,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.loadInitialData();
     this.addressSuggestions$ = this.addressInput.pipe(
-      debounceTime(300),
+      debounceTime(500),
       distinctUntilChanged(),
       switchMap((address) =>
         address ? this.searchService.getAddressSuggestions(address) : of([])
@@ -108,6 +108,7 @@ export class SearchComponent implements OnInit {
     this.removeFilter('Tri par');
     this.removeFilter('Distance');
     this.currentSearchTerm = '';
+    this.searchPrograms('');
   }
 
   applyFilter(filterName: string, value: any, termFront?: string): void {
