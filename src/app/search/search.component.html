@@ -63,14 +63,43 @@
           Trier par <i class="bi bi-sort-up"></i>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem (click)="sortByItem('L1_succes_rate')">
-            Taux de succès
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('L1_succes_rate', 'Taux de succès en L1')"
+          >
+            Taux de succès en L1
           </button>
-          <button ngbDropdownItem (click)="sortByItem('acceptance_rate')">
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('acceptance_rate', 'Taux d\'acceptation')"
+          >
             Taux d'acceptation
           </button>
-          <button ngbDropdownItem (click)="sortByItem('available_places')">
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('available_places', 'Places disponibles')"
+          >
             Places disponibles
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="
+              sortByItem('diploma_earned_ontime', 'Taux obtention diplome ')
+            "
+          >
+            Taux obtention diplome
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('number_applicants', 'Nombre de candidats')"
+          >
+            Nombre de candidats
+          </button>
+          <button
+            ngbDropdownItem
+            (click)="sortByItem('percent_scholarship', 'Boursiers')"
+          >
+            Boursiers
           </button>
         </div>
       </div>
@@ -80,7 +109,7 @@
     <div *ngIf="getActiveFilterKeys().length">
       <div *ngFor="let key of getActiveFilterKeys()">
         <button (click)="removeFilter(key)">
-          {{ key }}: {{ activeFilters[key] }}
+          {{ key }} : {{ activeFilters[key] }}
           <i class="bi bi-backspace-fill"></i>
         </button>
       </div>

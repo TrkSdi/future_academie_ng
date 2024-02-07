@@ -69,10 +69,7 @@ export class SearchComponent implements OnInit {
         if (suggestions.length > 0) {
           this.selectAddress(suggestions[0]);
         }
-        // delete suggestion after time
-        // setTimeout(() => {
-        //   this.addressSuggestions$ = of([]);
-        // }, 7000);
+
       }),
       catchError((error) => {
         console.error('Error loading address suggestions:', error);
@@ -114,9 +111,13 @@ export class SearchComponent implements OnInit {
     this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
   }
 
-  applyFilter(filterName: string, value: any): void {
+  applyFilter(filterName: string, value: any, termFront?: string): void {
     if (value !== null && value !== undefined) {
-      this.activeFilters[filterName] = value;
+      if (termFront) {
+        this.activeFilters[filterName] = termFront;
+      } else {
+        this.activeFilters[filterName] = value;
+      }
     } else {
       delete this.activeFilters[filterName];
     }
@@ -191,9 +192,9 @@ export class SearchComponent implements OnInit {
 
   /// sort by
 
-  sortByItem(sortBy: string) {
+  sortByItem(sortBy: string, termFront: string) {
     this.defaultSortBy = sortBy;
 
-    this.applyFilter('Tri par', sortBy);
+    this.applyFilter('Tri par', sortBy, termFront);
   }
 }
