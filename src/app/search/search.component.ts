@@ -69,7 +69,6 @@ export class SearchComponent implements OnInit {
         if (suggestions.length > 0) {
           this.selectAddress(suggestions[0]);
         }
-
       }),
       catchError((error) => {
         console.error('Error loading address suggestions:', error);
@@ -105,10 +104,10 @@ export class SearchComponent implements OnInit {
 
   // Delete all filters
   clearFilters(): void {
-    this.selectedLocation = this.defaultLocation;
-    this.distance = this.distance;
-
-    this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
+    this.removeFilter('Ville sélectionnée');
+    this.removeFilter('Tri par');
+    this.removeFilter('Distance');
+    this.currentSearchTerm = '';
   }
 
   applyFilter(filterName: string, value: any, termFront?: string): void {
