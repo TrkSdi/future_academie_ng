@@ -1,6 +1,6 @@
 <div class="main-container">
     <h1>Favorites</h1>
-    <button type="button" class="btn btn-red" (click)="shareFavorites()" [hidden]="shareToken$ | async">Partager vos
+    <button type="button" class="btn btn-red" (click)="shareFavorites()" [hidden]="route.includes('share')">Partager vos
         Favoris</button>
     <textarea class="share-link" placeholder="" [hidden]="!(shareToken$ | async)">
         {{ shareUrlBase + (shareToken$ | async) }}
@@ -8,8 +8,8 @@
 
     <p [hidden]="!(shareToken$ | async)">
         Copier ce lien et partager-le avec vos proches pour leur permettre de voir
-        vos favoris. Il est valable jusqu'au {{expirationDate | async | date}}
-        <span class="text-danger">ATTENTION: vos notes seront visibles également.</span>
+        vos favoris. Il est valable jusqu'au {{expirationDate | async | date}}.
+        <span class="text-danger"> ATTENTION: vos notes seront visibles également.</span>
     </p>
     <div class="cards-container">
         @for (favorite of favorites; track $index) {
