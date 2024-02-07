@@ -19,20 +19,26 @@ export class CreationComponent {
     private router: Router
   ) {}
 
+  apiUrl: string = this.api.getAPIUrl();
+
+  // "smalltext" blank initialisation
   texteSmallConfirmEmail: string = '';
   texteSmallEmail: string = '';
   texteSmallConfirmPassword: string = '';
+
+  //boolean variable to change Ngclass (text color) in case of succes or not
   validationNOK: boolean = false;
   validationOK: boolean = false;
   validationCreation: boolean = true;
-  apiUrl: string = this.api.getAPIUrl();
 
+  // boolean variable to indicate which password parameter is respected or not
   isLengthValid: boolean = false;
   isNumberValid: boolean = false;
   isLowerCaseValid: boolean = false;
   isUpperCaseValid: boolean = false;
   isSpecialCharValid: boolean = false;
 
+  // function to test if password parameters are ok or not
   onPasswordChange(password: string) {
     this.isLengthValid = password.length >= 8;
     this.isNumberValid = /\d/.test(password);
@@ -41,6 +47,7 @@ export class CreationComponent {
     this.isSpecialCharValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   }
 
+  // fonction to test (when keyup) if email has good format regarding to the regex and change small text appropriate
   isEmailValid: boolean = false;
   onEmailChange(email: string) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,6 +61,7 @@ export class CreationComponent {
     return this.isEmailValid;
   }
 
+  // fonction to compare passwords in order to know if they are egals
   passwordsMatch: boolean = false;
   onComparePasswords(password: string, confirmationPassword: string) {
     this.passwordsMatch = password === confirmationPassword;
@@ -66,6 +74,7 @@ export class CreationComponent {
     return this.passwordsMatch;
   }
 
+  // fonction to compare emails in order to know if they are egals
   emailsMatch: boolean = false;
   onCompareEmails(email: string, confirmationEmail: string) {
     this.emailsMatch = email === confirmationEmail;
@@ -77,8 +86,9 @@ export class CreationComponent {
     return this.passwordsMatch;
   }
 
+  // principal fonction to send to information in json for back
   enregistrement() {
-    // on va attraper les différentes constantes utiles dans le template
+    // catch different information needed : text inside input element
     const emailValue = (
       document.getElementById('InputEmail') as HTMLInputElement
     ).value;
@@ -92,36 +102,31 @@ export class CreationComponent {
       document.getElementById('InputConfirmationPassword') as HTMLInputElement
     ).value;
 
-    // transformation de l'email et mot de passe en formation json pour renvoyer à l'url
+    // transform email and pasword in json format in order to be understandable by the back
     var jsonObj = {
       email: emailValue,
       password: passwordValue,
     };
     var jsonStr = JSON.stringify(jsonObj);
 
-    // variables permettant de fetch les informations à l'adresse url
+    // variables which permit to fech information in the good route for auth user
     var url = this.apiUrl + '/auth/users/';
     var options = {
-      method: 'POST',
+      method: 'POST', //envoyer données
       headers: {
         'Content-Type': 'application/json',
       },
       body: jsonStr,
     };
-    console.log(
-      'passwordsmatch:',
-      this.passwordsMatch,
-      'emailsmatch:',
-      this.emailsMatch,
-      'emailvalid:',
-      this.isEmailValid
-    );
-    // condition pour envoyer les infos : même mot de passe + regex email
+
+    // conditions to fetch : same passwords, same email, good email format
     if (this.passwordsMatch && this.isEmailValid && this.emailsMatch) {
       fetch(url, options)
         .then((response) => response.json())
         .then((data) => {
+          // test if answer inform us that an user with the same email adress exists
           if (data.email[0] !== 'user with this email already exists.') {
+            //show or hide buttons in case of
             this.validationOK = true;
             this.validationCreation = false;
             this.validationNOK = false;
@@ -131,16 +136,19 @@ export class CreationComponent {
             this.validationCreation = false;
           }
         })
+        // in case of error, send information in console.log
         .catch((error) => {
           console.error("Erreur lors de l'envoi de la requête:", error);
         });
     }
   }
 
+  // link to go when process of creation is ok
   redirectionLogin() {
     this.router.navigateByUrl('/login');
   }
 
+  // reload page in case of login already exists
   rechargementPage() {
     location.reload();
   }
