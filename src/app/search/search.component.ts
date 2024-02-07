@@ -49,6 +49,7 @@ export class SearchComponent implements OnInit {
   count: number | null = null;
   currentGeoLocationInput: string = '';
   showSuggestions: boolean = false;
+  currentSearchTerm: string = '';
 
   activeFilters: { [filterName: string]: any } = {};
   defaultSearchTerm: string = '';
@@ -88,7 +89,11 @@ export class SearchComponent implements OnInit {
   }
 
   // simple search for the programs
-  searchPrograms(term: string, sortBy: string = ''): void {
+  searchPrograms(
+    term: string = this.currentSearchTerm,
+    sortBy: string = this.defaultSortBy
+  ): void {
+    this.currentSearchTerm = term;
     this.searchService
       .searchProgram(term, this.selectedLocation, this.distance, sortBy)
       .subscribe((response) => {
@@ -97,7 +102,6 @@ export class SearchComponent implements OnInit {
           (this.nextUrl = response.next),
           (this.previousUrl = response.previous);
       });
-    // this.applyFilter('term', term);
   }
 
   // Delete all filters
@@ -114,7 +118,7 @@ export class SearchComponent implements OnInit {
     } else {
       delete this.activeFilters[filterName];
     }
-    this.searchPrograms('');
+    this.searchPrograms();
   }
   objectKeys = Object.keys;
 
@@ -176,7 +180,6 @@ export class SearchComponent implements OnInit {
     this.applyFilter('Ville sélectionnée', suggestion.properties.label);
     this.currentGeoLocationInput = suggestion.properties.label;
     this.showSuggestions = false;
-    this.searchPrograms('');
   }
 
   // the distance around the city
