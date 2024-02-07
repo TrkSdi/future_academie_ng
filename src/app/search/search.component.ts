@@ -99,7 +99,7 @@ export class SearchComponent implements OnInit {
       });
   }
 
-  // supprimer tous les filtres
+  // Delete all filters
   clearFilters(): void {
     this.selectedLocation = this.defaultLocation;
     this.distance = this.distance;
@@ -123,6 +123,7 @@ export class SearchComponent implements OnInit {
     this.applyFilter(filterName, null);
     if (filterName == 'Ville sélectionnée') {
       this.currentGeoLocationInput = '';
+
       this.selectedLocation = undefined;
     }
   }
@@ -135,18 +136,46 @@ export class SearchComponent implements OnInit {
       .searchSchools(term)
       .subscribe((schools) => (this.schools$ = of(schools)));
   }
+  // searchAddress(query: string): void {
+  //   this.showSuggestions = !!query;
+
+  //   if (!query) {
+  //     this.selectedLocation = undefined;
+  //     this.currentGeoLocationInput = '';
+  //     this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
+  //   } else {
+  //     this.addressInput.next(query);
+  //   }
+  // }
 
   searchAddress(query: string): void {
     this.showSuggestions = !!query;
 
     if (!query) {
+      this.removeFilter('Ville sélectionnée');
+      delete this.activeFilters['Ville sélectionnée'];
+      this.addressSuggestions$ = this.addressInput.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((address) =>
+          address ? this.searchService.getAddressSuggestions(address) : of([])
+        ),
+        tap((suggestions) => {
+          if (suggestions.length > 0) {
+            this.selectAddress(suggestions[0]);
+          }
+        }),
+        catchError((error) => {
+          console.error('Error loading address suggestions:', error);
+          return of([]);
+        })
+      );
+      this.studies$.subscribe((studies) => {
+        this.results = studies as StudyProgram[];
+      });
     } else {
       this.addressInput.next(query);
-    }
-    if (this.currentGeoLocationInput == '') {
-      this.removeFilter('Ville sélectionnée');
       this.selectedLocation = undefined;
-      this.showSuggestions = false;
     }
   }
 
