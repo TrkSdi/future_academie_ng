@@ -83,8 +83,6 @@
   </button>
   } -->
   <nav>
-    <p-paginator [totalRecords]="(count$ | async)!" [showCurrentPageReport]="true"
-      currentPageReportTemplate="{first} - {last} of {totalRecords}" [rows]="6"
-      (onPageChange)="onPageChange($event)"></p-paginator>
+    <p-paginator [totalRecords]="(count$ | async)!" [rows]="6" (onPageChange)="onPageChange($event)"></p-paginator>
   </nav>
 </div>
