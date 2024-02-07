@@ -92,20 +92,22 @@ export class CreationComponent {
     const emailValue = (
       document.getElementById('InputEmail') as HTMLInputElement
     ).value;
-    const emailConfirmationValue = (
-      document.getElementById('InputConfirmationEmail') as HTMLInputElement
-    ).value;
     const passwordValue = (
       document.getElementById('InputPassword') as HTMLInputElement
     ).value;
-    const passwordConfirmationValue = (
-      document.getElementById('InputConfirmationPassword') as HTMLInputElement
+    const firstName = (
+      document.getElementById('InputFirsttName') as HTMLInputElement
+    ).value;
+    const lastName = (
+      document.getElementById('InputLastName') as HTMLInputElement
     ).value;
 
     // transform email and pasword in json format in order to be understandable by the back
     var jsonObj = {
       email: emailValue,
       password: passwordValue,
+      first_name: firstName,
+      last_name: lastName,
     };
     var jsonStr = JSON.stringify(jsonObj);
 
