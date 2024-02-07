@@ -4,6 +4,10 @@
   --background_color: #fff;
   --grey: #333;
   --shadow1: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  --shadow2: rgba(74, 155, 255, 0.203);
+  --blue: rgb(3 42 115);
+  --red: rgb(255 49 49);
+  
 }
 
 body {
