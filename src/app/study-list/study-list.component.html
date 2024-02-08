@@ -33,7 +33,8 @@
           <li *ngIf="
               study.description !== null && study.description !== undefined
             ">
-            <span>Description:</span> {{ study.description }}
+            <span>Description:</span> {{ study.description.length > 250 ? study.description.slice(0, 250) + '...' :
+            study.description }}
           </li>
           <li *ngIf="
               study.diploma_earned_ontime !== null &&
