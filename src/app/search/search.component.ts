@@ -18,7 +18,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { StudyListComponent } from '../study-list/study-list.component';
 
-
 @Component({
   selector: 'app-search',
   imports: [
@@ -58,9 +57,9 @@ export class SearchComponent implements OnInit {
   activeFilters: { [filterName: string]: any } = {};
   defaultSearchTerm: string = '';
   defaultSortBy: string = '';
- 
+
   // defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -90,7 +89,6 @@ export class SearchComponent implements OnInit {
   loadInitialData(): void {
     this.searchPrograms('');
   }
-
 
   searchPrograms(
     term: string = this.currentSearchTerm,
