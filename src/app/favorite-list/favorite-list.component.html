@@ -1,5 +1,6 @@
 <div class="main-container">
     <h1>Favorites</h1>
+    @if((favorites$ | async)!.length){
     <button type="button" class="btn btn-red" (click)="shareFavorites()" [hidden]="route.includes('share')">Partager vos
         Favoris</button>
     <textarea class="share-link" placeholder="" [hidden]="!(shareToken$ | async)">
@@ -11,6 +12,12 @@
         vos favoris. Il est valable jusqu'au {{expirationDate | async | date}}.
         <span class="text-danger"> ATTENTION: vos notes seront visibles également.</span>
     </p>
+    }
+    @else{
+    <h2>Vous n'avez pas encore sauvegardé de favoris. Cliquez sur le petit coeur sur un programme qui vous intéresse
+        pour
+        le sauvegarder! </h2>
+    }
     <div class="cards-container">
         @for (favorite of favorites$ | async; track $index) {
         <div class="card">
