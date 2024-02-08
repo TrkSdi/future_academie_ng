@@ -36,10 +36,9 @@ export class ContactFormComponent {
       recipient: email,
     };
     var jsonStr = JSON.stringify(jsonObj);
-    console.log('stringify : ', jsonStr);
 
     // variables which permit to fetch information in the good route for auth user
-    var url = this.apiUrl + '/API_public/sendemail/send_email_view';
+    var url = this.apiUrl + '/API_public/sendemail/send_email_view/';
     var options = {
       method: 'POST', //envoyer données
       headers: {
