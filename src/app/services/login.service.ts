@@ -19,6 +19,7 @@ export class LoginService {
   auth_required: boolean = false;
 
   setCanGoBack(value: boolean = true) {
+
     this.canGoBack = value;
   }
 

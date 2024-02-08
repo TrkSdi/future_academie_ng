@@ -93,9 +93,16 @@ export class FavoriteListComponent {
         this.favorites$ = this.favorites$.pipe(
           map((favorites: Favorite[]) => favorites.filter(favorite => favorite.id !== favorite_id_del))
         );
+        this.alertService.showAlert({
+          type: "success", message: "Le favoris a été supprimé.",
+          object_id: ""
+        })
       },
       error: (error) => {
-        console.log(error); // Handle error
+        this.alertService.showAlert({
+          type: "danger", message: "Une erreur est survenue. Merci de réessayer.",
+          object_id: favorite_id_del
+        })
       }
     });
   }

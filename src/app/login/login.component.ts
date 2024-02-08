@@ -32,7 +32,6 @@ export class LoginComponent {
           localStorage.setItem('refresh_token', response.refresh);
           this.auth.authenticated$.next(true);
           if (this.loginService.checkCanGoBack()) {
-
             this.location.back();
           } else {
             this.router.navigateByUrl('/');
