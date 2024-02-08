@@ -34,10 +34,13 @@ import { StudyListComponent } from '../study-list/study-list.component';
 export class SearchComponent implements OnInit {
   // Variables to store search results
   schools$: Observable<School[]> = of([]);
+
+  //results: StudyProgram[] | null = null;
   studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
     StudyProgram[]
   >([]);
   results$: Observable<StudyProgram[]> = of([]);
+
 
   // Variables to store search inputs
   distance: number = 10; // Default distance
