@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FavoriteListService } from '../services/favorite-list.service';
 import { Favorite } from '../interface/favorite-interface';
 import { CommonModule, formatDate, Location } from '@angular/common';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, of, map } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { AlertService, Alert } from "../services/alert.service"
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +17,7 @@ import { ApiconfigService } from '../services/apiconfig.service';
 })
 export class FavoriteListComponent {
 
-  @Input() favorites: Favorite[] = [];
+  @Input() favorites$: Observable<Favorite[]> = of([]);
   nextUrl: string | null = null;
   previousUrl: string | null = null;
   count: number | null = null;
@@ -27,7 +27,12 @@ export class FavoriteListComponent {
   expirationDate: Subject<any> = new Subject();
   isShare: boolean = this.router.url.includes("share");
 
-  constructor(private router: Router, private favListService: FavoriteListService, private alertService: AlertService, private api: ApiconfigService) { }
+  constructor(
+    private router: Router,
+    private favListService: FavoriteListService,
+    private alertService: AlertService,
+    private api: ApiconfigService) { }
+
   route: string = this.router.url;
   ngOnInit() {
     if (!this.router.url.includes("share")) {
@@ -48,7 +53,7 @@ export class FavoriteListComponent {
 
   getFavorites(url?: string): void {
     this.favListService.getFavorites(url).subscribe((response) => {
-      this.favorites = response.results;
+      this.favorites$ = of(response.results);
       this.nextUrl = response.next;
       this.previousUrl = response.previous;
       this.count = response.count;
@@ -80,11 +85,19 @@ export class FavoriteListComponent {
     })
   }
 
-  deleteFavorite(favorite_id: string) {
-    return this.favListService.deleteFavorite(favorite_id).subscribe({
-      next: (response) => { this.favorites = this.favorites.filter(obj => { return obj.id !== favorite_id }); },
-      error: (error) => { console.log(error) }
-    }
-    );
+  deleteFavorite(favorite_id_del: string) {
+    return this.favListService.deleteFavorite(favorite_id_del).subscribe({
+      next: (response) => {
+        console.log("delete successful now trying to update list");
+        // Update the favorites list by filtering out the item with the specified id
+        this.favorites$ = this.favorites$.pipe(
+          map((favorites: Favorite[]) => favorites.filter(favorite => favorite.id !== favorite_id_del))
+        );
+      },
+      error: (error) => {
+        console.log(error); // Handle error
+      }
+    });
   }
 }
+

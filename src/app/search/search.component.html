@@ -1,6 +1,7 @@
 <div class="main-container">
   <div class="search-bar">
     <!-- Search program -->
+
     <div class="forms">
       <div class="program-search">
         <input
@@ -99,6 +100,7 @@
               </button>
             </div>
           </div>
+
         </div>
       </div>
      
@@ -121,13 +123,9 @@
     <!-- end active filters -->
     <div>
       <!-- List of results -->
-      @if (results) {
-      <app-study-list
-        [studies]="results"
-        [count]="count"
-        [nextUrl]="nextUrl"
-        [previousUrl]="previousUrl"
-      ></app-study-list>
+      @if (results$|async) {
+      <app-study-list [studies$]="results$" [count$]="count$" [nextUrl]="nextUrl"
+        [previousUrl]="previousUrl"></app-study-list>
       <!-- [studies]="results!" -->
       }
 
