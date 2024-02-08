@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <ul *ngIf="userprofile">
       <li>First name : {{ userprofile.first_name }}</li>
       <li>Last name : {{ userprofile.last_name }}</li>
@@ -6,17 +6,59 @@
       <li>Image Profile : {{ userprofile.image_profile }}</li>
       <li>URL TikTok : {{ userprofile.url_tiktok }}</li>
       <li>URL Instagram : {{ userprofile.url_instagram}}</li>
-      <li>
-        <form (ngSubmit)="updateAboutMe()">
-          <div class="form-group">
-            <label for="aboutMe">About Me:</label>
-            <!-- Utilisation de la méthode updateAboutMeText() -->
-            <textarea id="aboutMe" class="form-control" [value]="aboutMeText" (ngModelChange)="updateAboutMeText($event)"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </form>
-      </li>
       <li>Profile is public? : {{ userprofile.is_public }}</li>
       <li>Student at : {{ userprofile.student_at}}</li>
     </ul>
+  </div> -->
+
+  
+
+  <div class="container">
+    <ul *ngIf="userprofile">
+      <li>First name : {{ userprofile.first_name }}</li>
+      <li>Last name : {{ userprofile.last_name }}</li>
+      <li>Email : {{ userprofile.email }}</li>
+      <li>Image Profile : {{ userprofile.image_profile }}</li>
+      <li>URL TikTok : {{ userprofile.url_tiktok }}</li>
+      <li>URL Instagram : {{ userprofile.url_instagram }}</li>
+      <li>Profile is public? : {{ userprofile.is_public }}</li>
+      <li>Student at : {{ userprofile.student_at }}</li>
+      
+      <li>
+        <div *ngIf="!editingMode">
+          <label>About Me:</label>
+          <p>{{ userprofile.about_me }}</p>
+          <button (click)="toggleEditingMode()">Edit</button>
+        </div>
+        <div *ngIf="editingMode">
+          <label for="aboutMe">About Me:</label>
+          <input id="aboutMe" class="form-control" [(ngModel)]="aboutMeText">
+  
+          <button (click)="updateAboutMe()">Save</button>
+          <button (click)="cancelEditing()">Cancel</button>
+        </div>
+      </li>
+    </ul>
   </div>
+  
+
+  <!-- <form #myForm="ngForm" (ngSubmit)="submitForm()">
+    <div>
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" [(ngModel)]="firstName" required>
+      <div *ngIf="myForm.controls['firstName'].errors?.required && myForm.controls['firstName'].touched">
+        First name is required.
+      </div>
+    </div>
+  
+    <div>
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" [(ngModel)]="lastName" required>
+      <div *ngIf="myForm.controls['lastName'].errors?.required && myForm.controls['lastName'].touched">
+        Last name is required.
+      </div>
+    </div>
+  
+    <button type="submit" [disabled]="!myForm.valid">Submit</button>
+  </form> -->
+  
