@@ -18,7 +18,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { StudyListComponent } from '../study-list/study-list.component';
 
-
 @Component({
   selector: 'app-search',
   imports: [
@@ -35,15 +34,10 @@ import { StudyListComponent } from '../study-list/study-list.component';
 export class SearchComponent implements OnInit {
   // Variables to store search results
   schools$: Observable<School[]> = of([]);
-<<<<<<< HEAD
   studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
     StudyProgram[]
   >([]);
   results$: Observable<StudyProgram[]> = of([]);
-=======
-
-  results: StudyProgram[] | null = null;
->>>>>>> gillesah
 
   // Variables to store search inputs
   distance: number = 10; // Default distance
@@ -60,11 +54,9 @@ export class SearchComponent implements OnInit {
   activeFilters: { [filterName: string]: any } = {};
   defaultSearchTerm: string = '';
   defaultSortBy: string = '';
-  studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
-    StudyProgram[]
-  >([]);
+
   // defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -94,7 +86,6 @@ export class SearchComponent implements OnInit {
   loadInitialData(): void {
     this.searchPrograms('');
   }
-
 
   searchPrograms(
     term: string = this.currentSearchTerm,
