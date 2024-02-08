@@ -12,10 +12,12 @@ import { FavoriteResponse } from '../interface/favorite-interface';
 export class FavoriteListService {
 
   constructor(private http: HttpClient, private auth: AuthService, private api: ApiconfigService, user: UserService) { }
-  favUrl = this.api.getAPIUrl() + "/API_private/favorite/?page_size=10";
+  favUrl = this.api.getAPIUrl() + "/API_private/favorite/";
 
   getFavorites(url?: string): Observable<FavoriteResponse> {
-    return this.http.get(url || this.favUrl).pipe(
+    const getUrl: string = this.favUrl + "?page_size=10";
+
+    return this.http.get(url || getUrl).pipe(
       map((response: any) => ({
         next: response.next,
         previous: response.previous,
@@ -35,11 +37,12 @@ export class FavoriteListService {
     );
   }
 
-  deleteFavorite(favorite_id: string) {
+  deleteFavorite(favorite_id: string): Observable<any> {
     const url: string = this.favUrl + favorite_id + "/";
     const http_options = {}
     return this.http.delete(url, http_options)
   }
+
   shareFavorites() {
     const url: string = this.api.getAPIUrl() + "/API_private/favorite/share_favorites/"
     return this.http.get(url)
@@ -47,6 +50,20 @@ export class FavoriteListService {
 
   getSharedFavorites(token: string) {
     const url: string = this.api.getAPIUrl() + "/API_public/favorite/view_shared/?list="
-    return this.http.get(url + token).pipe(tap((result) => (console.log(result))))
+    return this.http.get<any[]>(url + token).pipe(
+      map((data: any[]) => {
+        return data.map((item: any) => ({
+          id: item.id,
+          user: item.user,
+          study_program: item.study_program,
+          note: item.note,
+          status: item.status,
+          study_program_name: item.study_program_extended.name,
+          school_name: item.study_program_extended.school_extended.name,
+          school_locality: item.study_program_extended.school_extended.address_extended.locality,
+          school_code: item.study_program_extended.school_extended.UAI_code
+        }))
+      })
+    )
   }
 }

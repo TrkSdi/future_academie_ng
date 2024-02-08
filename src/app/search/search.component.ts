@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit {
   studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
     StudyProgram[]
   >([]);
-  results: StudyProgram[] | null = null;
+  results$: Observable<StudyProgram[]> = of([]);
 
   // Variables to store search inputs
   distance: number = 10; // Default distance
@@ -46,20 +46,22 @@ export class SearchComponent implements OnInit {
   selectedLocation?: { latitude: number; longitude: number };
   nextUrl: string | null = null;
   previousUrl: string | null = null;
-  count: number | null = null;
+  count$: Observable<number> = of();
   currentGeoLocationInput: string = '';
   showSuggestions: boolean = false;
+  currentSearchTerm: string = '';
 
   activeFilters: { [filterName: string]: any } = {};
   defaultSearchTerm: string = '';
   defaultSortBy: string = '';
-  defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
+
+  // defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
   constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
     this.addressSuggestions$ = this.addressInput.pipe(
-      debounceTime(300),
+      debounceTime(600),
       distinctUntilChanged(),
       switchMap((address) =>
         address ? this.searchService.getAddressSuggestions(address) : of([])
@@ -68,18 +70,16 @@ export class SearchComponent implements OnInit {
         if (suggestions.length > 0) {
           this.selectAddress(suggestions[0]);
         }
-        // delete suggestion after time
-        // setTimeout(() => {
-        //   this.addressSuggestions$ = of([]);
-        // }, 7000);
       }),
       catchError((error) => {
         console.error('Error loading address suggestions:', error);
         return of([]);
       })
     );
+
+    // supprimer
     this.studies$.subscribe((studies) => {
-      this.results = studies as StudyProgram[];
+      this.results$ = of(studies);
     });
   }
   // to have the program without a search
@@ -87,35 +87,42 @@ export class SearchComponent implements OnInit {
     this.searchPrograms('');
   }
 
-  // simple search for the programs
-  searchPrograms(term: string, sortBy: string = ''): void {
+  searchPrograms(
+    term: string = this.currentSearchTerm,
+    sortBy: string = this.defaultSortBy
+  ): void {
+    this.currentSearchTerm = term;
+    this.defaultSortBy = sortBy;
+
     this.searchService
       .searchProgram(term, this.selectedLocation, this.distance, sortBy)
       .subscribe((response) => {
         this.studies$.next(response.results),
-          (this.count = response.count),
+          (this.count$ = of(response.count!)),
           (this.nextUrl = response.next),
           (this.previousUrl = response.previous);
       });
   }
+  // //
 
   // Delete all filters
   clearFilters(): void {
-    this.selectedLocation = this.defaultLocation;
-    this.distance = this.distance;
-
-    // Optionnellement, effectuer une nouvelle recherche sans filtres
-    // Vous pouvez décider de ne pas appeler searchPrograms ici si vous ne voulez pas effectuer une recherche immédiatement après avoir effacé les filtres
-    this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
+    this.removeFilter('Ville sélectionnée');
+    this.removeFilter('Tri par');
+    this.removeFilter('Distance');
   }
 
-  applyFilter(filterName: string, value: any): void {
+  applyFilter(filterName: string, value: any, termFront?: string): void {
     if (value !== null && value !== undefined) {
-      this.activeFilters[filterName] = value;
+      if (termFront) {
+        this.activeFilters[filterName] = termFront;
+      } else {
+        this.activeFilters[filterName] = value;
+      }
     } else {
       delete this.activeFilters[filterName];
     }
-    this.searchPrograms('');
+    this.searchPrograms();
   }
   objectKeys = Object.keys;
 
@@ -136,17 +143,6 @@ export class SearchComponent implements OnInit {
       .searchSchools(term)
       .subscribe((schools) => (this.schools$ = of(schools)));
   }
-  // searchAddress(query: string): void {
-  //   this.showSuggestions = !!query;
-
-  //   if (!query) {
-  //     this.selectedLocation = undefined;
-  //     this.currentGeoLocationInput = '';
-  //     this.searchPrograms(this.defaultSearchTerm, this.defaultSortBy);
-  //   } else {
-  //     this.addressInput.next(query);
-  //   }
-  // }
 
   searchAddress(query: string): void {
     this.showSuggestions = !!query;
@@ -171,7 +167,7 @@ export class SearchComponent implements OnInit {
         })
       );
       this.studies$.subscribe((studies) => {
-        this.results = studies as StudyProgram[];
+        this.results$ = of(studies);
       });
     } else {
       this.addressInput.next(query);
@@ -179,7 +175,6 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  // here I would like to make adress input = first selectAdress(suggestion)
   selectAddress(suggestion: any): void {
     this.selectedLocation = {
       latitude: suggestion.geometry.coordinates[1],
@@ -188,7 +183,6 @@ export class SearchComponent implements OnInit {
     this.applyFilter('Ville sélectionnée', suggestion.properties.label);
     this.currentGeoLocationInput = suggestion.properties.label;
     this.showSuggestions = false;
-    this.searchPrograms('');
   }
 
   // the distance around the city
@@ -199,8 +193,9 @@ export class SearchComponent implements OnInit {
 
   /// sort by
 
-  sortByItem(sortBy: string) {
-    // Appel à searchPrograms avec le critère de tri
-    this.applyFilter('Tri par', sortBy);
+  sortByItem(sortBy: string, termFront: string) {
+    this.defaultSortBy = sortBy;
+
+    this.applyFilter('Tri par', sortBy, termFront);
   }
 }

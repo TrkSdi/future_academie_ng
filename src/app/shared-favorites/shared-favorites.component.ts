@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { tokenInterceptor } from '../token.interceptor';
 import { Favorite } from '../interface/favorite-interface';
 import { FavoriteListComponent } from '../favorite-list/favorite-list.component';
+import { of, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-shared-favorites',
@@ -16,17 +17,14 @@ import { FavoriteListComponent } from '../favorite-list/favorite-list.component'
 export class SharedFavoritesComponent {
 
   constructor(private favListService: FavoriteListService, private route: ActivatedRoute) { }
-  favorites: Favorite[] = []
+  favorites$: Observable<Favorite[]> = of([]);
+
   ngOnInit() {
     this.getFavorites();
   }
 
   getFavorites() {
     const token = this.route.snapshot.paramMap.get('token');
-    this.favListService.getSharedFavorites(token!).subscribe({
-      next: (favorites: any) => {
-        this.favorites = favorites;
-      }
-    });
+    this.favorites$ = this.favListService.getSharedFavorites(token!);
   }
 }

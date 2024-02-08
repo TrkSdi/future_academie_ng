@@ -8,19 +8,22 @@ import { FavoriteService } from '../services/favorite.service';
 import { AuthService } from '../services/auth.service';
 import { FavoriteListService } from '../services/favorite-list.service';
 import { ApiconfigService } from '../services/apiconfig.service';
+import { PaginatorModule } from 'primeng/paginator'
+import { ButtonModule } from 'primeng/button';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-study-list',
   standalone: true,
-  imports: [CommonModule, SearchComponent, RouterModule],
+  imports: [CommonModule, SearchComponent, RouterModule, PaginatorModule, ButtonModule],
   templateUrl: './study-list.component.html',
   styleUrl: './study-list.component.css'
 })
 export class StudyListComponent {
-  @Input() studies: StudyProgram[] = [];
+  @Input() studies$: Observable<StudyProgram[]> = of([]);
   @Input() nextUrl: string | null = null;
   @Input() previousUrl: string | null = null;
-  @Input() count: number | null = null;
+  @Input() count$: Observable<number | null> = of(null);
   favorites: number[] = [];
 
   constructor(
@@ -40,25 +43,24 @@ export class StudyListComponent {
 
   getStudy(url?: string): void {
     this.studyListService.getStudyList(url).subscribe((response) => {
-      this.studies = response.results;
+      this.studies$ = of(response.results);
       this.nextUrl = response.next;
       this.previousUrl = response.previous;
-      this.count = response.count;
+      this.count$ = of(response.count);
     });
   }
 
-  loadNextPage(): void {
-    if (this.nextUrl) {
-      this.getStudy(this.nextUrl);
+  onPageChange(event: any) {
+    let studyURL: string = this.api.getAPIUrl() + "/API_public/studyprogram/";
+    if (event.page > 0) {
+      const pageToGet = event.page + 1;
+      studyURL += "?page=" + pageToGet;
     }
-  }
+    this.getStudy(studyURL);
+    console.log(event);
+    console.log(studyURL);
 
-  loadPreviousPage(): void {
-    if (this.previousUrl) {
-      this.getStudy(this.previousUrl);
-    }
   }
-
   /**
    * This function saves a program to the user's favorite list and is called when 
    * the heart icon on the program description is clicked

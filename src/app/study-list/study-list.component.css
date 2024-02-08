@@ -1,3 +1,7 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+
 .main-container {
     max-width: 1320px;
     margin: 0 auto;
@@ -5,44 +9,81 @@
 
 .cards-container {
     display: flex;
-    gap: 30px;
+    justify-content: space-between;
     flex-wrap: wrap;
 }
 
 .card {
-    width: 500px;
+    border: none;
+    border-radius: 25px;
+    width: 400px;
+    height: 700px;
     padding: 30px 20px;
     display: flex;
     position: relative;
-    min-height: 600px;
+    margin-bottom: 50px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0px 0px 10px 10px rgba(0,0,0,0.1), 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.card:hover .main-info {
+    transform: scale(0.99);
+}
+
+.main-info {
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.main-info:hover {
+    transform: scale(0.99);
 }
 
 h1 {
-    margin-top: 20px;
+    font-size: 1.8em;
+    margin-top: 50px;
     margin-bottom: 20px;
 }
 
 h2 {
-    font-size: 1.6em;
+    font-size: 1.4em;
+    color: var(--blue)
 }
 
 h3 {
     font-size: 1.2em;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
-ul li {
-    list-style: none;
+.card ul {
+    padding: 0;
+}
 
+.card ul li {
+    list-style: none;
+    margin-bottom: 5px;
+}
+
+
+.link {
+    text-decoration: underline;
+    color: var(--grey);
+    margin-left: 10px;
 }
 
 span {
     font-weight: bold;
-    text-decoration: underline;
+    color: var(--grey);
+    
 }
 
 .main-info {
-    height: 400px;
+    min-height: 400px;
+    margin-bottom: 20px;
 }
 
 .charm--chevron-left {
@@ -75,8 +116,9 @@ span {
 
 .pagination {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     margin-top: 40px;
+    margin-right: 40px;
 }
 
 .pagination a {
@@ -121,13 +163,18 @@ button.chevron {
     mask-size: 100% 100%;
 }
 
-
 .bottom-row {
     display: flex;
     align-items: center;
     position: absolute;
     bottom: 30px;
     right: 20px;
+    margin-top: 30px;
+}
+
+.bottom-row a {
+    text-decoration: none;
+    color: var(--grey)
 }
 
 button.more {
@@ -136,12 +183,50 @@ button.more {
     padding: 10px 20px;
     border-radius: 25px;
     margin-left: 20px;
+    transition: box-shadow 0.3s ease;
+}
+
+button.more:hover {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 10px 10px -5px;
+    
 }
 
 .favorite {
     background-color: black;
+    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+}
+
+.favorite:hover {
+    background-color: var(--red);
+    transform: scale(1.05)
 }
 
 .favorite.active {
-    background-color: red;
+    background-color: var(--red);
 }
+
+
+@media (max-width: 850px) {
+    .cards-container {
+        flex-direction: column;
+        align-items: center; /* Center items vertically */
+        margin: 0 auto;
+    }
+
+    .card {
+        width: 90%; /* Adjust the width as needed */
+        max-width: 400px; /* Set a maximum width if needed */
+    }
+
+    h1, .count-container {
+        padding: 0 15px;
+    }
+
+    .card ul li {
+        font-size: 0.85em;
+    }
+
+
+}
+
