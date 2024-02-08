@@ -108,8 +108,6 @@ export class SearchComponent implements OnInit {
     this.removeFilter('Ville sélectionnée');
     this.removeFilter('Tri par');
     this.removeFilter('Distance');
-    this.currentSearchTerm = '';
-    this.searchPrograms('');
   }
 
   applyFilter(filterName: string, value: any, termFront?: string): void {
