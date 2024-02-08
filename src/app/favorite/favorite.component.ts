@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, Subject, } from 'rxjs';
+import { BehaviorSubject, Subject, of } from 'rxjs';
 
 // Local Imports
 import { Favorite } from '../interface/favorite-interface';
@@ -45,7 +45,9 @@ export class FavoriteComponent {
   favorite!: Favorite;
   alerts: Alert[] = [];
   favoriteProgram: StudyProgram | null = null;
-  successConfirmation: string = '';
+  successConfirmation$: BehaviorSubject<string> = new BehaviorSubject("");
+  status: string = "";
+  note: string = "";
 
   ngOnInit() {
     this.loadFavorite();
@@ -80,10 +82,13 @@ export class FavoriteComponent {
 
   editForm(): void {
     this.editing$.next(true);
+
   }
-  //why is this not working??
+
   cancelEdit(): void {
     this.editing$.next(false);
+    this.favorite.status = this.status;
+    this.favorite.note = this.note;
   }
 
   goBack() {
@@ -94,10 +99,15 @@ export class FavoriteComponent {
     this.favService.updateFavorite(this.favorite.id, this.favorite.note, this.favorite.status).subscribe({
       next: (response) => {
         this.favorite = response;
+        this.status = response.status;
+        this.note = response.note;
         this.editing$.next(false);
-        this.successConfirmation = "Changement sauvegardé ✅"
+        this.alertService.showAlert({
+          type: "success", message: "Changement sauvegardé ✅",
+          object_id: response.id
+        })
         setTimeout(() => {
-          this.successConfirmation = '';
+          this.successConfirmation$.next("");
         }, 5000);
       }
     })
@@ -108,6 +118,8 @@ export class FavoriteComponent {
       this.favService.getFavorite(id).subscribe({
         next: (favorite) => {
           this.favorite = favorite;
+          this.note = favorite.note;
+          this.status = favorite.status;
           const program_id: string = this.favorite.study_program.toString()
           this.studyProgramService.getStudyProgram(program_id).subscribe({
             next: (studyProgram) => {
