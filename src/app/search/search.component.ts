@@ -34,9 +34,7 @@ import { StudyListComponent } from '../study-list/study-list.component';
 export class SearchComponent implements OnInit {
   // Variables to store search results
   schools$: Observable<School[]> = of([]);
-  studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
-    StudyProgram[]
-  >([]);
+
   results: StudyProgram[] | null = null;
 
   // Variables to store search inputs
@@ -54,13 +52,16 @@ export class SearchComponent implements OnInit {
   activeFilters: { [filterName: string]: any } = {};
   defaultSearchTerm: string = '';
   defaultSortBy: string = '';
+  studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
+    StudyProgram[]
+  >([]);
   // defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
   constructor(private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
     this.addressSuggestions$ = this.addressInput.pipe(
-      debounceTime(500),
+      debounceTime(600),
       distinctUntilChanged(),
       switchMap((address) =>
         address ? this.searchService.getAddressSuggestions(address) : of([])
@@ -75,6 +76,8 @@ export class SearchComponent implements OnInit {
         return of([]);
       })
     );
+
+    // supprimer
     this.studies$.subscribe((studies) => {
       this.results = studies as StudyProgram[];
     });
@@ -84,7 +87,7 @@ export class SearchComponent implements OnInit {
     this.searchPrograms('');
   }
 
-  // simple search for the programs
+
   searchPrograms(
     term: string = this.currentSearchTerm,
     sortBy: string = this.defaultSortBy
@@ -101,6 +104,7 @@ export class SearchComponent implements OnInit {
           (this.previousUrl = response.previous);
       });
   }
+  // //
 
   // Delete all filters
   clearFilters(): void {
