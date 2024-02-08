@@ -184,11 +184,13 @@ header {
     z-index: 10;
     background-color: var(--background_color);
     opacity: 0;
+    display: none;
     transition: opacity 0.3s ease;
   }
 
   .menu ul.active {
     opacity: 1;
+    display: flex;
   }
 
   .logo-container img {

@@ -18,6 +18,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { StudyListComponent } from '../study-list/study-list.component';
 
+
 @Component({
   selector: 'app-search',
   imports: [
@@ -35,7 +36,12 @@ export class SearchComponent implements OnInit {
   // Variables to store search results
   schools$: Observable<School[]> = of([]);
 
-  results: StudyProgram[] | null = null;
+  //results: StudyProgram[] | null = null;
+  studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
+    StudyProgram[]
+  >([]);
+  results$: Observable<StudyProgram[]> = of([]);
+
 
   // Variables to store search inputs
   distance: number = 10; // Default distance
@@ -44,7 +50,7 @@ export class SearchComponent implements OnInit {
   selectedLocation?: { latitude: number; longitude: number };
   nextUrl: string | null = null;
   previousUrl: string | null = null;
-  count: number | null = null;
+  count$: Observable<number> = of();
   currentGeoLocationInput: string = '';
   showSuggestions: boolean = false;
   currentSearchTerm: string = '';
@@ -52,11 +58,9 @@ export class SearchComponent implements OnInit {
   activeFilters: { [filterName: string]: any } = {};
   defaultSearchTerm: string = '';
   defaultSortBy: string = '';
-  studies$: BehaviorSubject<StudyProgram[]> = new BehaviorSubject<
-    StudyProgram[]
-  >([]);
+ 
   // defaultLocation = { latitude: 48.866667, longitude: 2.333333 };
-  constructor(private searchService: SearchService) {}
+  constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -79,7 +83,7 @@ export class SearchComponent implements OnInit {
 
     // supprimer
     this.studies$.subscribe((studies) => {
-      this.results = studies as StudyProgram[];
+      this.results$ = of(studies);
     });
   }
   // to have the program without a search
@@ -99,7 +103,7 @@ export class SearchComponent implements OnInit {
       .searchProgram(term, this.selectedLocation, this.distance, sortBy)
       .subscribe((response) => {
         this.studies$.next(response.results),
-          (this.count = response.count),
+          (this.count$ = of(response.count!)),
           (this.nextUrl = response.next),
           (this.previousUrl = response.previous);
       });
@@ -111,8 +115,6 @@ export class SearchComponent implements OnInit {
     this.removeFilter('Ville sélectionnée');
     this.removeFilter('Tri par');
     this.removeFilter('Distance');
-    this.currentSearchTerm = '';
-    this.searchPrograms('');
   }
 
   applyFilter(filterName: string, value: any, termFront?: string): void {
@@ -170,7 +172,7 @@ export class SearchComponent implements OnInit {
         })
       );
       this.studies$.subscribe((studies) => {
-        this.results = studies as StudyProgram[];
+        this.results$ = of(studies);
       });
     } else {
       this.addressInput.next(query);

@@ -1,102 +1,112 @@
 <div class="main-container">
-  <div class="row search-bar">
+  <div class="search-bar">
     <!-- Search program -->
-    <div class="col-md-3">
-      <input
-        #searchInputProgram
-        class="form-control"
-        placeholder="Rechercher un programme"
-        [(ngModel)]="currentSearchTerm"
-        (input)="searchPrograms(searchInputProgram.value)"
-      />
-    </div>
-    <!-- Localisation-->
-    <div class="col-md-6 location-distance-container">
-      <input
-        class="form-control"
-        placeholder="Entrez une adresse"
-        #geoLocationInput
-        [(ngModel)]="currentGeoLocationInput"
-        (input)="searchAddress(geoLocationInput.value)"
-      />
-      <ul
-        *ngIf="showSuggestions && (addressSuggestions$ | async) as suggestions"
-      >
-        <li
-          *ngFor="let suggestion of suggestions"
-          (click)="selectAddress(suggestion)"
-          class="dropdown-item"
+
+    <div class="forms">
+      <div class="program-search">
+        <input
+          #searchInputProgram
+          class="form-control"
+          placeholder="Rechercher un programme"
+          [(ngModel)]="currentSearchTerm"
+          (input)="searchPrograms(searchInputProgram.value)"
+        />
+      </div>
+      <!-- Localisation-->
+      <div class="location-container">
+        <input
+          class="form-control"
+          placeholder="Entrez une adresse"
+          #geoLocationInput
+          [(ngModel)]="currentGeoLocationInput"
+          (input)="searchAddress(geoLocationInput.value)"
+        />
+        <ul
+          *ngIf="showSuggestions && (addressSuggestions$ | async) as suggestions"
         >
-          {{ suggestion.properties.label }}
-        </li>
-      </ul>
+          <li
+            *ngFor="let suggestion of suggestions"
+            (click)="selectAddress(suggestion)"
+            class="dropdown-item"
+          >
+            {{ suggestion.properties.label }}
+          </li>
+        </ul>
+      </div>
+      <div class="distance-sort">
+        <div class="distance-container">
+          <select
+            class="form-control custom-select"
+            #distanceSelect
+            (change)="setDistance(distanceSelect.value)"
+          >
+            <option value="10">10 km</option>
+            <option value="20">20 km</option>
+            <option value="30">30 km</option>
+            <option value="40">40 km</option>
+          </select>
+        </div>
+    
+        <!-- Sort by -->
+    
+        <div class="sort-container">
+          <div ngbDropdown class="d-inline-block">
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              id="dropdownBasic1"
+              ngbDropdownToggle
+            >
+              Trier par <i class="bi bi-sort-up"></i>
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button
+                ngbDropdownItem
+                (click)="sortByItem('L1_succes_rate', 'Taux de succès en L1')"
+              >
+                Taux de succès en L1
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="sortByItem('acceptance_rate', 'Taux d\'acceptation')"
+              >
+                Taux d'acceptation
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="sortByItem('available_places', 'Places disponibles')"
+              >
+                Places disponibles
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="
+                  sortByItem('diploma_earned_ontime', 'Taux obtention diplome ')
+                "
+              >
+                Taux obtention diplome
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="sortByItem('number_applicants', 'Nombre de candidats')"
+              >
+                Nombre de candidats
+              </button>
+              <button
+                ngbDropdownItem
+                (click)="sortByItem('percent_scholarship', 'Boursiers')"
+              >
+                Boursiers
+              </button>
+            </div>
+          </div>
 
-      <select
-        class="form-control custom-select"
-        #distanceSelect
-        (change)="setDistance(distanceSelect.value)"
-      >
-        <option value="10">10 km</option>
-        <option value="20">20 km</option>
-        <option value="30">30 km</option>
-        <option value="40">40 km</option>
-      </select>
-    </div>
-
-    <!-- Sort by -->
-
-    <div class="col-md-3">
-      <div ngbDropdown class="d-inline-block">
-        <button
-          type="button"
-          class="btn btn-outline-primary"
-          id="dropdownBasic1"
-          ngbDropdownToggle
-        >
-          Trier par <i class="bi bi-sort-up"></i>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button
-            ngbDropdownItem
-            (click)="sortByItem('L1_succes_rate', 'Taux de succès en L1')"
-          >
-            Taux de succès en L1
-          </button>
-          <button
-            ngbDropdownItem
-            (click)="sortByItem('acceptance_rate', 'Taux d\'acceptation')"
-          >
-            Taux d'acceptation
-          </button>
-          <button
-            ngbDropdownItem
-            (click)="sortByItem('available_places', 'Places disponibles')"
-          >
-            Places disponibles
-          </button>
-          <button
-            ngbDropdownItem
-            (click)="
-              sortByItem('diploma_earned_ontime', 'Taux obtention diplome ')
-            "
-          >
-            Taux obtention diplome
-          </button>
-          <button
-            ngbDropdownItem
-            (click)="sortByItem('number_applicants', 'Nombre de candidats')"
-          >
-            Nombre de candidats
-          </button>
-          <button
-            ngbDropdownItem
-            (click)="sortByItem('percent_scholarship', 'Boursiers')"
-          >
-            Boursiers
-          </button>
         </div>
       </div>
+     
+
     </div>
+    
 
     <!-- filters active -->
     <div *ngIf="getActiveFilterKeys().length" class="filters-container">
@@ -113,13 +123,9 @@
     <!-- end active filters -->
     <div>
       <!-- List of results -->
-      @if (results) {
-      <app-study-list
-        [studies]="results"
-        [count]="count"
-        [nextUrl]="nextUrl"
-        [previousUrl]="previousUrl"
-      ></app-study-list>
+      @if (results$|async) {
+      <app-study-list [studies$]="results$" [count$]="count$" [nextUrl]="nextUrl"
+        [previousUrl]="previousUrl"></app-study-list>
       <!-- [studies]="results!" -->
       }
 

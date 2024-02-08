@@ -1,5 +1,6 @@
 <div class="container">
-  <p id="titre">Formulaire d'inscription</p>
+  <div class="main-container">
+    <p id="titre">Formulaire d'inscription</p>
   <form id="creationform">
     <div class="row">
       <div class="col-md-6">
@@ -9,7 +10,7 @@
             type="text"
             class="form-control"
             id="InputLastName"
-            placeholder="Enter your Last Name"
+            placeholder="Entrez votre nom"
           />
         </div>
       </div>
@@ -20,7 +21,7 @@
             type="text"
             class="form-control"
             id="InputFirstName"
-            placeholder="Enter your First Name"
+            placeholder="Entrez votre prénom"
           />
         </div>
       </div>
@@ -35,7 +36,7 @@
             type="email"
             class="form-control"
             id="InputEmail"
-            placeholder="Enter Mail"
+            placeholder="Entrez votre email"
             (keyup)="onEmailChange(emailInput.value)"
           />
           <small
@@ -57,7 +58,7 @@
             type="email"
             class="form-control"
             id="InputConfirmationEmail"
-            placeholder="Confirm Mail"
+            placeholder="Confirmez votre email"
             (keyup)="
               onCompareEmails(emailInput.value, emailConfirmationInput.value)
             "
@@ -83,25 +84,10 @@
             type="password"
             class="form-control"
             id="InputPassword"
-            placeholder="Enter Password"
+            placeholder="Entrez mot de passe"
             (keyup)="onPasswordChange(passwordInput.value)"
           />
-          <small
-            >Votre mot de passe doit contenir :
-            <ul>
-              <li [class.completed]="isLengthValid">8 caractères</li>
-              <li [class.completed]="isNumberValid">Au moins un chiffre</li>
-              <li [class.completed]="isLowerCaseValid">
-                Au moins une minuscule
-              </li>
-              <li [class.completed]="isUpperCaseValid">
-                Au moins une majuscule
-              </li>
-              <li [class.completed]="isSpecialCharValid">
-                Au moins un caractère spécial
-              </li>
-            </ul>
-          </small>
+
         </div>
       </div>
 
@@ -115,7 +101,7 @@
             type="password"
             class="form-control"
             id="InputConfirmationPassword"
-            placeholder="Confirm Password"
+            placeholder="Entrez mot de passe"
             (keyup)="
               onComparePasswords(
                 passwordInput.value,
@@ -134,12 +120,29 @@
         </div>
       </div>
     </div>
+
+    <small
+            >Votre mot de passe doit contenir :
+            <ul>
+              <li [class.completed]="isLengthValid">8 caractères</li>
+              <li [class.completed]="isNumberValid">Au moins un chiffre</li>
+              <li [class.completed]="isLowerCaseValid">
+                Au moins une minuscule
+              </li>
+              <li [class.completed]="isUpperCaseValid">
+                Au moins une majuscule
+              </li>
+              <li [class.completed]="isSpecialCharValid">
+                Au moins un caractère spécial
+              </li>
+            </ul>
+          </small>
     <!--different buttons visible or hidden in case of-->
     <button
       *ngIf="validationCreation"
       id="creationbutton"
       type="submit"
-      class="btn btn-primary bouton-centre"
+      class=""
       (click)="enregistrement()"
     >
       Envoyer
@@ -167,4 +170,5 @@
       Cliquez ici pour relancer le formulaire d'inscription.
     </button>
   </form>
+  </div>
 </div>
