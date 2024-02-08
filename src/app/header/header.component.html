@@ -48,22 +48,16 @@
         <li class="danger-text">{{ logout_message }}</li>
         }
         <li>
-          <a class="hover-underline-animation" routerLink="/search"
-            >Recherche</a
-          >
+          <a class="hover-underline-animation" routerLink="/search">Recherche</a>
         </li>
         <li>
-          <a class="hover-underline-animation" routerLink="/userprofile"
-            >Profil</a
-          >
+          <a class="hover-underline-animation" routerLink="/userprofile">Profil</a>
         </li>
         <li>
-          <a class="hover-underline-animation" routerLink="/favorite"
-            >Favoris</a
-          >
+          <a class="hover-underline-animation" routerLink="/favorite">Favoris</a>
         </li>
 
-        @if (isAuthenticated | async) {
+        @if (isAuthenticated$ | async) {
         <li (click)="logout()">
           <a class="hover-underline-animation">Déconnexion</a>
         </li>

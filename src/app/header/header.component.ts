@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../services/login.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -15,17 +15,19 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   constructor(private auth: AuthService, private login: LoginService, private router: Router) { }
 
-  
-  isAuthenticated: Observable<boolean> = this.auth.authenticated;
+
+  isAuthenticated$: BehaviorSubject<boolean> = this.auth.authenticated$;
   logout_message: string = '';
   isNavActive: boolean = false;
-  
+
   toggleNav() {
     this.isNavActive = !this.isNavActive;
   }
 
   allowGoBack() {
-    this.login.setCanGoBack(true);
+    if (!this.router.url.includes("creation")) {
+      this.login.setCanGoBack(false);
+    }
   }
 
   logout() {
@@ -35,6 +37,7 @@ export class HeaderComponent {
         // tokens should not be removed before successful logout HTTP request
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        this.auth.authenticated$.next(false);
         this.logout_message = "Déconnexion Réussie";
         this.router.navigateByUrl('/login');
         setTimeout(() => {
