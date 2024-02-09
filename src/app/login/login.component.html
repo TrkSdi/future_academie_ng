@@ -1,40 +1,57 @@
 <div class="container">
+  <form
+    (ngSubmit)="login(loginForm.value.email, loginForm.value.password)"
+    #loginForm="ngForm"
+  >
+    <h1>Connectez-vous</h1>
+    <h4>Vous n'avez pas encore de compte?</h4>
+    <p><a routerLink="/creation">Inscrivez-vous ici !</a></p>
 
-    <form (ngSubmit)="login(loginForm.value.email, loginForm.value.password)" #loginForm="ngForm">
+    @if(authRequiredMessage){
+    <h2>L'authentification est requise pour la page demandée</h2>
+    }
 
-        <h1>Connectez-vous</h1>
-        <h4>Vous n'avez pas encore de compte?</h4>
-        <p><a routerLink="/creation">Inscrivez-vous ici !</a></p>
+    <div class="form-group">
+      @if(error){
+      <p class="error text-center">{{ error }}</p>
+      }
+      <label for="email">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        name="email"
+        placeholder="Entrez votre adresse mail"
+        ngModel
+        required
+        email
+      />
+      @if(loginForm.controls['email'].hasError('required') ||
+      loginForm.controls['email'].hasError('email') ) {
+      <small id="emailHelp" class="form-text text-danger"
+        >Merci de renseigner une adresse mail valide.</small
+      >
+      }
+    </div>
 
-        @if(authRequiredMessage){
-        <h2>L'authentication est requise pour le page demandé</h2>
-        }
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input
+        type="password"
+        class="form-control"
+        name="password"
+        placeholder="Entrez votre mot de passe"
+        ngModel
+        required
+      />
+      @if(loginForm.controls['password'].hasError('required')) {
+      <small id="emailHelp" class="form-text text-danger"
+        >Merci de renseigner votre mot de passe.</small
+      >
+      }
+    </div>
 
-        <div class="form-group">
-
-            @if(error){
-            <p class="error text-center"> {{error}} </p>
-            }
-            <label for="email">Email</label>
-            <input type="email" class="form-control" name="email" placeholder="Entrez votre adresse mail" ngModel
-                required email>
-            @if(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email') ) {
-            <small id="emailHelp" class="form-text text-danger">Merci de renseigner une adresse mail valide.</small>
-            }
-
-        </div>
-
-        <div class="form-group">
-
-            <label for="password">Mot de passe</label>
-            <input type="password" class="form-control" name="password" placeholder="Entrez votre mot de passe" ngModel required>
-            @if(loginForm.controls['password'].hasError('required')) {
-            <small id="emailHelp" class="form-text text-danger">Merci de renseigner votre mot de passe.</small>
-            }
-        </div>
-
-        <button type="submit" class="" [disabled]="!loginForm.valid">Valider</button>
-
-    </form>
-
+    <button type="submit" class="" [disabled]="!loginForm.valid">
+      Valider
+    </button>
+  </form>
 </div>
