@@ -15,15 +15,17 @@ export class StudyProgramDetailService {
 
   url: string = this.api.getAPIUrl() + "/API_public/studyprogram";
 
-  getStudyProgram(UAI_code: string | null): Observable<StudyProgram> {
-    return this.http.get<StudyProgram>(this.url + `/${UAI_code}`).pipe(
+  getStudyProgram(program_id: string | null): Observable<StudyProgram> {
+    return this.http.get<StudyProgram>(this.url + `/${program_id}`).pipe(
       map((response: any) => ({
         cod_aff_form: response.cod_aff_form,
         name: response.name,
-        school: response.school,
-        url: response.url_parcoursup_extended.link_url,
+        school: response.school_extended.name,
+        url: response.url_parcoursup_extended
+          ? response.url_parcoursup_extended.link_url
+          : '', // Gestion de l'absence de l'URL parcoursup
         acceptance_rate: response.acceptance_rate,
-        L1_succes_rate: response.L1_succes_rate,
+        L1_succes_rate: response.L1_success_rate,
         description: response.description,
         diploma_earned_ontime: response.diploma_earned_ontime,
         available_places: response.available_places,
@@ -31,10 +33,14 @@ export class StudyProgramDetailService {
         percent_scholarship: response.percent_scholarship,
         acceptance_rate_quartile: response.acceptance_rate_quartile,
         L1_success_rate_quartile: response.L1_success_rate_quartile,
-        diploma_earned_ontime_quartile: response.diploma_earned_ontime_quartile,
+        diploma_earned_ontime_quartile:
+          response.diploma_earned_ontime_quartile,
         percent_scholarship_quartile: response.percent_scholarship_quartile,
-        job_prospects: response.job_prospects
-      })
-      ))
+        job_prospects: response.job_prospects,
+        geolocation: response.address_extended.geolocation,
+        locality: response.address_extended.locality,
+      }))
+    );
   }
+
 }

@@ -1,5 +1,9 @@
 <div class="main-container">
     <h1>Favorites</h1>
+    @if(alerts[0] && alerts[0].type==='success'){
+    <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
+    }
+
     @if((favorites$ | async)!.length){
     <button type="button" class="btn btn-red" (click)="shareFavorites()" [hidden]="route.includes('share')">Partager vos
         Favoris</button>
@@ -27,7 +31,7 @@
 
                 <p><span class="section-title">Status:</span> {{ favorite.status }} </p>
                 <p><span class="section-title">Note:</span> {{ favorite.note }} </p>
-                @if(alerts[0] && alerts[0].object_id===favorite.id) {
+                @if(alerts[0] && alerts[0].object_id===favorite.id && alerts[0].type==='danger') {
                 <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
 
                 <button type="button" class="btn btn-danger"

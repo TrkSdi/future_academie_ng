@@ -44,26 +44,21 @@
     <nav class="menu active" [ngClass]="{ active: isNavActive }">
       <div id="icons" (click)="toggleNav()"></div>
       <ul [ngClass]="{ active: isNavActive }">
-        @if(logout_message){
-        <li class="danger-text">{{ logout_message }}</li>
+        @if(alerts[0] && alerts[0].type==='success'){
+        <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
         }
+
         <li>
-          <a class="hover-underline-animation" routerLink="/search"
-            >Recherche</a
-          >
+          <a class="hover-underline-animation" routerLink="/search">Recherche</a>
         </li>
         <li>
-          <a class="hover-underline-animation" routerLink="/userprofile"
-            >Profil</a
-          >
+          <a class="hover-underline-animation" routerLink="/userprofile">Profil</a>
         </li>
         <li>
-          <a class="hover-underline-animation" routerLink="/favorite"
-            >Favoris</a
-          >
+          <a class="hover-underline-animation" routerLink="/favorite">Favoris</a>
         </li>
 
-        @if (isAuthenticated | async) {
+        @if (isAuthenticated$ | async) {
         <li (click)="logout()">
           <a class="hover-underline-animation">Déconnexion</a>
         </li>

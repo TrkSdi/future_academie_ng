@@ -30,6 +30,7 @@ export class LoginComponent {
         next: (response) => {
           localStorage.setItem('access_token', response.access);
           localStorage.setItem('refresh_token', response.refresh);
+          this.auth.authenticated$.next(true);
           if (this.loginService.checkCanGoBack()) {
             this.location.back();
           } else {
