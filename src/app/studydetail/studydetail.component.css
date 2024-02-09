@@ -40,6 +40,7 @@ ul li span {
     border: 1px solid black;
     border-radius: 10px;
     padding: 10px 15px;
+    max-width: 250px;
 }
 
 .material-symbols--favorite-outline {
