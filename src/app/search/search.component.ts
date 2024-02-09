@@ -41,7 +41,6 @@ export class SearchComponent implements OnInit {
   >([]);
   results$: Observable<StudyProgram[]> = of([]);
 
-
   // Variables to store search inputs
   distance: number = 10; // Default distance
   addressInput: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -113,6 +112,7 @@ export class SearchComponent implements OnInit {
     this.removeFilter('Ville sélectionnée');
     this.removeFilter('Tri par');
     this.removeFilter('Distance');
+    this.currentSearchTerm = '';
   }
 
   applyFilter(filterName: string, value: any, termFront?: string): void {
