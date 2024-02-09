@@ -1,5 +1,5 @@
 <div class="main-container">
-    <h1>Favorites</h1>
+    <h1>Favoris</h1>
     @if(alerts[0] && alerts[0].type==='success'){
     <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
     }
@@ -34,16 +34,16 @@
                 @if(alerts[0] && alerts[0].object_id===favorite.id && alerts[0].type==='danger') {
                 <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
 
-                <button type="button" class="btn btn-danger"
+                <button type="button" class="red-btn"
                     (click)="deleteFavorite(favorite.id); close(alerts[0]); ">Supprimer</button>
-                <button type="button" class="btn btn-secondary" (click)="close(alerts[0])">Annuler</button>
+                <button type="button" class="btn-red" (click)="close(alerts[0])">Annuler</button>
                 }
                 <div [hidden]="(alerts.length && alerts[0].object_id==favorite.id)">
                     <button type="button" class="btn btn-blue"
                         [routerLink]="isShare ? '/studyprogram/' + favorite.study_program : '/favorite/' + favorite.id">Voir
                         plus</button>
                     @if(!isShare){
-                    <button type="button" class="btn btn-secondary"
+                    <button type="button" class="red-btn"
                         (click)="confirmDelete(favorite.id)">Supprimer</button>
                     }
                 </div>
@@ -51,17 +51,5 @@
         </div>
         }
 
-    </div>
-
-    <div class="pagination">
-        @if (previousUrl) {
-        <button class="chevron" (click)="loadPreviousPage()">
-            <span class="charm--chevron-left"></span>
-        </button>
-        } @if (nextUrl) {
-        <button class="chevron" (click)="loadNextPage()">
-            <span class="charm--chevron-right"></span>
-        </button>
-        }
     </div>
 </div>
