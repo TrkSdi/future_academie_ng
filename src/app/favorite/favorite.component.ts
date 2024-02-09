@@ -40,16 +40,16 @@ export class FavoriteComponent {
   ) { }
 
 
-  // used to toggle between edit and read views
+  // Used to toggle between edit and read views
   editing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   favorite!: Favorite;
   favoriteProgram: StudyProgram | null = null;
 
-  // note and status are used to store values while editing to restore them if edit is cancelled
+  // nNote and status are used to store values while editing to restore them if edit is cancelled
   status: string = "";
   note: string = "";
 
-  // alert and subscription handling
+  // Alert and subscription handling
   alerts: Alert[] = [];
   subscriptions: Subscription = new Subscription();
 
@@ -168,7 +168,7 @@ export class FavoriteComponent {
           this.note = response.note;
           this.editing$.next(false);
           this.alertService.showAlert({
-            type: "success", message: "Changement sauvegardé ✅",
+            type: "secondary", message: "Changement sauvegardé ✅",
             object_id: response.id
           });
         },
@@ -202,7 +202,14 @@ export class FavoriteComponent {
   deleteFavorite(favorite_id_del: string) {
     this.subscriptions.add(
       this.favListService.deleteFavorite(favorite_id_del).subscribe({
-        next: () => { this.router.navigateByUrl("/favorite"); },
+        next: () => {
+          this.router.navigateByUrl("/favorite");
+          this.alertService.showAlert({
+            type: "success",
+            message: `Une errreur est survenue et le favoris n'a pas pu être supprimé. Error: $(error.message)`,
+            object_id: favorite_id_del
+          })
+        },
         error: (error: any) => {
           this.alertService.showAlert({
             type: "warning",
