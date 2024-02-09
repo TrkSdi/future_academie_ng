@@ -1,20 +1,37 @@
 import { Component } from '@angular/core';
-import { SendemailService } from '../services/sendemail.service';
-import { HttpClient } from '@angular/common/http';
 import { ApiconfigService } from '../services/apiconfig.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, CommonModule],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
 })
 export class ContactFormComponent {
   constructor(private api: ApiconfigService) {}
 
+  // creation variable for email adress verification
+  textVerifEmail: string = '';
+
   // Route for api
   apiUrl: string = this.api.getAPIUrl();
+
+  // fonction to test (when keyup) if email has good format regarding to the regex and change small text appropriate
+  isEmailValid: boolean = false;
+  onEmailChange(email: string) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    this.isEmailValid = emailRegex.test(email);
+
+    if (this.isEmailValid) {
+      this.textVerifEmail = 'Adresse e-mail valide.';
+    } else {
+      this.textVerifEmail = 'Adresse e-mail invalide.';
+    }
+    return this.isEmailValid;
+  }
 
   sendEmail() {
     // take all variable we need and adapt them
