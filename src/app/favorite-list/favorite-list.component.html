@@ -46,10 +46,9 @@
                 @if(alerts[0] && alerts[0].object_id===favorite.id && alerts[0].type==='danger') {
                 <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
 
-                <button type="button" class="btn btn-danger"
+                <button type="button" class="red-btn"
                     (click)="deleteFavorite(favorite.id); close(alerts[0]); ">Supprimer</button>
-
-                <button type="button" class="btn btn-secondary" (click)="close(alerts[0])">Annuler</button>
+                <button type="button" class="btn-red" (click)="close(alerts[0])">Annuler</button>
                 }
 
                 <!-- Butoons will not display while delete confirmation is shown -->
@@ -61,8 +60,7 @@
 
                     <!-- Don't display editing buttons if the list is viewed as a public share -->
                     @if(!isShare){
-                    <button type="button" class="btn btn-secondary"
-                        (click)="confirmDelete(favorite.id)">Supprimer</button>
+                    <button type="button" class="red-btn" (click)="confirmDelete(favorite.id)">Supprimer</button>
                     }
 
                 </div>
