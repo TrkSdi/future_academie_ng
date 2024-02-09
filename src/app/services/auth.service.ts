@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { map, Observable, of, switchMap, catchError } from 'rxjs';
+import { map, Observable, of, switchMap, catchError, BehaviorSubject } from 'rxjs';
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { ApiconfigService } from './apiconfig.service';
 
@@ -16,7 +16,7 @@ export class AuthService {
   constructor(private http: HttpClient, private api: ApiconfigService) { }
 
   // Observable of the authentication status for dynamic data binding
-  authenticated: Observable<boolean> = of(this.isAuthenticated());
+  authenticated$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   apiUrl = this.api.getAPIUrl();
 
   // get JWT tokens Login component will save to local storage
@@ -30,6 +30,7 @@ export class AuthService {
     const data = {
       "refresh": refresh_token,
     }
+    this.authenticated$.next(false);
     return this.http.post<any>(url, data);
   }
 
@@ -41,12 +42,15 @@ export class AuthService {
     const current_time: number = new Date().getTime()
 
     if (!access_token) {
+      this.authenticated$.next(false);
       return false;
     } else if (decoded_access_token.exp * 1000 > current_time) {
+      this.authenticated$.next(true);
       return true;
     } else {
       // remove expired access token
       localStorage.removeItem('access_token');
+      this.authenticated$.next(false);
       return false;
     }
   }

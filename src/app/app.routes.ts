@@ -11,6 +11,9 @@ import { UserProfilesComponent } from './userprofiles/userprofiles.component';
 import { StudyListComponent } from './study-list/study-list.component';
 import { SharedFavoritesComponent } from './shared-favorites/shared-favorites.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { AboutComponent } from './about/about.component';
+import { FAQComponent } from './faq/faq.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 export const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -20,6 +23,9 @@ export const routes: Routes = [
   { path: 'studyprogram', component: StudyListComponent },
   { path: 'creation', component: CreationComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'FAQ', component: FAQComponent },
+  { path: 'contact', component: ContactFormComponent },
   {
     path: 'userprofile',
     component: UserProfilesComponent,
