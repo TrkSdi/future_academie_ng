@@ -1,10 +1,12 @@
+// Angular modules
 import { Component } from '@angular/core';
 import { FavoriteListService } from '../services/favorite-list.service';
 import { ActivatedRoute } from '@angular/router';
-import { tokenInterceptor } from '../token.interceptor';
 import { Favorite } from '../interface/favorite-interface';
 import { FavoriteListComponent } from '../favorite-list/favorite-list.component';
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+
+// Local imports
 
 @Component({
   selector: 'app-shared-favorites',
