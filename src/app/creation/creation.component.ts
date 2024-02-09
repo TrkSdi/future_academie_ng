@@ -114,7 +114,7 @@ export class CreationComponent {
     // variables which permit to fetch information in the good route for auth user
     var url = this.apiUrl + '/auth/users/';
     var options = {
-      method: 'POST', //envoyer données
+      method: 'POST', //post methode
       headers: {
         'Content-Type': 'application/json',
       },
