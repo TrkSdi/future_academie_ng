@@ -1,3 +1,89 @@
-.form-group {
-    width: 90%;
+.container-fluid {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+#favoriteProgram {
+    width: 100vw;
+}
+
+#form-area {
+    padding: 25px 70px;
+    border-radius: 10px;
+}
+
+textarea {
+    resize: none;
+    font-size: 0.8em;
+}
+
+span {
+    font-weight: bold;
+}
+
+.return {
+    font-size: 1.2em;
+    margin-top: 25px;
+    text-decoration: none;
+    color: var(--grey);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+select {
+    border: none;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+small {
+    font-size: 0.6em;
+}
+
+.remove-btn {
+    box-shadow: var(--shadow1);
+    border-radius: 10px;
+    border: 1px solid var(--red);
+    color: var(--red);
+    background-color: transparent;
+    padding: 0.375rem 0.75rem;
+    margin-right: 10px;
+}
+
+.remove-btn:hover {
+    background-color: var(--red);
+    color: white;
+}
+
+.edit-btn {
+    box-shadow: var(--shadow1);
+    border-radius: 10px;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    background-color: transparent;
+    padding: 0.375rem 0.75rem;
+    margin-right: 10px;
+}
+
+.edit-btn:hover {
+    background-color: var(--blue);
+    color: white;
+}
+
+.cancel-btn {
+    box-shadow: var(--shadow1);
+    border-radius: 10px;
+    border: 1px solid var(--grey);
+    color: var(--grey);
+    background-color: transparent;
+    padding: 0.375rem 0.75rem;
+    margin-right: 10px;
+}
+
+.cancel-btn:hover {
+    background-color: var(--grey);
+    color: white;
 }

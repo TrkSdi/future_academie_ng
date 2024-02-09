@@ -1,13 +1,92 @@
 <div class="container">
-    <ul *ngIf="userprofile">
-        <li>First name : {{ userprofile.first_name }}</li>
-        <li>Last name : {{ userprofile.last_name }}</li>
-        <li>Email : {{ userprofile.email }}</li>
-        <li>Image Profile : {{ userprofile.image_profile }}</li>
-        <li>URL TikTok : {{ userprofile.url_tiktok }}</li>
-        <li>URL Instagram : {{ userprofile.url_instagram}}</li>
-        <li>About me : {{ userprofile.about_me }}</li>
-        <li>Profile is public? : {{ userprofile.is_public }}</li>
-        <li>Student at : {{ userprofile.student_at}}</li>
-    </ul>
+  <ul *ngIf="userprofile">
+
+    <li>
+      <div *ngIf="!editingMode">
+        <label>First name:</label>
+        <p>{{ userprofile.first_name }}</p>
+      </div>
+      <div *ngIf="editingMode">
+        <label for="first_name">First Name:</label>
+        <input id="first_name" class="form-control" [(ngModel)]="userprofile.first_name">
+      </div>
+    </li>
+
+    <li>
+      <div *ngIf="!editingMode">
+        <label>Last name:</label>
+        <p>{{ userprofile.last_name }}</p>
+      </div>
+      <div *ngIf="editingMode">
+        <label for="last_name">Last Name:</label>
+        <input id="last_name" class="form-control" [(ngModel)]="userprofile.last_name">
+      </div>
+    </li>
+
+    <li>
+      <div *ngIf="!editingMode">
+        <label>Email:</label>
+        <p>{{ userprofile.email }}</p>
+      </div>
+      <div *ngIf="editingMode">
+        <label for="email">Email:</label>
+        <input id="email" class="form-control" [(ngModel)]="userprofile.email">
+      </div>
+    </li>
+
+    <li>
+      <div *ngIf="!editingMode">
+        <label>Image Profile:</label>
+        <p>{{ userprofile.image_profile }}</p>
+      </div>
+      <div *ngIf="editingMode">
+        <label for="image_profile">Image Profile:</label>
+        <input id="image_profile" class="form-control" [(ngModel)]="userprofile.image_profile">
+      </div>
+    </li>
+
+    <li>
+      <div *ngIf="!editingMode">
+        <label>About Me:</label>
+        <p>{{ userprofile.about_me }}</p>
+      </div>
+      <div *ngIf="editingMode">
+        <label for="aboutMe">About Me:</label>
+        <textarea id="aboutMe" class="form-control" [(ngModel)]="userprofile.about_me"></textarea>
+      </div>
+    </li>
+
+    <li>
+      <div class="form-group">
+        <label for="isPublic">Profile Visibility:</label>
+        <input type="checkbox" value="true" [checked]="isProfilePublic" id="isPublic" [(ngModel)]="isProfilePublic" name="isPublic" [disabled]="!editingMode"> Public
+      </div>
+    </li>
+
+    <li>
+      <div *ngIf="!editingMode">
+        <label>TikTok URL:</label>
+        <p>{{ userprofile.url_tiktok }}</p>
+      </div>
+    </li>
+
+    <li>
+      <div *ngIf="!editingMode">
+        <label>Instagram URL:</label>
+        <p>{{ userprofile.url_instagram}}</p>
+      </div>
+    </li>
+
+
+    <li>
+      <div *ngIf="!editingMode">
+        <button (click)="toggleEditingMode()">Edit</button>
+      </div>
+
+      <div *ngIf="editingMode">
+        <button (click)="saveUserProfile()">Save</button>
+        <button (click)="toggleEditingMode()">Cancel</button>
+      </div>
+    </li>
+  </ul>
 </div>

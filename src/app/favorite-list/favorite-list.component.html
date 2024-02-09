@@ -1,12 +1,16 @@
 <div class="main-container">
     <h1>Favorites</h1>
-    @if(alerts[0] && alerts[0].type==='success'){
+
+    <!-- Space for showing alerts in case of error or successful deletion of a favorite -->
+    @if(alerts[0] &&(alerts[0].type==='success'|| alerts[0].type==='warning' )){
     <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
     }
 
+    <!-- Creation of a share link or a message if no favorites exist -->
     @if((favorites$ | async)!.length){
     <button type="button" class="btn btn-red" (click)="shareFavorites()" [hidden]="route.includes('share')">Partager vos
         Favoris</button>
+
     <textarea class="share-link" placeholder="" [hidden]="!(shareToken$ | async)">
         {{ shareUrlBase + (shareToken$ | async) }}
     </textarea>
@@ -22,46 +26,67 @@
         pour
         le sauvegarder! </h2>
     }
+
+    <!-- Display of favorites -->
     <div class="cards-container">
+
         @for (favorite of favorites$ | async; track $index) {
         <div class="card">
+
             <ul>
                 <h4> {{ favorite.study_program_name }} </h4>
+
                 <h5>{{ favorite.school_name }}, {{ favorite.school_locality }} </h5>
 
                 <p><span class="section-title">Status:</span> {{ favorite.status }} </p>
+
                 <p><span class="section-title">Note:</span> {{ favorite.note }} </p>
+
+                <!-- Alert display to confirm delete -->
                 @if(alerts[0] && alerts[0].object_id===favorite.id && alerts[0].type==='danger') {
                 <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
 
-                <button type="button" class="btn btn-danger"
+                <button type="button" class="red-btn"
                     (click)="deleteFavorite(favorite.id); close(alerts[0]); ">Supprimer</button>
-                <button type="button" class="btn btn-secondary" (click)="close(alerts[0])">Annuler</button>
+                <button type="button" class="btn-red" (click)="close(alerts[0])">Annuler</button>
                 }
+
+                <!-- Butoons will not display while delete confirmation is shown -->
                 <div [hidden]="(alerts.length && alerts[0].object_id==favorite.id)">
+
                     <button type="button" class="btn btn-blue"
                         [routerLink]="isShare ? '/studyprogram/' + favorite.study_program : '/favorite/' + favorite.id">Voir
                         plus</button>
+
+                    <!-- Don't display editing buttons if the list is viewed as a public share -->
                     @if(!isShare){
-                    <button type="button" class="btn btn-secondary"
-                        (click)="confirmDelete(favorite.id)">Supprimer</button>
+                    <button type="button" class="red-btn" (click)="confirmDelete(favorite.id)">Supprimer</button>
                     }
+
                 </div>
+
             </ul>
+
         </div>
         }
 
     </div>
 
+    <!-- Pagination to update with the PrimeNG module to be coherent with study program display -->
     <div class="pagination">
+
         @if (previousUrl) {
         <button class="chevron" (click)="loadPreviousPage()">
             <span class="charm--chevron-left"></span>
         </button>
-        } @if (nextUrl) {
+        }
+
+        @if (nextUrl) {
         <button class="chevron" (click)="loadNextPage()">
             <span class="charm--chevron-right"></span>
         </button>
         }
+
     </div>
+
 </div>

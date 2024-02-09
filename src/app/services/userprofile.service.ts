@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { UserProfile } from '../interface/userprofile-interface';
 import { ApiconfigService } from './apiconfig.service';
@@ -12,15 +12,38 @@ export class UserProfileService {
 
   constructor(private http: HttpClient, private api: ApiconfigService) { }
 
-  url: string = this.api.getAPIUrl() + "/API_private/userprofile";
+  private apiUrl = `${this.api.getAPIUrl()}/API_private/userprofile/`;
 
   getUserProfile(): Observable<UserProfile> {
-    console.log('Fetching user profile from:', this.url);
-    return this.http.get<any>(this.url).pipe(
+    console.log('Fetching user profile from:', this.apiUrl);
+    return this.http.get<any>(this.apiUrl).pipe(
       map((response: any) => this.mapProfile(response)),
       catchError(error => {
         console.error('Error fetching user profile:', error);
-        throw error; 
+        throw error;
+      })
+    );
+  }
+
+  updateUserProfile(userprofile: UserProfile) {
+    const url = `${this.apiUrl}${userprofile.id}/`;
+    console.log('Updating user profile:', userprofile);
+    return this.http.patch<any>(url, userprofile).pipe(
+      catchError(error => {
+        console.error('Error updating user profile:', error);
+        throw error;
+      })
+    );
+  }
+
+  updateProfileVisibility(isPublic: boolean, userId: number) {
+    const url = `${this.apiUrl}${userId}/`;
+    const updatedData = { is_public: isPublic };
+  
+    return this.http.patch<any>(url, updatedData).pipe(
+      catchError(error => {
+        console.error('Error updating profile visibility:', error);
+        throw error;
       })
     );
   }

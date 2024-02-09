@@ -30,11 +30,21 @@
         <div class="form-group">
           <label for="InputEmail">Adresse Email</label>
           <input
+            #emailInput
             type="email"
             class="form-control"
             placeholder="Enter Mail"
             id="email"
+            (keyup)="onEmailChange(emailInput.value)"
           />
+          <div
+            [ngClass]="{
+              'text-danger': !isEmailValid,
+              'text-success': isEmailValid,
+            }"
+          >
+            {{ textVerifEmail }}
+          </div>
         </div>
       </div>
     </div>
@@ -51,7 +61,7 @@
         </div>
       </div>
     </div>
-    <!--different buttons visible or hidden in case of-->
+
     <button
       id="creationbutton"
       type="submit"

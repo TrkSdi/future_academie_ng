@@ -39,23 +39,34 @@
 <header>
   <div class="main-container">
     <div class="logo-container">
-      <img src="assets/logo.png" alt="main-logo" />
+      <!-- click on logo permit to go back on welcome -->
+      <a routerLink="/">
+        <img src="assets/logo.png" alt="main-logo" />
+      </a>
     </div>
     <nav class="menu active" [ngClass]="{ active: isNavActive }">
       <div id="icons" (click)="toggleNav()"></div>
       <ul [ngClass]="{ active: isNavActive }">
         @if(alerts[0] && alerts[0].type==='success'){
-        <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
+        <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{
+          alerts[0].message
+        }}</ngb-alert>
         }
 
         <li>
-          <a class="hover-underline-animation" routerLink="/search">Recherche</a>
+          <a class="hover-underline-animation" routerLink="/search"
+            >Recherche</a
+          >
         </li>
         <li>
-          <a class="hover-underline-animation" routerLink="/userprofile">Profil</a>
+          <a class="hover-underline-animation" routerLink="/userprofile"
+            >Profil</a
+          >
         </li>
         <li>
-          <a class="hover-underline-animation" routerLink="/favorite">Favoris</a>
+          <a class="hover-underline-animation" routerLink="/favorite"
+            >Favoris</a
+          >
         </li>
 
         @if (isAuthenticated$ | async) {

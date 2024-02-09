@@ -15,6 +15,7 @@ export interface UserProfile {
   is_public: boolean;
   student_at: string | null;
   id: string;
+  
 }
 
 

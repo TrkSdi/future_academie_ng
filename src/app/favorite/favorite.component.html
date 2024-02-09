@@ -1,16 +1,20 @@
 <div class="container-fluid">
-
     <div class="row">
-
+        <a class="return" (click)="goBack()">
+            << Retour favoris</a>
+    </div>
+    <div class="row">
+        <div id="favoriteProgram" class="col-md-8 order-md-2">
+            @if(favoriteProgram){
+            <app-studydetail [studyProgram]="favoriteProgram"></app-studydetail>
+            }
+        </div>
+        <!-- Form Favoris -->
         <div id="form-area" class="col-md-4 order-md-1">
-
             @if( favorite) {
-
             <form action="">
-
                 <div class="form-group">
-
-                    <label class="my-1 mr-2" for="status">Status</label>
+                    <label class="my-1 mr-2" for="status"><span>Status: </span></label>
                     <select class="custom-select my-1 mr-sm-2" name="status" [disabled]="!(editing$ | async)"
                         [(ngModel)]="favorite.status">
                         <option value="interested" [selected]="favorite.status==='interested'">Intéressé.e</option>
@@ -19,65 +23,41 @@
                         <option value="waitlisted" [selected]="favorite.status==='waitlisted'">Liste d'attente</option>
                         <option value="enrolled" [selected]="favorite.status==='enrolled'">Inscrit.e</option>
                     </select>
-
                 </div>
-
                 <div class="form-group">
-
-                    <label for="note">Note</label>
-
+                    <label for="note"><span>Note</span></label>
                     <textarea
                         [ngClass]="{'form-control-plaintext': !(editing$ | async),'form-control': editing$ | async }"
                         class="form-control" name="note" rows="3" [readOnly]="!(editing$ | async)"
                         [(ngModel)]="favorite.note">{{favorite.note}}</textarea>
 
-                    <small id="note-help" class="form-text text-muted">Notez ici ce que vous voulez sur le program - vos
-                        questions,
-                        pourquoi il vous intéresse, etc.</small>
-
+                    <small id="note-help" class="form-text text-muted">Notez ici ce que vous voulez sur le programme -
+                        vos questions, pourquoi il vous intéresse, etc.</small>
                 </div>
                 @if(alerts[0]) {
                 <ngb-alert [type]="alerts[0].type" (closed)="close(alerts[0])">{{ alerts[0].message }}</ngb-alert>
                 <div [hidden]="alerts[0].type!=='danger'">
-                    {{alerts[0].type}}
-                    <button type="button" class="btn btn-danger"
+                    <button type="button" class="remove-btn"
                         (click)="deleteFavorite(favorite.id); close(alerts[0]); ">Supprimer</button>
-                    <button type="button" class="btn btn-secondary" (click)="close(alerts[0])">Annuler</button>
+                    <button type="button" class="cancel-btn" (click)="close(alerts[0])">Annuler</button>
                 </div>
                 }
                 <div [hidden]="(alerts.length)">
-                    <button type="button" class="btn btn-danger" (click)="confirmDelete(favorite.id)"
+                    <button type="button" class="remove-btn" (click)="confirmDelete(favorite.id)"
                         [ngClass]="{'d-none': editing$ | async}">Supprimer le
                         favoris</button>
-                    <button type="button" class="btn btn-primary" (click)="editForm()"
+                    <button type="button" class="edit-btn" (click)="editForm()"
                         [ngClass]="{'d-none': editing$ | async}">Editer</button>
                 </div>
                 <div [ngClass]="{'d-none': !(editing$ | async)}">
-                    <button type="button" class="btn btn-secondary my-1" (click)="cancelEdit()">Annuler</button>
-                    <button type="button" class="btn btn-primary my-1" (click)="saveChanges()">Sauvegarder</button>
-
-
+                    <button type="button" class="cancel-btn" (click)="cancelEdit()">Annuler</button>
+                    <button type="button" class="edit-btn" (click)="saveChanges()">Sauvegarder</button>
                 </div>
-                <small id="save-confirmation" class="form-text text-success">{{ successConfirmation$ | async
-                    }}</small>
             </form>
             }
-
-        </div>
-
-        <div id="favoriteProgram" class="col-md-8 order-md-2">
-
-            @if(favoriteProgram){
-            <app-studydetail [studyProgram]="favoriteProgram"></app-studydetail>
-            }
-
         </div>
     </div>
 
-    <div class="row">
 
-        <button (click)="goBack()" type="button" class="btn btn-light">Retourner</button>
-
-    </div>
 
 </div>
