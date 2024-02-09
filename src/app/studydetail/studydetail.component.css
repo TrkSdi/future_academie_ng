@@ -13,7 +13,7 @@ img {
 
 .container {
     display: flex;
-    height: 100vh;
+    height: 100%;
     margin-top: 70px;
     justify-content: space-between;
     gap: 70px
