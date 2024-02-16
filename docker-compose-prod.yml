@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: dockerfileprod
     ports:
-      - "80:80"
+      - "85:80"
     volumes:
       - /app
       - /app/node_modules
