@@ -7,9 +7,9 @@ services:
       dockerfile: dockerfileprod
     ports:
       - "85:80"
-    volumes:
-      - /app
-      - /app/node_modules
+    # volumes:
+    #   - /app
+    #   - /app/node_modules
   # nginx:
   #   image: nginx:alpine
   #   ports:

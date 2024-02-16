@@ -1,8 +1,11 @@
-FROM node:16-alpine
+# Étape de build
+FROM node:14 AS build
 WORKDIR /app
-RUN npm install -g @angular/cli@13
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-EXPOSE 80
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+RUN npm run build
+
+# Étape de production
+FROM nginx:alpine
+COPY --from=build /app/dist/future_academie/browser /usr/share/nginx/html
